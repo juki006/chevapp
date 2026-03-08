@@ -1285,6 +1285,272 @@ a {
 
 /* === PLACEHOLDER ZA CSS OSTALIH TABOVA ===
    Tab 2 — Kuhinja    → // CSS-TAB2-START / END
+/* === CSS-TAB2-START === */
+
+/* ── Sticky header ── */
+.t2-sticky {
+  flex-shrink: 0;
+  background: var(--cream);
+  padding: 14px 16px 0;
+  border-bottom: 1px solid var(--cream3);
+}
+.t2-title { font-family: var(--font-title); font-size: 26px; font-weight: 700; color: var(--brown); margin-bottom: 10px; }
+.t2-title em { color: var(--red); font-style: italic; }
+.t2-chips { display: flex; gap: 6px; overflow-x: auto; scrollbar-width: none; padding-bottom: 10px; }
+.t2-chips::-webkit-scrollbar { display: none; }
+.t2-chip {
+  flex-shrink: 0; padding: 6px 14px;
+  background: var(--white); border: 1.5px solid var(--cream3);
+  border-radius: 20px; font-size: 12px; font-weight: 700;
+  color: var(--brown3); white-space: nowrap; transition: all var(--transition);
+}
+.t2-chip.active { background: var(--red); border-color: var(--red); color: var(--white); }
+
+/* ── Hero kartica ── */
+.t2-hero {
+  margin: 14px 16px 0;
+  background: var(--cream2);
+  border-radius: var(--radius-lg);
+  padding: 16px;
+  border: 1px solid var(--cream3);
+  position: relative;
+  overflow: hidden;
+  cursor: pointer;
+}
+.t2-hero:active { opacity: 0.9; }
+.t2-hero-label {
+  font-size: 10px; font-weight: 800; letter-spacing: 1.2px;
+  font-family: var(--font-mono); color: var(--orange2);
+  display: flex; align-items: center; gap: 6px; margin-bottom: 6px;
+}
+.t2-hero-naziv {
+  font-family: var(--font-title); font-size: 22px; font-weight: 700;
+  color: var(--brown); margin-bottom: 10px; line-height: 1.2;
+}
+.t2-hero-chips { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 14px; }
+.t2-hero-chip {
+  padding: 4px 10px; background: var(--white); border-radius: 20px;
+  font-size: 11px; font-weight: 700; color: var(--brown3);
+  display: flex; align-items: center; gap: 4px;
+}
+.t2-hero-emoji {
+  position: absolute; right: 12px; top: 12px;
+  font-size: 52px; opacity: 0.18; pointer-events: none;
+}
+.t2-hero-btn {
+  width: 100%; padding: 13px;
+  background: linear-gradient(135deg, var(--red), var(--orange));
+  color: var(--white); border-radius: var(--radius-md);
+  font-size: 15px; font-weight: 800;
+  display: flex; align-items: center; justify-content: center; gap: 8px;
+  transition: opacity var(--transition);
+}
+.t2-hero-btn:active { opacity: 0.85; }
+
+/* ── Section label ── */
+.t2-section-lbl {
+  font-size: 11px; font-weight: 800; text-transform: uppercase;
+  letter-spacing: 1px; color: var(--brown3); font-family: var(--font-mono);
+  padding: 16px 16px 8px;
+}
+
+/* ── 2-col grid ── */
+.t2-grid {
+  display: grid; grid-template-columns: 1fr 1fr;
+  gap: 10px; padding: 0 16px;
+}
+.t2-recipe-card {
+  background: var(--cream2); border-radius: var(--radius-md);
+  padding: 14px; cursor: pointer;
+  transition: transform 0.15s; border: 1px solid var(--cream3);
+  position: relative;
+}
+.t2-recipe-card:active { transform: scale(0.97); }
+.t2-recipe-emoji { font-size: 28px; margin-bottom: 8px; display: block; }
+.t2-recipe-naziv {
+  font-family: var(--font-title); font-size: 14px; font-weight: 700;
+  color: var(--brown); margin-bottom: 2px; line-height: 1.2;
+}
+.t2-recipe-subtitle { font-size: 11px; color: var(--brown3); }
+.t2-save-btn {
+  position: absolute; top: 10px; right: 10px;
+  font-size: 16px; background: none; border: none; cursor: pointer;
+  opacity: 0.4; transition: opacity var(--transition);
+}
+.t2-save-btn.saved { opacity: 1; }
+
+/* ── Kalkulator ── */
+.t2-kalkulator {
+  margin: 16px 16px 0;
+  background: var(--cream2); border-radius: var(--radius-lg);
+  padding: 16px; border: 1px solid var(--cream3);
+}
+.t2-kalk-title {
+  font-size: 10px; font-weight: 800; text-transform: uppercase;
+  letter-spacing: 1px; color: var(--brown3); font-family: var(--font-mono);
+  margin-bottom: 12px; display: flex; align-items: center; gap: 6px;
+}
+.t2-kalk-row { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 12px; }
+.t2-kalk-field { display: flex; flex-direction: column; gap: 4px; }
+.t2-kalk-lbl {
+  font-size: 10px; font-weight: 700; color: var(--brown3);
+  text-transform: uppercase; letter-spacing: 0.6px; font-family: var(--font-mono);
+}
+.t2-kalk-select {
+  padding: 9px 10px; background: var(--white); border: 1.5px solid var(--cream3);
+  border-radius: var(--radius-sm); font-size: 13px; color: var(--brown);
+  font-family: var(--font-body); transition: border-color var(--transition);
+}
+.t2-kalk-select:focus { border-color: var(--orange); outline: none; }
+.t2-kalk-stats { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px; margin-bottom: 10px; }
+.t2-kalk-stat {
+  background: var(--white); border-radius: var(--radius-sm);
+  padding: 10px; text-align: center;
+}
+.t2-kalk-stat-val { font-size: 22px; font-weight: 800; font-family: var(--font-mono); }
+.t2-kalk-stat-lbl { font-size: 9px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.8px; color: var(--brown3); font-family: var(--font-mono); }
+.t2-kalk-activity {
+  background: var(--white); border-radius: var(--radius-sm);
+  padding: 10px 12px; margin-bottom: 10px;
+  display: flex; align-items: center; gap: 8px;
+  font-size: 12px; color: var(--brown); font-weight: 600;
+}
+.t2-kalk-activity-icon { font-size: 20px; flex-shrink: 0; }
+.t2-kalk-activity-sub { font-size: 11px; color: var(--brown3); font-style: italic; }
+.t2-kalk-tagovi { display: flex; flex-wrap: wrap; gap: 6px; }
+.t2-kalk-tag {
+  padding: 4px 10px; border-radius: 20px;
+  background: var(--cream3); font-size: 11px; font-weight: 700; color: var(--brown3);
+  display: flex; align-items: center; gap: 4px;
+}
+
+/* ── Detail slide screen ── */
+#t2-detail { z-index: 200; }
+.t2-detail-hero {
+  flex-shrink: 0; height: 150px;
+  display: flex; align-items: center; justify-content: center; position: relative;
+}
+.t2-detail-back {
+  position: absolute; top: 48px; left: 16px;
+  width: 36px; height: 36px; background: rgba(255,255,255,0.88);
+  border-radius: 50%; display: flex; align-items: center; justify-content: center;
+  font-size: 18px; box-shadow: var(--shadow-sm);
+}
+.t2-detail-save {
+  position: absolute; top: 48px; right: 16px;
+  width: 36px; height: 36px; background: rgba(255,255,255,0.88);
+  border-radius: 50%; display: flex; align-items: center; justify-content: center;
+  font-size: 18px; box-shadow: var(--shadow-sm);
+}
+.t2-detail-emoji { font-size: 64px; filter: drop-shadow(0 4px 12px rgba(0,0,0,0.15)); }
+.t2-detail-scroll { flex: 1; overflow-y: auto; -webkit-overflow-scrolling: touch; scrollbar-width: none; }
+.t2-detail-scroll::-webkit-scrollbar { display: none; }
+.t2-detail-body { padding: 16px 16px 32px; }
+.t2-detail-naziv { font-family: var(--font-title); font-size: 24px; font-weight: 700; color: var(--brown); margin-bottom: 8px; }
+.t2-detail-chips { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 16px; }
+.t2-detail-chip {
+  padding: 4px 10px; background: var(--cream2); border-radius: 20px;
+  font-size: 11px; font-weight: 700; color: var(--brown3);
+  display: flex; align-items: center; gap: 4px;
+}
+
+/* Portion scaler */
+.t2-porcije-row {
+  display: flex; align-items: center; gap: 10px;
+  background: var(--cream2); border-radius: var(--radius-sm);
+  padding: 8px 12px; margin-bottom: 14px;
+}
+.t2-porcije-lbl { font-size: 12px; font-weight: 700; color: var(--brown3); flex: 1; }
+.t2-porcije-val { font-size: 16px; font-weight: 800; color: var(--brown); font-family: var(--font-mono); min-width: 24px; text-align: center; }
+.t2-porcije-btn {
+  width: 28px; height: 28px; border-radius: 50%;
+  background: var(--white); border: 1.5px solid var(--cream3);
+  font-size: 16px; font-weight: 700; color: var(--brown);
+  display: flex; align-items: center; justify-content: center;
+  cursor: pointer; transition: all var(--transition);
+}
+.t2-porcije-btn:active { background: var(--cream3); }
+
+/* Sastojci */
+.t2-sub-lbl {
+  font-size: 10px; font-weight: 800; text-transform: uppercase;
+  letter-spacing: 1px; color: var(--brown3); font-family: var(--font-mono);
+  margin-bottom: 8px;
+}
+.t2-sastojci-box {
+  background: var(--cream2); border-radius: var(--radius-md);
+  overflow: hidden; margin-bottom: 16px; border: 1px solid var(--cream3);
+}
+.t2-sastojak {
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 10px 14px; font-size: 13px; color: var(--brown);
+}
+.t2-sastojak + .t2-sastojak { border-top: 1px solid var(--cream3); }
+.t2-sastojak-kol { font-weight: 800; color: var(--orange); font-family: var(--font-mono); }
+
+/* Koraci */
+.t2-koraci { display: flex; flex-direction: column; gap: 10px; margin-bottom: 16px; }
+.t2-korak {
+  display: flex; gap: 12px; align-items: flex-start;
+  background: var(--cream2); border-radius: var(--radius-md);
+  padding: 12px; border: 1px solid var(--cream3);
+}
+.t2-korak-br {
+  width: 28px; height: 28px; border-radius: 50%;
+  background: var(--red); color: var(--white);
+  font-size: 13px; font-weight: 800;
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0; font-family: var(--font-mono);
+}
+.t2-korak-tekst { flex: 1; font-size: 13px; color: var(--brown); line-height: 1.55; }
+.t2-korak-tekst strong { color: var(--brown); }
+.t2-korak-tekst em { color: var(--red); font-style: normal; font-weight: 700; }
+
+/* Srodni recepti */
+.t2-srodni-scroll { display: flex; gap: 10px; overflow-x: auto; scrollbar-width: none; margin-bottom: 16px; }
+.t2-srodni-scroll::-webkit-scrollbar { display: none; }
+.t2-srodni-card {
+  flex-shrink: 0; width: 120px;
+  background: var(--cream2); border-radius: var(--radius-md);
+  padding: 12px; text-align: center;
+  cursor: pointer; border: 1px solid var(--cream3);
+  transition: transform 0.15s;
+}
+.t2-srodni-card:active { transform: scale(0.96); }
+.t2-srodni-emoji { font-size: 26px; display: block; margin-bottom: 6px; }
+.t2-srodni-naziv { font-size: 11px; font-weight: 700; color: var(--brown); line-height: 1.3; }
+
+/* Videi */
+.t2-videi { display: flex; flex-direction: column; gap: 8px; }
+.t2-video-card {
+  display: flex; gap: 10px; align-items: center;
+  background: var(--cream2); border-radius: var(--radius-md);
+  padding: 10px; border: 1px solid var(--cream3); cursor: pointer;
+  transition: opacity 0.15s;
+}
+.t2-video-card:active { opacity: 0.75; }
+.t2-video-thumb {
+  width: 72px; height: 48px; background: #222;
+  border-radius: var(--radius-sm); flex-shrink: 0;
+  display: flex; align-items: center; justify-content: center;
+  position: relative; overflow: hidden;
+}
+.t2-video-play {
+  width: 24px; height: 24px; background: var(--red);
+  border-radius: 50%; display: flex; align-items: center; justify-content: center;
+  font-size: 10px; color: var(--white);
+}
+.t2-video-dur {
+  position: absolute; bottom: 3px; right: 4px;
+  background: rgba(0,0,0,0.8); color: white;
+  font-size: 9px; font-weight: 700; padding: 1px 4px;
+  border-radius: 3px; font-family: var(--font-mono);
+}
+.t2-video-info { flex: 1; min-width: 0; }
+.t2-video-naziv { font-size: 12px; font-weight: 700; color: var(--brown); line-height: 1.3; margin-bottom: 3px; }
+.t2-video-meta { font-size: 10px; color: var(--brown3); }
+
+/* === CSS-TAB2-END === */
    Tab 3 — Akademija  → // CSS-TAB3-START / END
    Tab 4 — Zajednica  → // CSS-TAB4-START / END
    Tab 6 — Profil     → // CSS-TAB6-START / END
@@ -1481,17 +1747,79 @@ a {
 
         <!-- TAB 2: Kuhinja -->
         <div class="tab-pane" id="tab-kuhinja">
-          <!-- HTML-TAB2-START -->
-          <div class="tab-header">
-            <h2>🔪 Kuhinja</h2>
-            <p>Recepti i kalorije</p>
+                    <!-- HTML-TAB2-START -->
+
+          <!-- Sticky: title + filter chips -->
+          <div class="t2-sticky">
+            <div class="t2-title">The <em>Kuhinja</em></div>
+            <div class="t2-chips" id="t2-chips"></div>
           </div>
-          <div class="tab-scroll">
-            <div style="padding:20px;text-align:center;color:var(--brown3);">
-              <p style="font-size:40px">🏗️</p>
-              <p>Tab 2 se učitava...</p>
+
+          <!-- Scrollable sadržaj -->
+          <div class="tab-scroll" id="t2-scroll">
+
+            <!-- Specijalitet dana -->
+            <div class="t2-hero" id="t2-hero" onclick="t2HeroClick()">
+              <div class="t2-hero-emoji" id="t2-hero-emoji"></div>
+              <div class="t2-hero-label">⭐ SPECIJALITET DANA</div>
+              <div class="t2-hero-naziv" id="t2-hero-naziv"></div>
+              <div class="t2-hero-chips" id="t2-hero-chips"></div>
+              <button class="t2-hero-btn">Počni kuhati 🔥</button>
             </div>
+
+            <!-- Grid recepata -->
+            <div class="t2-section-lbl" id="t2-section-lbl">SVI RECEPTI</div>
+            <div class="t2-grid" id="t2-grid"></div>
+
+            <!-- Kalkulator obroka -->
+            <div class="t2-kalkulator">
+              <div class="t2-kalk-title">🔥 KALKULATOR OBROKA</div>
+              <div class="t2-kalk-row">
+                <div class="t2-kalk-field">
+                  <label class="t2-kalk-lbl">Stil ćevapa</label>
+                  <select class="t2-kalk-select" id="t2-kalk-stil" onchange="t2Kalkulator()">
+                    <option>Sarajevski (60/40)</option>
+                    <option>Banjalučki (svinjetina)</option>
+                    <option>Tuzlanski (janjetina)</option>
+                  </select>
+                </div>
+                <div class="t2-kalk-field">
+                  <label class="t2-kalk-lbl">Broj ćevapa</label>
+                  <select class="t2-kalk-select" id="t2-kalk-broj" onchange="t2Kalkulator()">
+                    <option value="5">5 komada</option>
+                    <option value="10" selected>10 komada</option>
+                    <option value="15">15 komada</option>
+                    <option value="20">20 komada</option>
+                  </select>
+                </div>
+              </div>
+              <div class="t2-kalk-stats">
+                <div class="t2-kalk-stat">
+                  <div class="t2-kalk-stat-val" id="t2-kcal" style="color:var(--red)"></div>
+                  <div class="t2-kalk-stat-lbl">KCAL</div>
+                </div>
+                <div class="t2-kalk-stat">
+                  <div class="t2-kalk-stat-val" id="t2-prot" style="color:var(--orange)"></div>
+                  <div class="t2-kalk-stat-lbl">PROTEINI</div>
+                </div>
+                <div class="t2-kalk-stat">
+                  <div class="t2-kalk-stat-val" id="t2-masti" style="color:var(--brown3)"></div>
+                  <div class="t2-kalk-stat-lbl">MASTI</div>
+                </div>
+              </div>
+              <div class="t2-kalk-activity">
+                <div class="t2-kalk-activity-icon">🏃</div>
+                <div>
+                  <div id="t2-activity-txt"></div>
+                  <div class="t2-kalk-activity-sub">Ali isplatilo se. Bez rasprave.</div>
+                </div>
+              </div>
+              <div class="t2-kalk-tagovi" id="t2-kalk-tagovi"></div>
+            </div>
+
+            <div style="height:24px"></div>
           </div>
+
           <!-- HTML-TAB2-END -->
         </div>
 
@@ -1647,6 +1975,51 @@ a {
         </div>
 
       </div><!-- /t1-detail -->
+
+      <!-- ============================================
+           DETAIL SCREEN — Tab 2 Kuhinja
+           ============================================ -->
+      <div class="slide-screen" id="t2-detail">
+
+        <div class="t2-detail-hero" id="t2-detail-hero">
+          <button class="t2-detail-back" onclick="closeSlideScreen('t2-detail')">←</button>
+          <span class="t2-detail-emoji" id="t2-detail-emoji"></span>
+          <button class="t2-detail-save" id="t2-detail-save-btn" onclick="t2ToggleSave()">🔖</button>
+        </div>
+
+        <div class="t2-detail-scroll">
+          <div class="t2-detail-body">
+
+            <div class="t2-detail-naziv" id="t2-detail-naziv"></div>
+            <div class="t2-detail-chips" id="t2-detail-chips"></div>
+
+            <!-- Porcije scaler -->
+            <div class="t2-porcije-row">
+              <span class="t2-porcije-lbl">👥 Porcije</span>
+              <button class="t2-porcije-btn" onclick="t2ScalePorcije(-1)">−</button>
+              <span class="t2-porcije-val" id="t2-porcije-val">4</span>
+              <button class="t2-porcije-btn" onclick="t2ScalePorcije(+1)">+</button>
+            </div>
+
+            <!-- Sastojci -->
+            <div class="t2-sub-lbl">SASTOJCI</div>
+            <div class="t2-sastojci-box" id="t2-sastojci"></div>
+
+            <!-- Koraci -->
+            <div class="t2-sub-lbl" style="margin-top:16px">PRIPREMA</div>
+            <div class="t2-koraci" id="t2-koraci"></div>
+
+            <!-- Srodni recepti -->
+            <div class="t2-sub-lbl" style="margin-top:4px" id="t2-srodni-lbl"></div>
+            <div class="t2-srodni-scroll" id="t2-srodni"></div>
+
+            <!-- Videi -->
+            <div class="t2-sub-lbl">VIDEI O OVOM RECEPTU <span style="float:right;font-weight:400;text-transform:none;letter-spacing:0;font-family:var(--font-body)">po gledanosti</span></div>
+            <div class="t2-videi" id="t2-videi"></div>
+
+          </div>
+        </div>
+      </div><!-- /t2-detail -->
 
     </div><!-- /screen-app -->
 
@@ -2327,8 +2700,392 @@ setTimeout(() => { t1InitMap(); t1UpdateMap(); }, 150);
 }());
 /* === JS-TAB1-END === */
 
+/* === JS-TAB2-START === */
+(function () {
+
+/* ─── Podaci ─── */
+const T2_DATA = [
+  {
+    id:1, naziv:'Sarajevski Ćevapi — Original', emoji:'🥩', subtitle:'Legendarni recept od 1954.',
+    kategorija:'Klasici', tagovi:['ćevapi','sarajevski','govedina','janjetina','ugljen'],
+    vrijemeMin:45, vrijemeExtra:'+ 24h', porcije:4, tezina:'Srednje', boja:'#C0392B',
+    sastojci:[
+      {naziv:'Mljevena govedina (80/20)', kol:300, jed:'g'},
+      {naziv:'Mljevena janjetina',        kol:200, jed:'g'},
+      {naziv:'Fina morska sol (1,5%)',    kol:7.5, jed:'g'},
+    ],
+    koraci:[
+      {naslov:'Pomiješajte meso.',       opis:'Pomiješajte 60% svježe mljevene govedine s 40% mljevene janjetine. Koristite <em>hladno meso</em> izravno iz hladnjaka.'},
+      {naslov:'Začinite samo solju.',    opis:'Dodajte 1,5% ukupne težine mesa u finoj morskoj soli. <em>Bez papra. Bez kima. Bez češnjaka.</em> Odolite iskušenju. Miješajte 3 minute.'},
+      {naslov:'Odmarajte u hladnjaku.', opis:'Pokrijte prozirnom folijom. Odmarajte <em>najmanje 24 sata</em>. 48 sati je primjetno bolje. Ovo je najvažniji korak.'},
+      {naslov:'Oblikujte ćevape.',       opis:'Rolajte u valjčiće ~8cm duljine, 2,5cm promjera. Hladne ruke, brzi pokreti. <em>Ujednačena veličina = ravnomjerno pečenje.</em>'},
+      {naslov:'Pecite na ugljenu.',      opis:'Visoka temperatura, čista rešetka. 2-3 min po strani. Cvrči ali bez plamena. <em>Nikad ne bušite.</em> Odmah poslužite u toplom somunu.'},
+    ],
+    videi:[
+      {naziv:'Pravi sarajevski ćevap — originalni recept',         kanal:'Kuhinja BiH',      pregledi:'2.4M', trajanje:'12:34'},
+      {naziv:'Sarajevski ćevap kod kuće — korak po korak',         kanal:'Balkanska Kuhinja', pregledi:'1.8M', trajanje:'9:12'},
+      {naziv:'Tehnika mljevenja mesa za ćevap — majstorska lekcija',kanal:'Roštilj Majstor',  pregledi:'940K', trajanje:'7:45'},
+      {naziv:'Zašto je sol jedini začin u ćevapima?',              kanal:'Recept TV',         pregledi:'620K', trajanje:'5:20'},
+    ],
+  },
+  {
+    id:2, naziv:'Somun / Lepinja', emoji:'🫓', subtitle:'Sveti kruh',
+    kategorija:'Dodaci', tagovi:['somun','lepinja','kruh','tijesto'],
+    vrijemeMin:90, vrijemeExtra:'', porcije:8, tezina:'Teže', boja:'#E67E22',
+    sastojci:[
+      {naziv:'Brašno T550',  kol:500, jed:'g'},
+      {naziv:'Topla voda',   kol:300, jed:'ml'},
+      {naziv:'Suhi kvasac',  kol:7,   jed:'g'},
+      {naziv:'Sol',          kol:10,  jed:'g'},
+      {naziv:'Šećer',        kol:5,   jed:'g'},
+    ],
+    koraci:[
+      {naslov:'Aktivirajte kvasac.',  opis:'Pomiješajte kvasac sa šećerom i 50ml tople vode. Ostavite <em>10 minuta</em> dok ne zapjeni.'},
+      {naslov:'Zamijesite tijesto.', opis:'Dodajte preostalu vodu i sol u brašno. Mijesite <em>10 minuta</em> do glatke, elastične mase.'},
+      {naslov:'Prvo dizanje.',        opis:'Pokrijte vlažnom krpom. Ostavite na toplom <em>1 sat</em>. Tijesto treba udvostručiti volumen.'},
+      {naslov:'Oblikujte somune.',    opis:'Podijelite na 8 jednakih loptica. Razvaljajte na <em>1cm debljine</em>, okruglog oblika.'},
+      {naslov:'Pecite na tavi.',      opis:'Suha, vrela tava bez ulja. 3-4 minute po strani. <em>Zlatno-smeđ s tipičnim mjehurima.</em>'},
+    ],
+    videi:[
+      {naziv:'Domaći somun za ćevape — tajni recept', kanal:'Kuhinja BiH',      pregledi:'1.1M', trajanje:'8:22'},
+      {naziv:'Somun vs lepinja — koja je razlika?',   kanal:'Balkanska Kuhinja', pregledi:'540K', trajanje:'6:15'},
+    ],
+  },
+  {
+    id:3, naziv:'Ajvar', emoji:'🫑', subtitle:'Pečena paprika',
+    kategorija:'Dodaci', tagovi:['ajvar','paprika','zimnica','prilog'],
+    vrijemeMin:120, vrijemeExtra:'', porcije:10, tezina:'Srednje', boja:'#E74C3C',
+    sastojci:[
+      {naziv:'Crvena babura paprika', kol:2000, jed:'g'},
+      {naziv:'Patlidžan',             kol:500,  jed:'g'},
+      {naziv:'Češnjak',               kol:4,    jed:'češnja'},
+      {naziv:'Ulje',                  kol:100,  jed:'ml'},
+      {naziv:'Sol i papar',           kol:1,    jed:'po ukusu'},
+    ],
+    koraci:[
+      {naslov:'Pecite povrće.',      opis:'Paprike i patlidžan pecite na <em>250°C</em> dok kožica ne pocrnni sa svih strana.'},
+      {naslov:'Ogulite i ocijedite.',opis:'Stavite u vrećicu 15 minuta da se pare. Ogulite, uklonite sjemenke, ocijedite višak tekućine.'},
+      {naslov:'Sameljite.',          opis:'Sameljite u mašini ili blenderom — ali <em>ne previše glatko</em>. Tekstura je važna.'},
+      {naslov:'Kuhajte s uljem.',    opis:'Miješajte s uljem <em>45-60 minuta</em>. Gotovo kada kapljica na tanjuriću ne širi vodu.'},
+      {naslov:'Konzervirajte.',      opis:'Vruć ajvar punite u sterilizovane staklenke. Okrenite naopako 10 minuta.'},
+    ],
+    videi:[
+      {naziv:'Domaći ajvar — pravi balkanski recept',  kanal:'Zimnica TV',    pregledi:'3.2M', trajanje:'14:50'},
+      {naziv:'Ajvar za ćevape — savršena kombinacija', kanal:'Roštilj Majstor',pregledi:'890K', trajanje:'7:30'},
+    ],
+  },
+  {
+    id:4, naziv:'Kajmak', emoji:'🥛', subtitle:'Domaći skorup',
+    kategorija:'Dodaci', tagovi:['kajmak','mlijeko','mlječni','prilog'],
+    vrijemeMin:30, vrijemeExtra:'+ 48h', porcije:6, tezina:'Lako', boja:'#F39C12',
+    sastojci:[
+      {naziv:'Punomasno svježe mlijeko', kol:2000, jed:'ml'},
+      {naziv:'Sol',                       kol:5,    jed:'g'},
+    ],
+    koraci:[
+      {naslov:'Zagrijte mlijeko.',    opis:'Zagrijte na <em>85°C</em> — ne smije ključati.'},
+      {naslov:'Ohladite polako.',     opis:'Ostavite 2-3 sata. Na površini se formira <em>zlatna korica</em>.'},
+      {naslov:'Skupite kajmak.',      opis:'Skinite gornji sloj u plitku posudu. Malo posolite. Ponavljajte 2-3 dana.'},
+      {naslov:'Odmarajte 24-48h.',   opis:'Kajmak treba <em>odležati</em> da dobije pravi okus.'},
+    ],
+    videi:[
+      {naziv:'Domaći kajmak — jednostavni recept', kanal:'Kuhinja BiH', pregledi:'780K', trajanje:'6:40'},
+    ],
+  },
+  {
+    id:5, naziv:'Banjalučki Ćevapi', emoji:'🐷', subtitle:'Širi, masni valovi',
+    kategorija:'Varijante', tagovi:['ćevapi','banjalučki','svinjetina','junetina'],
+    vrijemeMin:40, vrijemeExtra:'+ 12h', porcije:4, tezina:'Srednje', boja:'#27AE60',
+    sastojci:[
+      {naziv:'Mljevena svinjetina (60%)', kol:300, jed:'g'},
+      {naziv:'Mljevena junetina (40%)',   kol:200, jed:'g'},
+      {naziv:'Sol',                        kol:8,   jed:'g'},
+      {naziv:'Bijeli luk',                 kol:2,   jed:'češnja'},
+      {naziv:'Soda bikarbona',             kol:1,   jed:'g'},
+    ],
+    koraci:[
+      {naslov:'Pomiješajte smjesu.', opis:'Svinjetina daje karakteristični <em>masni okus</em> banjalučkih ćevapa.'},
+      {naslov:'Začinite.',           opis:'Sol, iscijeđeni češnjak, soda bikarbona. Soda čini teksturu <em>mekanom</em>. Miješajte 5 minuta.'},
+      {naslov:'Odmarajte 12h.',     opis:'Za razliku od sarajevskih, banjalučki ne zahtijeva 24h.'},
+      {naslov:'Oblikujte šire.',     opis:'<em>~10cm duljine, 3cm promjera.</em> Karakteristično rebrasto oblikovanje.'},
+      {naslov:'Pecite na roštilju.',opis:'Srednje-visoka temperatura. 4-5 minuta po strani. <em>Svinjetina mora biti dobro pečena.</em>'},
+    ],
+    videi:[
+      {naziv:'Banjalučki ćevapi — originalni recept',  kanal:'Roštilj Majstor', pregledi:'1.5M', trajanje:'10:20'},
+      {naziv:'Sarajevski vs Banjalučki — usporedba',   kanal:'ĆevapTV',         pregledi:'2.1M', trajanje:'15:00'},
+    ],
+  },
+  {
+    id:6, naziv:'Tuzlanski Ćevapi', emoji:'🐑', subtitle:'Jagnjeći varijetet',
+    kategorija:'Varijante', tagovi:['ćevapi','tuzlanski','janjetina'],
+    vrijemeMin:50, vrijemeExtra:'+ 24h', porcije:4, tezina:'Srednje', boja:'#8E44AD',
+    sastojci:[
+      {naziv:'Mljevena janjetina (70%)', kol:350, jed:'g'},
+      {naziv:'Mljevena govedina (30%)',  kol:150, jed:'g'},
+      {naziv:'Sol',                       kol:8,   jed:'g'},
+      {naziv:'Crni luk (sitno)',          kol:30,  jed:'g'},
+    ],
+    koraci:[
+      {naslov:'Pripremite smjesu.',  opis:'Omjer <em>70/30</em> janjetina/govedina daje intenzivniji okus.'},
+      {naslov:'Dodajte luk.',        opis:'Sitno nasjeckani luk daje <em>vlažnost i aromu</em> — specifičnost tuzlanskog stila.'},
+      {naslov:'Odmarajte 24h.',     opis:'Jednako važno kao i kod sarajevskog.'},
+      {naslov:'Oblikujte tanje.',    opis:'Sličniji sarajevskom obliku, ali od janjetine.'},
+      {naslov:'Roštilj na ugljenu.',opis:'Visoka temperatura. <em>2-3 minute po strani.</em> Zlatno-smeđa korica.'},
+    ],
+    videi:[
+      {naziv:'Tuzlanski ćevapi — recept iz Tuzle', kanal:'Kuhinja BiH', pregledi:'680K', trajanje:'9:00'},
+    ],
+  },
+  {
+    id:7, naziv:'Luk — Pravilno Rezanje', emoji:'🧅', subtitle:'Bez suza, s stilom',
+    kategorija:'Trikovi', tagovi:['luk','rezanje','tehnika','priprema'],
+    vrijemeMin:10, vrijemeExtra:'', porcije:1, tezina:'Lako', boja:'#E67E22',
+    sastojci:[
+      {naziv:'Bijeli luk',  kol:2, jed:'glavice'},
+      {naziv:'Oštri nož',   kol:1, jed:'kom'},
+    ],
+    koraci:[
+      {naslov:'Ohladite luk.',         opis:'<em>30 minuta u hladnjaku.</em> Hladnoća smanjuje isparavanje sumpornih spojeva koji izazivaju suze.'},
+      {naslov:'Prerežite na pola.',    opis:'Odrežite vrh, <em>ne korijenski dio</em>. Korijen drži listove zajedno.'},
+      {naslov:'Narezujte vodoravno.', opis:'2-3 horizontalna reza prema korijenu. <em>Ne sijecite korijen.</em>'},
+      {naslov:'Narezujte vertikalno.',opis:'Okomito od vrha prema korijenu, jednaka razmaka.'},
+      {naslov:'Sjecite poprečno.',    opis:'Dobivate <em>savršenu kockicu.</em> Korijen bacite.'},
+    ],
+    videi:[
+      {naziv:'Profesionalna tehnika rezanja luka',        kanal:'Chef Škola',    pregledi:'4.5M', trajanje:'5:15'},
+      {naziv:'Zašto luk izaziva suze — i kako to spriječiti', kanal:'Kuhinja Nauka', pregledi:'2.8M', trajanje:'4:30'},
+    ],
+  },
+  {
+    id:8, naziv:'Roštilj — Temperatura', emoji:'🔥', subtitle:'Savladaj vatru',
+    kategorija:'Trikovi', tagovi:['roštilj','ugljen','temperatura','tehnika'],
+    vrijemeMin:20, vrijemeExtra:'', porcije:1, tezina:'Srednje', boja:'#C0392B',
+    sastojci:[
+      {naziv:'Ugljen (bukva)',      kol:2, jed:'kg'},
+      {naziv:'Papir za paljenje',   kol:1, jed:'kom'},
+      {naziv:'Strpljenje',          kol:1, jed:'∞'},
+    ],
+    koraci:[
+      {naslov:'Koristite bukvin ugljen.', opis:'Gori dulje i ravnomjernije. <em>Nikad briket za ćevape.</em>'},
+      {naslov:'Zapalite bez tekućine.',   opis:'Koristite dimnjak ili papir. <em>Nikad benzin</em> — daje okus mesu.'},
+      {naslov:'Pričekajte 20-30 min.',   opis:'Ugljen je spreman kada postane <em>bijelo-siv, bez plamena.</em>'},
+      {naslov:'Testirajte rukom.',        opis:'Ruka 10cm od rešetke: <em>2s = prevruće, 4s = savršeno za ćevape, 6s = prenisko.</em>'},
+      {naslov:'Čistite rešetku.',         opis:'Vruću rešetku četkom, namažite uljem. <em>Čista rešetka = meso se ne lijepi.</em>'},
+    ],
+    videi:[
+      {naziv:'Savršeni roštilj — kontrola temperature', kanal:'Roštilj Majstor', pregledi:'1.9M', trajanje:'11:00'},
+      {naziv:'Ugljen vs. drvo — što je bolje za ćevape?',kanal:'BBQ Akademija',   pregledi:'1.1M', trajanje:'8:45'},
+    ],
+  },
+];
+
+const T2_KALK = {
+  'Sarajevski (60/40)':       {kcal:41, prot:3.2, masti:2.4, tagovi:['🔥 Visoko proteinski','✗ Gluten FREE','🐄 Govedina/Janjetina']},
+  'Banjalučki (svinjetina)':  {kcal:48, prot:2.8, masti:3.8, tagovi:['✗ Gluten FREE','🐷 Svinjetina/Junetina']},
+  'Tuzlanski (janjetina)':    {kcal:44, prot:3.5, masti:3.2, tagovi:['🔥 Visoko proteinski','✗ Gluten FREE','🐑 Janjetina']},
+};
+
+/* ─── State ─── */
+let t2Kategorija = 'sve';
+let t2ActiveRecept = null;
+let t2Porcije = 4, t2BasePorcije = 4;
+const T2_SAVED_KEY = 'ca_t2_saved';
+
+/* ─── Saved ─── */
+function t2GetSaved() { return JSON.parse(localStorage.getItem(T2_SAVED_KEY) || '[]'); }
+function t2IsSaved(id) { return t2GetSaved().includes(id); }
+function t2ToggleSave() {
+  const r = t2ActiveRecept; if (!r) return;
+  let saved = t2GetSaved();
+  if (saved.includes(r.id)) {
+    saved = saved.filter(x => x !== r.id);
+    showToast('Uklonjeno iz spremljenih 🗑️');
+  } else {
+    saved.push(r.id);
+    showToast('Recept spremljen! 🔖');
+  }
+  localStorage.setItem(T2_SAVED_KEY, JSON.stringify(saved));
+  document.getElementById('t2-detail-save-btn').textContent = t2IsSaved(r.id) ? '🔖' : '🔖';
+  document.getElementById('t2-detail-save-btn').style.opacity = t2IsSaved(r.id) ? '1' : '0.5';
+  t2RenderGrid();
+}
+
+/* ─── Chips ─── */
+function t2RenderChips() {
+  const cats = ['sve', ...new Set(T2_DATA.map(r => r.kategorija)), 'spremljeni'];
+  const labels = { sve:'Sve', spremljeni:'🔖 Moji' };
+  document.getElementById('t2-chips').innerHTML = cats.map(c =>
+    `<button class="t2-chip${c === t2Kategorija ? ' active' : ''}" onclick="t2SetKat('${c}',this)">${labels[c] || c}</button>`
+  ).join('');
+}
+
+/* ─── Grid ─── */
+function t2GetFiltered() {
+  if (t2Kategorija === 'sve') return T2_DATA;
+  if (t2Kategorija === 'spremljeni') { const s = t2GetSaved(); return T2_DATA.filter(r => s.includes(r.id)); }
+  return T2_DATA.filter(r => r.kategorija === t2Kategorija);
+}
+
+function t2RenderGrid() {
+  const filtered = t2GetFiltered();
+  const saved = t2GetSaved();
+  const lbl = document.getElementById('t2-section-lbl');
+  lbl.textContent = t2Kategorija === 'sve' ? 'SVI RECEPTI' :
+                    t2Kategorija === 'spremljeni' ? 'MOJI RECEPTI' :
+                    t2Kategorija.toUpperCase();
+  document.getElementById('t2-grid').innerHTML = filtered.map(r => `
+    <div class="t2-recipe-card animate-fade" onclick="t2OpenDetail(${r.id})">
+      <button class="t2-save-btn${saved.includes(r.id) ? ' saved' : ''}"
+              onclick="event.stopPropagation();t2QuickSave(${r.id},this)">🔖</button>
+      <span class="t2-recipe-emoji">${r.emoji}</span>
+      <div class="t2-recipe-naziv">${r.naziv}</div>
+      <div class="t2-recipe-subtitle">${r.subtitle}</div>
+    </div>`).join('') || '<div style="grid-column:span 2;padding:24px;text-align:center;color:var(--brown3)">Nema spremljenih recepata.</div>';
+}
+
+window.t2QuickSave = function(id, btn) {
+  let saved = t2GetSaved();
+  if (saved.includes(id)) { saved = saved.filter(x => x !== id); btn.classList.remove('saved'); showToast('Uklonjeno 🗑️'); }
+  else { saved.push(id); btn.classList.add('saved'); showToast('Spremljeno 🔖'); }
+  localStorage.setItem(T2_SAVED_KEY, JSON.stringify(saved));
+};
+
+window.t2SetKat = function(kat, btn) {
+  t2Kategorija = kat;
+  document.querySelectorAll('.t2-chip').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  t2RenderGrid();
+};
+
+/* ─── Hero ─── */
+function t2RenderHero() {
+  const day = Math.floor((Date.now() - new Date(new Date().getFullYear(), 0, 0)) / 86400000);
+  const r = T2_DATA[day % T2_DATA.length];
+  window._t2HeroId = r.id;
+  document.getElementById('t2-hero-emoji').textContent = r.emoji;
+  document.getElementById('t2-hero-naziv').textContent = r.naziv;
+  document.getElementById('t2-hero-chips').innerHTML = [
+    `<span class="t2-hero-chip">⏱ ${r.vrijemeMin} min${r.vrijemeExtra ? ' ' + r.vrijemeExtra : ''}</span>`,
+    `<span class="t2-hero-chip">👥 ${r.porcije} porcije</span>`,
+    `<span class="t2-hero-chip">📊 ${r.tezina}</span>`,
+  ].join('');
+}
+window.t2HeroClick = function() { if (window._t2HeroId) t2OpenDetail(window._t2HeroId); };
+
+/* ─── Kalkulator ─── */
+window.t2Kalkulator = function() {
+  const stil  = document.getElementById('t2-kalk-stil').value;
+  const broj  = parseInt(document.getElementById('t2-kalk-broj').value);
+  const k = T2_KALK[stil];
+  const kcal  = Math.round(k.kcal  * broj);
+  const prot  = Math.round(k.prot  * broj * 10) / 10;
+  const masti = Math.round(k.masti * broj * 10) / 10;
+  document.getElementById('t2-kcal').textContent  = kcal;
+  document.getElementById('t2-prot').textContent  = prot + 'g';
+  document.getElementById('t2-masti').textContent = masti + 'g';
+  const trcanje = Math.round(kcal / 8.5);
+  const hodanje = Math.round(kcal / 5.5);
+  document.getElementById('t2-activity-txt').textContent = `= ${trcanje} min trčanja ili ${hodanje} min hodanja`;
+  document.getElementById('t2-kalk-tagovi').innerHTML = k.tagovi.map(t =>
+    `<span class="t2-kalk-tag">${t}</span>`).join('');
+};
+
+/* ─── Porcije scaler ─── */
+window.t2ScalePorcije = function(delta) {
+  t2Porcije = Math.max(1, Math.min(20, t2Porcije + delta));
+  document.getElementById('t2-porcije-val').textContent = t2Porcije;
+  t2RenderSastojci();
+};
+
+function t2RenderSastojci() {
+  const r = t2ActiveRecept; if (!r) return;
+  const factor = t2Porcije / t2BasePorcije;
+  document.getElementById('t2-sastojci').innerHTML = r.sastojci.map(s => {
+    const kol = s.jed === 'po ukusu' || s.jed === '∞' ? s.jed :
+                Number.isInteger(s.kol * factor) ? (s.kol * factor) : (Math.round(s.kol * factor * 10) / 10);
+    return `<div class="t2-sastojak">
+      <span>${s.naziv}</span>
+      <span class="t2-sastojak-kol">${typeof kol === 'number' ? kol + s.jed : kol}</span>
+    </div>`;
+  }).join('');
+}
+
+/* ─── Srodni recepti (spreman za API: filter po tagovima) ─── */
+function t2GetSrodni(r) {
+  /* Ovo će se zamijeniti API pozivom: GET /recepti?tagovi=ćevapi,sarajevski */
+  return T2_DATA.filter(x => x.id !== r.id && x.tagovi.some(t => r.tagovi.includes(t))).slice(0, 4);
+}
+
+/* ─── Detail screen ─── */
+window.t2OpenDetail = function(id) {
+  const r = T2_DATA.find(x => x.id === id); if (!r) return;
+  t2ActiveRecept = r;
+  t2BasePorcije  = r.porcije;
+  t2Porcije      = r.porcije;
+
+  document.getElementById('t2-detail-hero').style.background =
+    `linear-gradient(135deg, ${r.boja}33, ${r.boja}18)`;
+  document.getElementById('t2-detail-emoji').textContent = r.emoji;
+  document.getElementById('t2-detail-naziv').textContent = r.naziv;
+
+  document.getElementById('t2-detail-chips').innerHTML = [
+    `<span class="t2-detail-chip">⏱ ${r.vrijemeMin} min${r.vrijemeExtra ? ' ' + r.vrijemeExtra : ''}</span>`,
+    `<span class="t2-detail-chip">👥 ${r.porcije} porcije</span>`,
+    `<span class="t2-detail-chip">📊 ${r.tezina}</span>`,
+  ].join('');
+
+  document.getElementById('t2-porcije-val').textContent = t2Porcije;
+  t2RenderSastojci();
+
+  document.getElementById('t2-koraci').innerHTML = r.koraci.map((k, i) => `
+    <div class="t2-korak">
+      <div class="t2-korak-br">${i + 1}</div>
+      <div class="t2-korak-tekst"><strong>${k.naslov}</strong> ${k.opis}</div>
+    </div>`).join('');
+
+  const srodni = t2GetSrodni(r);
+  const srodniEl = document.getElementById('t2-srodni');
+  const srodniLbl = document.getElementById('t2-srodni-lbl');
+  if (srodni.length) {
+    srodniLbl.textContent = 'SRODNI RECEPTI';
+    srodniEl.innerHTML = srodni.map(s =>
+      `<div class="t2-srodni-card" onclick="t2OpenDetail(${s.id})">
+        <span class="t2-srodni-emoji">${s.emoji}</span>
+        <div class="t2-srodni-naziv">${s.naziv}</div>
+      </div>`).join('');
+  } else {
+    srodniLbl.textContent = '';
+    srodniEl.innerHTML = '';
+  }
+
+  document.getElementById('t2-videi').innerHTML = r.videi.map(v => `
+    <div class="t2-video-card">
+      <div class="t2-video-thumb">
+        <div class="t2-video-play">▶</div>
+        <div class="t2-video-dur">${v.trajanje}</div>
+      </div>
+      <div class="t2-video-info">
+        <div class="t2-video-naziv">${v.naziv}</div>
+        <div class="t2-video-meta">${v.kanal} · ▶ ${v.pregledi} pregleda</div>
+      </div>
+    </div>`).join('');
+
+  const saveBtn = document.getElementById('t2-detail-save-btn');
+  saveBtn.style.opacity = t2IsSaved(r.id) ? '1' : '0.5';
+
+  openSlideScreen('t2-detail');
+};
+
+/* ─── Init ─── */
+t2RenderChips();
+t2RenderHero();
+t2RenderGrid();
+t2Kalkulator();
+
+}());
+/* === JS-TAB2-END === */
+
 /* === PLACEHOLDER ZA JS OSTALIH TABOVA ===
-   Tab 2 → // JS-TAB2-START / END
    Tab 3 → // JS-TAB3-START / END
    Tab 4 → // JS-TAB4-START / END
    Tab 6 → // JS-TAB6-START / END
