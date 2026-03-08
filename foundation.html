@@ -1,0 +1,1658 @@
+<!DOCTYPE html>
+<html lang="bs">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <meta name="mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+  <meta name="theme-color" content="#FDF6EC" />
+  <title>ChevApp 🥩</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Nunito:wght@300;400;600;700;800&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+  <style>
+/* ============================================
+   CHEVAPP — FOUNDATION
+   Verzija: 1.0
+   ============================================
+   SADRŽAJ:
+   ✅ CSS varijable i paleta boja
+   ✅ Reset i base styles
+   ✅ Phone shell (desktop) / fullscreen (mobile)
+   ✅ Auth ekran (Login + Registracija)
+   ✅ Onboarding (4 slajda)
+   ✅ Tab bar (6 tabova)
+   ✅ Utility klase i animacije
+   ============================================ */
+
+/* === CSS-FOUNDATION-START === */
+
+/* --- Varijable --- */
+:root {
+  --cream:        #FDF6EC;
+  --cream2:       #F5E6D3;
+  --cream3:       #EDD5B3;
+  --cream4:       #E0C9A0;
+  --brown:        #2C1A0E;
+  --brown2:       #5C3D2E;
+  --brown3:       #8B5E3C;
+  --red:          #C0392B;
+  --red2:         #E74C3C;
+  --orange:       #E67E22;
+  --orange2:      #F39C12;
+  --green:        #1DB954;
+  --green2:       #169A42;
+  --white:        #FFFFFF;
+  --shadow-sm:    0 2px 8px rgba(44,26,14,0.08);
+  --shadow-md:    0 4px 20px rgba(44,26,14,0.12);
+  --shadow-lg:    0 8px 40px rgba(44,26,14,0.18);
+  --radius-sm:    8px;
+  --radius-md:    14px;
+  --radius-lg:    20px;
+  --radius-xl:    28px;
+  --transition:   0.25s ease;
+  --font-title:   'Playfair Display', Georgia, serif;
+  --font-body:    'Nunito', sans-serif;
+  --font-mono:    'DM Mono', monospace;
+}
+
+/* --- Reset --- */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  -webkit-tap-highlight-color: transparent;
+}
+
+html, body {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  background: #C8A882;
+  font-family: var(--font-body);
+  color: var(--brown);
+}
+
+button {
+  font-family: var(--font-body);
+  cursor: pointer;
+  border: none;
+  outline: none;
+  background: none;
+}
+
+input, textarea, select {
+  font-family: var(--font-body);
+  outline: none;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+/* --- Phone shell (Desktop) --- */
+.app-shell {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.phone {
+  position: relative;
+  width: 390px;
+  height: 844px;
+  background: var(--cream);
+  border-radius: 44px;
+  box-shadow:
+    0 0 0 10px #1a0a00,
+    0 0 0 12px #3a2010,
+    var(--shadow-lg),
+    0 40px 80px rgba(0,0,0,0.4);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Notch simulacija */
+.phone::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 120px;
+  height: 28px;
+  background: #1a0a00;
+  border-radius: 0 0 18px 18px;
+  z-index: 1000;
+}
+
+/* --- Fullscreen (Mobile) --- */
+@media (max-width: 600px) {
+  .app-shell {
+    background: var(--cream);
+  }
+  .phone {
+    width: 100%;
+    height: 100%;
+    border-radius: 0;
+    box-shadow: none;
+  }
+  .phone::before {
+    display: none;
+  }
+}
+
+/* --- Screens i navigacija --- */
+.screen {
+  position: absolute;
+  inset: 0;
+  display: none;
+  flex-direction: column;
+  background: var(--cream);
+  overflow: hidden;
+}
+
+.screen.active {
+  display: flex;
+}
+
+/* --- Scroll area unutar taba --- */
+.tab-scroll {
+  flex: 1;
+  overflow-y: auto;
+  overflow-x: hidden;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+}
+
+.tab-scroll::-webkit-scrollbar {
+  display: none;
+}
+
+/* ============================================
+   AUTH EKRAN
+   ============================================ */
+
+#screen-auth {
+  background: linear-gradient(160deg, var(--cream) 0%, var(--cream2) 50%, var(--cream3) 100%);
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+
+.auth-logo {
+  text-align: center;
+  margin-bottom: 32px;
+}
+
+.auth-logo .logo-emoji {
+  font-size: 56px;
+  display: block;
+  margin-bottom: 8px;
+  filter: drop-shadow(0 4px 8px rgba(44,26,14,0.2));
+}
+
+.auth-logo h1 {
+  font-family: var(--font-title);
+  font-size: 36px;
+  font-weight: 700;
+  color: var(--brown);
+  letter-spacing: -0.5px;
+}
+
+.auth-logo p {
+  font-size: 13px;
+  color: var(--brown3);
+  font-style: italic;
+  margin-top: 2px;
+}
+
+.auth-card {
+  width: 100%;
+  max-width: 340px;
+  background: var(--white);
+  border-radius: var(--radius-xl);
+  padding: 24px;
+  box-shadow: var(--shadow-lg);
+}
+
+/* Auth tabovi */
+.auth-tabs {
+  display: flex;
+  background: var(--cream2);
+  border-radius: var(--radius-md);
+  padding: 4px;
+  margin-bottom: 24px;
+}
+
+.auth-tab-btn {
+  flex: 1;
+  padding: 10px;
+  border-radius: 10px;
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--brown3);
+  transition: all var(--transition);
+}
+
+.auth-tab-btn.active {
+  background: var(--white);
+  color: var(--brown);
+  box-shadow: var(--shadow-sm);
+}
+
+/* Auth formi */
+.auth-form {
+  display: none;
+}
+
+.auth-form.active {
+  display: block;
+}
+
+.auth-field {
+  margin-bottom: 14px;
+}
+
+.auth-field label {
+  display: block;
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--brown3);
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+  margin-bottom: 6px;
+  font-family: var(--font-mono);
+}
+
+.auth-field input {
+  width: 100%;
+  padding: 12px 14px;
+  border: 1.5px solid var(--cream3);
+  border-radius: var(--radius-sm);
+  font-size: 15px;
+  color: var(--brown);
+  background: var(--cream);
+  transition: border-color var(--transition);
+}
+
+.auth-field input:focus {
+  border-color: var(--orange);
+}
+
+.auth-error {
+  font-size: 12px;
+  color: var(--red);
+  margin-bottom: 10px;
+  min-height: 16px;
+  font-weight: 600;
+}
+
+.btn-primary {
+  width: 100%;
+  padding: 14px;
+  background: linear-gradient(135deg, var(--red), var(--orange));
+  color: var(--white);
+  border-radius: var(--radius-md);
+  font-size: 15px;
+  font-weight: 800;
+  letter-spacing: 0.3px;
+  box-shadow: 0 4px 16px rgba(192,57,43,0.3);
+  transition: all var(--transition);
+}
+
+.btn-primary:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 6px 20px rgba(192,57,43,0.4);
+}
+
+.btn-primary:active {
+  transform: translateY(0);
+}
+
+.auth-divider {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 16px 0;
+  color: var(--brown3);
+  font-size: 12px;
+}
+
+.auth-divider::before,
+.auth-divider::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: var(--cream3);
+}
+
+.btn-social {
+  width: 100%;
+  padding: 12px 14px;
+  border: 1.5px solid var(--cream3);
+  border-radius: var(--radius-md);
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--brown);
+  background: var(--white);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  margin-bottom: 10px;
+  transition: all var(--transition);
+}
+
+.btn-social:hover {
+  background: var(--cream);
+  border-color: var(--cream4);
+}
+
+.btn-social.apple {
+  background: var(--brown);
+  color: var(--white);
+  border-color: var(--brown);
+}
+
+.btn-social.apple:hover {
+  background: var(--brown2);
+}
+
+/* ============================================
+   ONBOARDING
+   ============================================ */
+
+#screen-onboarding {
+  background: var(--cream);
+}
+
+.ob-slides {
+  flex: 1;
+  position: relative;
+  overflow: hidden;
+}
+
+.ob-slide {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 40px 32px;
+  opacity: 0;
+  transform: translateX(100%);
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.ob-slide.active {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+.ob-slide.prev {
+  opacity: 0;
+  transform: translateX(-100%);
+}
+
+.ob-illustration {
+  font-size: 90px;
+  margin-bottom: 32px;
+  filter: drop-shadow(0 8px 16px rgba(44,26,14,0.15));
+  animation: ob-float 3s ease-in-out infinite;
+}
+
+@keyframes ob-float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-10px); }
+}
+
+.ob-slide h2 {
+  font-family: var(--font-title);
+  font-size: 28px;
+  font-weight: 700;
+  color: var(--brown);
+  text-align: center;
+  margin-bottom: 16px;
+  line-height: 1.3;
+}
+
+.ob-slide p {
+  font-size: 15px;
+  color: var(--brown2);
+  text-align: center;
+  line-height: 1.6;
+  max-width: 280px;
+}
+
+/* Dot indikatori */
+.ob-dots {
+  display: flex;
+  gap: 8px;
+  justify-content: center;
+  padding: 16px;
+}
+
+.ob-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--cream3);
+  transition: all var(--transition);
+}
+
+.ob-dot.active {
+  width: 24px;
+  border-radius: 4px;
+  background: var(--orange);
+}
+
+/* Onboarding navigacija */
+.ob-nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 24px 32px;
+}
+
+.btn-ob-skip {
+  font-size: 14px;
+  color: var(--brown3);
+  font-weight: 600;
+  padding: 8px 12px;
+}
+
+.btn-ob-next {
+  padding: 14px 28px;
+  background: linear-gradient(135deg, var(--red), var(--orange));
+  color: var(--white);
+  border-radius: var(--radius-md);
+  font-size: 15px;
+  font-weight: 800;
+  box-shadow: 0 4px 16px rgba(192,57,43,0.3);
+  transition: all var(--transition);
+}
+
+.btn-ob-next:hover {
+  transform: translateY(-1px);
+}
+
+.btn-ob-back {
+  font-size: 14px;
+  color: var(--brown3);
+  font-weight: 600;
+  padding: 8px 12px;
+}
+
+/* ============================================
+   MAIN APP — Tab bar + Header
+   ============================================ */
+
+#screen-app {
+  display: none;
+  flex-direction: column;
+}
+
+#screen-app.active {
+  display: flex;
+}
+
+/* Tab sadržaj */
+.tab-content {
+  flex: 1;
+  position: relative;
+  overflow: hidden;
+}
+
+.tab-pane {
+  position: absolute;
+  inset: 0;
+  display: none;
+  flex-direction: column;
+  background: var(--cream);
+  overflow: hidden;
+}
+
+.tab-pane.active {
+  display: flex;
+}
+
+/* Tab bar */
+.tab-bar {
+  display: flex;
+  background: var(--white);
+  border-top: 1px solid var(--cream2);
+  padding: 0 4px;
+  padding-bottom: env(safe-area-inset-bottom, 8px);
+  box-shadow: 0 -4px 20px rgba(44,26,14,0.06);
+  flex-shrink: 0;
+  z-index: 100;
+}
+
+.tab-btn {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 8px 2px 6px;
+  gap: 3px;
+  transition: all var(--transition);
+  border-radius: var(--radius-sm);
+  position: relative;
+}
+
+.tab-btn .tab-icon {
+  font-size: 20px;
+  transition: transform var(--transition);
+}
+
+.tab-btn .tab-label {
+  font-size: 9px;
+  font-weight: 700;
+  color: var(--brown3);
+  font-family: var(--font-mono);
+  letter-spacing: 0.3px;
+  transition: color var(--transition);
+}
+
+.tab-btn.active .tab-label {
+  color: var(--orange);
+}
+
+.tab-btn.active .tab-icon {
+  transform: translateY(-2px);
+}
+
+.tab-btn::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%) scaleX(0);
+  width: 24px;
+  height: 3px;
+  background: linear-gradient(90deg, var(--red), var(--orange));
+  border-radius: 0 0 3px 3px;
+  transition: transform var(--transition);
+}
+
+.tab-btn.active::after {
+  transform: translateX(-50%) scaleX(1);
+}
+
+/* ============================================
+   UTILITY KLASE
+   ============================================ */
+
+/* Overlay (slide-up) */
+.overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 200;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  background: rgba(44,26,14,0.5);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity var(--transition);
+  backdrop-filter: blur(4px);
+}
+
+.overlay.open {
+  opacity: 1;
+  pointer-events: all;
+}
+
+.overlay-panel {
+  background: var(--white);
+  border-radius: var(--radius-xl) var(--radius-xl) 0 0;
+  max-height: 88%;
+  overflow-y: auto;
+  transform: translateY(100%);
+  transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+  scrollbar-width: none;
+}
+
+.overlay-panel::-webkit-scrollbar { display: none; }
+
+.overlay.open .overlay-panel {
+  transform: translateY(0);
+}
+
+.overlay-handle {
+  width: 40px;
+  height: 4px;
+  background: var(--cream3);
+  border-radius: 2px;
+  margin: 12px auto 0;
+}
+
+/* Chip / Tag */
+.chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 5px 12px;
+  background: var(--cream2);
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--brown2);
+  white-space: nowrap;
+  font-family: var(--font-mono);
+}
+
+.chip.active {
+  background: linear-gradient(135deg, var(--red), var(--orange));
+  color: var(--white);
+}
+
+/* Kartica */
+.card {
+  background: var(--white);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-sm);
+  overflow: hidden;
+  transition: transform var(--transition), box-shadow var(--transition);
+}
+
+.card:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md);
+}
+
+/* Header pattern */
+.tab-header {
+  background: var(--white);
+  padding: 52px 20px 16px;
+  box-shadow: var(--shadow-sm);
+  flex-shrink: 0;
+  z-index: 10;
+}
+
+.tab-header h2 {
+  font-family: var(--font-title);
+  font-size: 26px;
+  font-weight: 700;
+  color: var(--brown);
+}
+
+.tab-header p {
+  font-size: 13px;
+  color: var(--brown3);
+  margin-top: 2px;
+}
+
+/* Badge */
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 3px 8px;
+  background: var(--cream2);
+  border-radius: 12px;
+  font-size: 11px;
+  font-weight: 700;
+  font-family: var(--font-mono);
+  color: var(--brown2);
+}
+
+/* Stars */
+.stars {
+  color: var(--orange2);
+  font-size: 13px;
+  letter-spacing: 1px;
+}
+
+/* Gradijentni hero */
+.hero-gradient {
+  background: linear-gradient(135deg, var(--brown) 0%, var(--red) 50%, var(--orange) 100%);
+  padding: 32px 20px 24px;
+  color: var(--white);
+}
+
+/* XP Progress Bar */
+.xp-bar-wrap {
+  background: var(--cream2);
+  border-radius: 20px;
+  height: 8px;
+  overflow: hidden;
+}
+
+.xp-bar-fill {
+  height: 100%;
+  border-radius: 20px;
+  background: linear-gradient(90deg, var(--orange), var(--red));
+  transition: width 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Animacije */
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes slideUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes pulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.05); }
+}
+
+@keyframes bounce {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-6px); }
+}
+
+.animate-fade { animation: fadeIn 0.3s ease; }
+.animate-up  { animation: slideUp 0.4s ease; }
+
+/* Slide screen (full tab transition) */
+.slide-screen {
+  position: absolute;
+  inset: 0;
+  background: var(--cream);
+  z-index: 150;
+  transform: translateX(100%);
+  transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.slide-screen.open {
+  transform: translateX(0);
+}
+
+.slide-screen-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 52px 20px 16px;
+  background: var(--white);
+  box-shadow: var(--shadow-sm);
+  flex-shrink: 0;
+}
+
+.btn-back {
+  width: 36px;
+  height: 36px;
+  background: var(--cream2);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+  flex-shrink: 0;
+}
+
+.slide-screen-header h3 {
+  font-family: var(--font-title);
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--brown);
+}
+
+/* Toast obavijest */
+.toast {
+  position: absolute;
+  bottom: 80px;
+  left: 50%;
+  transform: translateX(-50%) translateY(20px);
+  background: var(--brown);
+  color: var(--white);
+  padding: 12px 20px;
+  border-radius: var(--radius-md);
+  font-size: 13px;
+  font-weight: 700;
+  white-space: nowrap;
+  opacity: 0;
+  transition: all 0.3s ease;
+  z-index: 999;
+  pointer-events: none;
+}
+
+.toast.show {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
+}
+
+/* Toggle switch */
+.toggle {
+  position: relative;
+  width: 46px;
+  height: 26px;
+}
+
+.toggle input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.toggle-slider {
+  position: absolute;
+  inset: 0;
+  background: var(--cream3);
+  border-radius: 13px;
+  cursor: pointer;
+  transition: background var(--transition);
+}
+
+.toggle-slider::before {
+  content: '';
+  position: absolute;
+  width: 20px;
+  height: 20px;
+  left: 3px;
+  top: 3px;
+  background: var(--white);
+  border-radius: 50%;
+  transition: transform var(--transition);
+  box-shadow: var(--shadow-sm);
+}
+
+.toggle input:checked + .toggle-slider {
+  background: linear-gradient(135deg, var(--red), var(--orange));
+}
+
+.toggle input:checked + .toggle-slider::before {
+  transform: translateX(20px);
+}
+
+/* Scrollbar chips (horizontalni) */
+.chips-scroll {
+  display: flex;
+  gap: 8px;
+  overflow-x: auto;
+  scrollbar-width: none;
+  padding: 0 20px;
+}
+
+.chips-scroll::-webkit-scrollbar { display: none; }
+
+/* Empty state */
+.empty-state {
+  text-align: center;
+  padding: 40px 20px;
+  color: var(--brown3);
+}
+
+.empty-state .empty-icon {
+  font-size: 48px;
+  margin-bottom: 12px;
+}
+
+.empty-state p {
+  font-size: 14px;
+}
+
+/* Modal */
+.modal-backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(44,26,14,0.6);
+  z-index: 300;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  backdrop-filter: blur(4px);
+}
+
+.modal-backdrop.open {
+  display: flex;
+}
+
+.modal-box {
+  background: var(--white);
+  border-radius: var(--radius-xl);
+  padding: 28px;
+  width: 100%;
+  max-width: 320px;
+  box-shadow: var(--shadow-lg);
+  animation: slideUp 0.3s ease;
+}
+
+.modal-box h3 {
+  font-family: var(--font-title);
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--brown);
+  margin-bottom: 8px;
+}
+
+.modal-box p {
+  font-size: 14px;
+  color: var(--brown3);
+  margin-bottom: 20px;
+  line-height: 1.5;
+}
+
+/* Inline tabovi (za zajednicu itd.) */
+.inner-tabs {
+  display: flex;
+  background: var(--cream2);
+  border-radius: var(--radius-md);
+  padding: 4px;
+  margin: 12px 20px;
+  overflow-x: auto;
+  scrollbar-width: none;
+  gap: 2px;
+}
+
+.inner-tabs::-webkit-scrollbar { display: none; }
+
+.inner-tab-btn {
+  flex-shrink: 0;
+  padding: 8px 14px;
+  border-radius: 10px;
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--brown3);
+  transition: all var(--transition);
+  white-space: nowrap;
+}
+
+.inner-tab-btn.active {
+  background: var(--white);
+  color: var(--brown);
+  box-shadow: var(--shadow-sm);
+}
+
+.inner-pane {
+  display: none;
+}
+
+.inner-pane.active {
+  display: block;
+}
+
+/* Sekcija naslov */
+.section-title {
+  font-family: var(--font-title);
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--brown);
+  padding: 16px 20px 8px;
+}
+
+/* Btn secondary */
+.btn-secondary {
+  padding: 10px 20px;
+  background: var(--cream2);
+  color: var(--brown);
+  border-radius: var(--radius-md);
+  font-size: 14px;
+  font-weight: 700;
+  transition: all var(--transition);
+}
+
+.btn-secondary:hover {
+  background: var(--cream3);
+}
+
+/* Btn outline */
+.btn-outline {
+  padding: 10px 20px;
+  border: 2px solid var(--orange);
+  color: var(--orange);
+  border-radius: var(--radius-md);
+  font-size: 14px;
+  font-weight: 700;
+  background: transparent;
+  transition: all var(--transition);
+}
+
+.btn-outline:hover {
+  background: var(--orange);
+  color: var(--white);
+}
+
+/* === CSS-FOUNDATION-END === */
+
+/* === PLACEHOLDER ZA CSS OSTALIH TABOVA ===
+   Tab 1 — Tražilica  → // CSS-TAB1-START / END
+   Tab 2 — Kuhinja    → // CSS-TAB2-START / END
+   Tab 3 — Akademija  → // CSS-TAB3-START / END
+   Tab 4 — Zajednica  → // CSS-TAB4-START / END
+   Tab 5 — Smještaj   → // CSS-TAB5-START / END
+   Tab 6 — Profil     → // CSS-TAB6-START / END
+   Overlays/Glazba    → // CSS-OVERLAYS-START / END
+   ========================================= */
+
+  </style>
+</head>
+<body>
+
+<div class="app-shell">
+  <div class="phone" id="app">
+
+    <!-- ============================================
+         AUTH EKRAN
+         ============================================ -->
+    <div class="screen active" id="screen-auth">
+      <div class="auth-logo">
+        <span class="logo-emoji">🥩</span>
+        <h1>ChevApp</h1>
+        <p>Tvoj vodič kroz svijet ćevapa</p>
+      </div>
+
+      <div class="auth-card">
+        <!-- Tabovi -->
+        <div class="auth-tabs">
+          <button class="auth-tab-btn active" onclick="switchAuthTab('login')">Prijava</button>
+          <button class="auth-tab-btn" onclick="switchAuthTab('register')">Registracija</button>
+        </div>
+
+        <!-- Login forma -->
+        <div class="auth-form active" id="auth-form-login">
+          <div class="auth-field">
+            <label>Email</label>
+            <input type="email" id="login-email" placeholder="tvoj@email.com" />
+          </div>
+          <div class="auth-field">
+            <label>Lozinka</label>
+            <input type="password" id="login-password" placeholder="••••••••" />
+          </div>
+          <div class="auth-error" id="login-error"></div>
+          <button class="btn-primary" onclick="doLogin()">Prijava →</button>
+
+          <div class="auth-divider">ili</div>
+
+          <button class="btn-social" onclick="doGoogleLogin()">
+            <svg width="18" height="18" viewBox="0 0 24 24"><path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/><path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/><path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" fill="#FBBC05"/><path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/></svg>
+            Nastavi s Googleom
+          </button>
+          <button class="btn-social apple" onclick="doAppleLogin()">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="white"><path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.8-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/></svg>
+            Nastavi s Appleom
+          </button>
+        </div>
+
+        <!-- Register forma -->
+        <div class="auth-form" id="auth-form-register">
+          <div class="auth-field">
+            <label>Ime</label>
+            <input type="text" id="reg-name" placeholder="Tvoje ime" />
+          </div>
+          <div class="auth-field">
+            <label>Email</label>
+            <input type="email" id="reg-email" placeholder="tvoj@email.com" />
+          </div>
+          <div class="auth-field">
+            <label>Lozinka</label>
+            <input type="password" id="reg-password" placeholder="min. 6 znakova" />
+          </div>
+          <div class="auth-error" id="reg-error"></div>
+          <button class="btn-primary" onclick="doRegister()">Registracija →</button>
+
+          <div class="auth-divider">ili</div>
+
+          <button class="btn-social" onclick="doGoogleLogin()">
+            <svg width="18" height="18" viewBox="0 0 24 24"><path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/><path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/><path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" fill="#FBBC05"/><path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/></svg>
+            Nastavi s Googleom
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ============================================
+         ONBOARDING
+         ============================================ -->
+    <div class="screen" id="screen-onboarding">
+      <div class="ob-slides" id="ob-slides">
+
+        <div class="ob-slide active" data-slide="0">
+          <div class="ob-illustration">🥩</div>
+          <h2>Dobrodošao u ChevApp!</h2>
+          <p>Tvoj ultimativni vodič kroz čarobni svijet bosanskih ćevapa — od tanjira do tradicije.</p>
+        </div>
+
+        <div class="ob-slide" data-slide="1">
+          <div class="ob-illustration">🗺️</div>
+          <h2>Pronađi Savršeni Restoran</h2>
+          <p>Interaktivna mapa, ocjene i opisi najboljihćevabdžinica u tvojoj blizini i diljem Bosne.</p>
+        </div>
+
+        <div class="ob-slide" data-slide="2">
+          <div class="ob-illustration">🎓</div>
+          <h2>Postani Majstor Roštilja</h2>
+          <p>Uči kroz kvizove, osvajaj XP bodove i napreduj od Početnika do legendarnog Majstora Roštilja.</p>
+        </div>
+
+        <div class="ob-slide" data-slide="3">
+          <div class="ob-illustration">🏆</div>
+          <h2>Pridruži se Zajednici</h2>
+          <p>Dijeli iskustva, glasaj za bisere mudrosti i natječi se na tjednoj ljestvici!</p>
+        </div>
+
+      </div>
+
+      <div class="ob-dots" id="ob-dots">
+        <div class="ob-dot active"></div>
+        <div class="ob-dot"></div>
+        <div class="ob-dot"></div>
+        <div class="ob-dot"></div>
+      </div>
+
+      <div class="ob-nav">
+        <button class="btn-ob-back" id="ob-back-btn" onclick="obBack()" style="visibility:hidden">← Natrag</button>
+        <button class="btn-ob-skip" onclick="finishOnboarding()">Preskoči</button>
+        <button class="btn-ob-next" id="ob-next-btn" onclick="obNext()">Dalje →</button>
+      </div>
+    </div>
+
+    <!-- ============================================
+         GLAVNI APP EKRAN
+         ============================================ -->
+    <div class="screen" id="screen-app">
+
+      <!-- Tab sadržaj -->
+      <div class="tab-content">
+
+        <!-- TAB 1: Tražilica -->
+        <div class="tab-pane active" id="tab-trazilica">
+          <!-- HTML-TAB1-START -->
+          <div class="tab-header">
+            <h2>🗺️ Tražilica</h2>
+            <p>Pronađi najbolje ćevabdžinice</p>
+          </div>
+          <div class="tab-scroll">
+            <div style="padding:20px;text-align:center;color:var(--brown3);">
+              <p style="font-size:40px">🏗️</p>
+              <p>Tab 1 se učitava...</p>
+            </div>
+          </div>
+          <!-- HTML-TAB1-END -->
+        </div>
+
+        <!-- TAB 2: Kuhinja -->
+        <div class="tab-pane" id="tab-kuhinja">
+          <!-- HTML-TAB2-START -->
+          <div class="tab-header">
+            <h2>🔪 Kuhinja</h2>
+            <p>Recepti i kalorije</p>
+          </div>
+          <div class="tab-scroll">
+            <div style="padding:20px;text-align:center;color:var(--brown3);">
+              <p style="font-size:40px">🏗️</p>
+              <p>Tab 2 se učitava...</p>
+            </div>
+          </div>
+          <!-- HTML-TAB2-END -->
+        </div>
+
+        <!-- TAB 3: Akademija -->
+        <div class="tab-pane" id="tab-akademija">
+          <!-- HTML-TAB3-START -->
+          <div class="tab-header">
+            <h2>🎓 Akademija</h2>
+            <p>Učenje i mini igre</p>
+          </div>
+          <div class="tab-scroll">
+            <div style="padding:20px;text-align:center;color:var(--brown3);">
+              <p style="font-size:40px">🏗️</p>
+              <p>Tab 3 se učitava...</p>
+            </div>
+          </div>
+          <!-- HTML-TAB3-END -->
+        </div>
+
+        <!-- TAB 4: Zajednica -->
+        <div class="tab-pane" id="tab-zajednica">
+          <!-- HTML-TAB4-START -->
+          <div class="tab-header">
+            <h2>👥 Zajednica</h2>
+            <p>Feed, biseri i događaji</p>
+          </div>
+          <div class="tab-scroll">
+            <div style="padding:20px;text-align:center;color:var(--brown3);">
+              <p style="font-size:40px">🏗️</p>
+              <p>Tab 4 se učitava...</p>
+            </div>
+          </div>
+          <!-- HTML-TAB4-END -->
+        </div>
+
+        <!-- TAB 5: Smještaj -->
+        <div class="tab-pane" id="tab-smjestaj">
+          <!-- HTML-TAB5-START -->
+          <div class="tab-header">
+            <h2>🏨 Smještaj</h2>
+            <p>Hoteli, apartmani, hosteli</p>
+          </div>
+          <div class="tab-scroll">
+            <div style="padding:20px;text-align:center;color:var(--brown3);">
+              <p style="font-size:40px">🏗️</p>
+              <p>Tab 5 se učitava...</p>
+            </div>
+          </div>
+          <!-- HTML-TAB5-END -->
+        </div>
+
+        <!-- TAB 6: Profil -->
+        <div class="tab-pane" id="tab-profil">
+          <!-- HTML-TAB6-START -->
+          <div class="tab-scroll">
+            <div style="padding:20px;text-align:center;color:var(--brown3);padding-top:60px;">
+              <p style="font-size:40px">🏗️</p>
+              <p>Tab 6 se učitava...</p>
+            </div>
+          </div>
+          <!-- HTML-TAB6-END -->
+        </div>
+
+      </div><!-- /tab-content -->
+
+      <!-- Tab Bar -->
+      <nav class="tab-bar">
+        <button class="tab-btn active" data-tab="trazilica" onclick="switchTab(this)">
+          <span class="tab-icon">🗺️</span>
+          <span class="tab-label">Tražilica</span>
+        </button>
+        <button class="tab-btn" data-tab="kuhinja" onclick="switchTab(this)">
+          <span class="tab-icon">🔪</span>
+          <span class="tab-label">Kuhinja</span>
+        </button>
+        <button class="tab-btn" data-tab="akademija" onclick="switchTab(this)">
+          <span class="tab-icon">🎓</span>
+          <span class="tab-label">Akademija</span>
+        </button>
+        <button class="tab-btn" data-tab="zajednica" onclick="switchTab(this)">
+          <span class="tab-icon">👥</span>
+          <span class="tab-label">Zajednica</span>
+        </button>
+        <button class="tab-btn" data-tab="smjestaj" onclick="switchTab(this)">
+          <span class="tab-icon">🏨</span>
+          <span class="tab-label">Smještaj</span>
+        </button>
+        <button class="tab-btn" data-tab="profil" onclick="switchTab(this)">
+          <span class="tab-icon">👤</span>
+          <span class="tab-label">Profil</span>
+        </button>
+      </nav>
+
+    </div><!-- /screen-app -->
+
+    <!-- Toast (globalni) -->
+    <div class="toast" id="toast"></div>
+
+    <!-- HTML-OVERLAYS-START -->
+    <!-- Overlay za Glazbu, Fitness, Admin i Impressum idu ovdje (Tab 7) -->
+    <!-- HTML-OVERLAYS-END -->
+
+  </div><!-- /phone -->
+</div><!-- /app-shell -->
+
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script>
+/* ============================================
+   CHEVAPP — FOUNDATION JS
+   ============================================
+   SADRŽAJ:
+   ✅ localStorage helperi
+   ✅ Upravljanje korisnicima (getCurrentUser itd.)
+   ✅ XP sustav (updateXP, getNextRank)
+   ✅ Streak sustav
+   ✅ Auth logika (login, register, Google, Apple)
+   ✅ Onboarding logika (slide, swipe)
+   ✅ Tab switching
+   ✅ Toast helper
+   ✅ Overlay helper
+   ✅ Auto-login + init
+   ============================================ */
+
+/* === JS-FOUNDATION-START === */
+
+/* ---- localStorage helperi ---- */
+const LS = {
+  get(key, fallback = null) {
+    try { const v = localStorage.getItem(key); return v ? JSON.parse(v) : fallback; }
+    catch { return fallback; }
+  },
+  set(key, val) {
+    try { localStorage.setItem(key, JSON.stringify(val)); }
+    catch {}
+  },
+  remove(key) { localStorage.removeItem(key); }
+};
+
+/* ---- Rangovi ---- */
+const RANKS = [
+  { title: '🌱 Početnik',           xpMin: 0,    xpMax: 499  },
+  { title: '🍖 Redoviti posjetitelj', xpMin: 500,  xpMax: 1999 },
+  { title: '🔥 Iskusni degustator',   xpMin: 2000, xpMax: 4999 },
+  { title: '👑 Majstor roštilja',     xpMin: 5000, xpMax: Infinity }
+];
+
+function getRank(xp) {
+  return RANKS.slice().reverse().find(r => xp >= r.xpMin) || RANKS[0];
+}
+
+function getNextRank(xp) {
+  return RANKS.find(r => xp < r.xpMin) || null;
+}
+
+function getXpProgress(xp) {
+  const curr = getRank(xp);
+  const next = getNextRank(xp);
+  if (!next) return 100;
+  const range = next.xpMin - curr.xpMin;
+  const done  = xp - curr.xpMin;
+  return Math.min(100, Math.round((done / range) * 100));
+}
+
+/* ---- Upravljanje korisnicima ---- */
+function getAllUsers() { return LS.get('ca_users', {}); }
+function saveAllUsers(u) { LS.set('ca_users', u); }
+
+function getCurrentUser() { return LS.get('ca_session', null); }
+
+function saveUser(user) {
+  LS.set('ca_session', user);
+  const all = getAllUsers();
+  all[user.email] = user;
+  saveAllUsers(all);
+}
+
+function createNewUser(name, email) {
+  return {
+    name,
+    email,
+    avatar: '👤',
+    avatarImg: null,
+    bio: '',
+    city: '',
+    rank: '🌱 Početnik',
+    xp: 0,
+    streak: 0,
+    lastLogin: new Date().toDateString(),
+    reviews: 0,
+    gems: 0,
+    notifications: true,
+    badges: ['🥩'],
+    joinDate: new Date().toISOString()
+  };
+}
+
+/* ---- XP sustav ---- */
+function updateXP(amount) {
+  const user = getCurrentUser();
+  if (!user) return;
+  user.xp = (user.xp || 0) + amount;
+  user.rank = getRank(user.xp).title;
+  saveUser(user);
+  showToast(`+${amount} XP! 🔥`);
+  refreshProfileUI();
+  return user.xp;
+}
+
+/* ---- Streak sustav ---- */
+function updateStreak() {
+  const user = getCurrentUser();
+  if (!user) return;
+  const today = new Date().toDateString();
+  const yesterday = new Date(Date.now() - 86400000).toDateString();
+  if (user.lastLogin === today) return;
+  if (user.lastLogin === yesterday) {
+    user.streak = (user.streak || 0) + 1;
+  } else {
+    user.streak = 1;
+  }
+  user.lastLogin = today;
+  saveUser(user);
+}
+
+/* ---- Auth logika ---- */
+function switchAuthTab(tab) {
+  document.querySelectorAll('.auth-tab-btn').forEach((b, i) => {
+    b.classList.toggle('active', (i === 0 && tab === 'login') || (i === 1 && tab === 'register'));
+  });
+  document.getElementById('auth-form-login').classList.toggle('active', tab === 'login');
+  document.getElementById('auth-form-register').classList.toggle('active', tab === 'register');
+}
+
+function doLogin() {
+  const email = document.getElementById('login-email').value.trim();
+  const pass  = document.getElementById('login-password').value;
+  const errEl = document.getElementById('login-error');
+  errEl.textContent = '';
+
+  if (!email || !pass) { errEl.textContent = 'Molimo unesi email i lozinku.'; return; }
+
+  const all = getAllUsers();
+  const user = all[email];
+
+  if (!user) { errEl.textContent = 'Korisnik ne postoji. Registriraj se.'; return; }
+  if (user.password !== btoa(pass)) { errEl.textContent = 'Pogrešna lozinka.'; return; }
+
+  updateStreak();
+  saveUser(user);
+  enterApp();
+}
+
+function doRegister() {
+  const name  = document.getElementById('reg-name').value.trim();
+  const email = document.getElementById('reg-email').value.trim();
+  const pass  = document.getElementById('reg-password').value;
+  const errEl = document.getElementById('reg-error');
+  errEl.textContent = '';
+
+  if (!name)            { errEl.textContent = 'Unesi ime.'; return; }
+  if (!email || !email.includes('@')) { errEl.textContent = 'Unesi ispravan email.'; return; }
+  if (pass.length < 6) { errEl.textContent = 'Lozinka mora imati min. 6 znakova.'; return; }
+
+  const all = getAllUsers();
+  if (all[email])       { errEl.textContent = 'Korisnik s tim emailom već postoji.'; return; }
+
+  const user = createNewUser(name, email);
+  user.password = btoa(pass);
+  saveUser(user);
+  enterApp();
+}
+
+function doGoogleLogin() {
+  const email = 'google_' + Date.now() + '@google.mock';
+  const all   = getAllUsers();
+  let user    = Object.values(all).find(u => u.email.startsWith('google_'));
+  if (!user) {
+    user = createNewUser('Google Korisnik', email);
+    user.avatar = '🔵';
+  }
+  updateStreak();
+  saveUser(user);
+  enterApp();
+}
+
+function doAppleLogin() {
+  const email = 'apple_' + Date.now() + '@apple.mock';
+  const all   = getAllUsers();
+  let user    = Object.values(all).find(u => u.email.startsWith('apple_'));
+  if (!user) {
+    user = createNewUser('Apple Korisnik', email);
+    user.avatar = '🍎';
+  }
+  updateStreak();
+  saveUser(user);
+  enterApp();
+}
+
+function doLogout() {
+  LS.remove('ca_session');
+  showScreen('screen-auth');
+  switchAuthTab('login');
+}
+
+/* ---- Onboarding ---- */
+let obCurrent = 0;
+const OB_TOTAL = 4;
+
+function showObSlide(idx) {
+  document.querySelectorAll('.ob-slide').forEach((s, i) => {
+    s.classList.remove('active', 'prev');
+    if (i === idx) s.classList.add('active');
+    else if (i < idx) s.classList.add('prev');
+  });
+  document.querySelectorAll('.ob-dot').forEach((d, i) => {
+    d.classList.toggle('active', i === idx);
+  });
+  document.getElementById('ob-back-btn').style.visibility = idx === 0 ? 'hidden' : 'visible';
+  const nextBtn = document.getElementById('ob-next-btn');
+  nextBtn.textContent = idx === OB_TOTAL - 1 ? 'Počnimo! 🔥' : 'Dalje →';
+}
+
+function obNext() {
+  if (obCurrent < OB_TOTAL - 1) { obCurrent++; showObSlide(obCurrent); }
+  else finishOnboarding();
+}
+
+function obBack() {
+  if (obCurrent > 0) { obCurrent--; showObSlide(obCurrent); }
+}
+
+function finishOnboarding() {
+  LS.set('ca_ob', true);
+  showScreen('screen-auth');
+}
+
+/* Swipe na onboardingu */
+(function initObSwipe() {
+  let startX = 0;
+  const el = document.getElementById('ob-slides');
+  if (!el) return;
+  el.addEventListener('touchstart', e => { startX = e.touches[0].clientX; }, { passive: true });
+  el.addEventListener('touchend', e => {
+    const diff = startX - e.changedTouches[0].clientX;
+    if (Math.abs(diff) > 50) { diff > 0 ? obNext() : obBack(); }
+  }, { passive: true });
+})();
+
+/* ---- Tab switching ---- */
+function switchTab(btn) {
+  const tab = btn.dataset.tab;
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  document.querySelectorAll('.tab-pane').forEach(p => p.classList.remove('active'));
+  const pane = document.getElementById('tab-' + tab);
+  if (pane) {
+    pane.classList.add('active');
+    if (typeof onTabActivated === 'function') onTabActivated(tab);
+  }
+}
+
+/* Programatski prebaci na tab */
+function goToTab(tabName) {
+  const btn = document.querySelector(`.tab-btn[data-tab="${tabName}"]`);
+  if (btn) switchTab(btn);
+}
+
+/* ---- Screen switching ---- */
+function showScreen(id) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  const s = document.getElementById(id);
+  if (s) s.classList.add('active');
+}
+
+/* ---- Overlay helperi ---- */
+function openOverlay(id) {
+  const el = document.getElementById(id);
+  if (el) { el.classList.add('open'); }
+}
+
+function closeOverlay(id) {
+  const el = document.getElementById(id);
+  if (el) { el.classList.remove('open'); }
+}
+
+/* ---- Slide screen helperi ---- */
+function openSlideScreen(id) {
+  const el = document.getElementById(id);
+  if (el) { el.classList.add('open'); }
+}
+
+function closeSlideScreen(id) {
+  const el = document.getElementById(id);
+  if (el) { el.classList.remove('open'); }
+}
+
+/* ---- Modal helperi ---- */
+function openModal(id) {
+  const el = document.getElementById(id);
+  if (el) el.classList.add('open');
+}
+
+function closeModal(id) {
+  const el = document.getElementById(id);
+  if (el) el.classList.remove('open');
+}
+
+/* ---- Toast ---- */
+let toastTimer = null;
+function showToast(msg, duration = 2500) {
+  const t = document.getElementById('toast');
+  if (!t) return;
+  t.textContent = msg;
+  t.classList.add('show');
+  if (toastTimer) clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => t.classList.remove('show'), duration);
+}
+
+/* ---- Stub: refreshProfileUI ---- */
+/* Ovu funkciju će pregaziti Tab 6 modul */
+function refreshProfileUI() {}
+
+/* ---- App entry point ---- */
+function enterApp() {
+  updateStreak();
+  showScreen('screen-app');
+  if (typeof onAppEnter === 'function') onAppEnter();
+}
+
+/* ---- Init ---- */
+(function init() {
+  const user    = getCurrentUser();
+  const obDone  = LS.get('ca_ob', false);
+
+  if (user) {
+    // Auto-login
+    updateStreak();
+    showScreen('screen-app');
+    if (typeof onAppEnter === 'function') onAppEnter();
+    return;
+  }
+
+  if (!obDone) {
+    showScreen('screen-onboarding');
+    showObSlide(0);
+  } else {
+    showScreen('screen-auth');
+  }
+})();
+
+/* === JS-FOUNDATION-END === */
+
+/* === PLACEHOLDER ZA JS OSTALIH TABOVA ===
+   Tab 1 → // JS-TAB1-START / END
+   Tab 2 → // JS-TAB2-START / END
+   Tab 3 → // JS-TAB3-START / END
+   Tab 4 → // JS-TAB4-START / END
+   Tab 5 → // JS-TAB5-START / END
+   Tab 6 → // JS-TAB6-START / END
+   Overlays → // JS-OVERLAYS-START / END
+   ========================================= */
+</script>
+</body>
+</html>
