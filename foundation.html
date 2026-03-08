@@ -1,0 +1,3096 @@
+<!DOCTYPE html>
+<html lang="bs">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <meta name="mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+  <meta name="theme-color" content="#FDF6EC" />
+  <title>ChevApp 🥩</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Nunito:wght@300;400;600;700;800&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+  <style>
+/* ============================================
+   CHEVAPP — FOUNDATION
+   Verzija: 1.0
+   ============================================
+   SADRŽAJ:
+   ✅ CSS varijable i paleta boja
+   ✅ Reset i base styles
+   ✅ Phone shell (desktop) / fullscreen (mobile)
+   ✅ Auth ekran (Login + Registracija)
+   ✅ Onboarding (4 slajda)
+   ✅ Tab bar (6 tabova)
+   ✅ Utility klase i animacije
+   ============================================ */
+
+/* === CSS-FOUNDATION-START === */
+
+/* --- Varijable --- */
+:root {
+  --cream:        #FDF6EC;
+  --cream2:       #F5E6D3;
+  --cream3:       #EDD5B3;
+  --cream4:       #E0C9A0;
+  --brown:        #2C1A0E;
+  --brown2:       #5C3D2E;
+  --brown3:       #8B5E3C;
+  --red:          #C0392B;
+  --red2:         #E74C3C;
+  --orange:       #E67E22;
+  --orange2:      #F39C12;
+  --green:        #1DB954;
+  --green2:       #169A42;
+  --white:        #FFFFFF;
+  --shadow-sm:    0 2px 8px rgba(44,26,14,0.08);
+  --shadow-md:    0 4px 20px rgba(44,26,14,0.12);
+  --shadow-lg:    0 8px 40px rgba(44,26,14,0.18);
+  --radius-sm:    8px;
+  --radius-md:    14px;
+  --radius-lg:    20px;
+  --radius-xl:    28px;
+  --transition:   0.25s ease;
+  --font-title:   'Playfair Display', Georgia, serif;
+  --font-body:    'Nunito', sans-serif;
+  --font-mono:    'DM Mono', monospace;
+}
+
+/* --- Reset --- */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  -webkit-tap-highlight-color: transparent;
+}
+
+html, body {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  background: #C8A882;
+  font-family: var(--font-body);
+  color: var(--brown);
+}
+
+button {
+  font-family: var(--font-body);
+  cursor: pointer;
+  border: none;
+  outline: none;
+  background: none;
+}
+
+input, textarea, select {
+  font-family: var(--font-body);
+  outline: none;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+/* --- Phone shell (Desktop) --- */
+.app-shell {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.phone {
+  position: relative;
+  width: 390px;
+  height: 844px;
+  background: var(--cream);
+  border-radius: 44px;
+  box-shadow:
+    0 0 0 10px #1a0a00,
+    0 0 0 12px #3a2010,
+    var(--shadow-lg),
+    0 40px 80px rgba(0,0,0,0.4);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Notch simulacija */
+.phone::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 120px;
+  height: 28px;
+  background: #1a0a00;
+  border-radius: 0 0 18px 18px;
+  z-index: 1000;
+}
+
+/* --- Fullscreen (Mobile) --- */
+@media (max-width: 600px) {
+  .app-shell {
+    background: var(--cream);
+  }
+  .phone {
+    width: 100%;
+    height: 100%;
+    border-radius: 0;
+    box-shadow: none;
+  }
+  .phone::before {
+    display: none;
+  }
+}
+
+/* --- Screens i navigacija --- */
+.screen {
+  position: absolute;
+  inset: 0;
+  display: none;
+  flex-direction: column;
+  background: var(--cream);
+  overflow: hidden;
+}
+
+.screen.active {
+  display: flex;
+}
+
+/* --- Scroll area unutar taba --- */
+.tab-scroll {
+  flex: 1;
+  overflow-y: auto;
+  overflow-x: hidden;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+}
+
+.tab-scroll::-webkit-scrollbar {
+  display: none;
+}
+
+/* ============================================
+   AUTH EKRAN
+   ============================================ */
+
+#screen-auth {
+  background: linear-gradient(160deg, var(--cream) 0%, var(--cream2) 50%, var(--cream3) 100%);
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+
+.auth-logo {
+  text-align: center;
+  margin-bottom: 32px;
+}
+
+.auth-logo .logo-emoji {
+  font-size: 56px;
+  display: block;
+  margin-bottom: 8px;
+  filter: drop-shadow(0 4px 8px rgba(44,26,14,0.2));
+}
+
+.auth-logo h1 {
+  font-family: var(--font-title);
+  font-size: 36px;
+  font-weight: 700;
+  color: var(--brown);
+  letter-spacing: -0.5px;
+}
+
+.auth-logo p {
+  font-size: 13px;
+  color: var(--brown3);
+  font-style: italic;
+  margin-top: 2px;
+}
+
+.auth-card {
+  width: 100%;
+  max-width: 340px;
+  background: var(--white);
+  border-radius: var(--radius-xl);
+  padding: 24px;
+  box-shadow: var(--shadow-lg);
+}
+
+/* Auth tabovi */
+.auth-tabs {
+  display: flex;
+  background: var(--cream2);
+  border-radius: var(--radius-md);
+  padding: 4px;
+  margin-bottom: 24px;
+}
+
+.auth-tab-btn {
+  flex: 1;
+  padding: 10px;
+  border-radius: 10px;
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--brown3);
+  transition: all var(--transition);
+}
+
+.auth-tab-btn.active {
+  background: var(--white);
+  color: var(--brown);
+  box-shadow: var(--shadow-sm);
+}
+
+/* Auth formi */
+.auth-form {
+  display: none;
+}
+
+.auth-form.active {
+  display: block;
+}
+
+.auth-field {
+  margin-bottom: 14px;
+}
+
+.auth-field label {
+  display: block;
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--brown3);
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+  margin-bottom: 6px;
+  font-family: var(--font-mono);
+}
+
+.auth-field input {
+  width: 100%;
+  padding: 12px 14px;
+  border: 1.5px solid var(--cream3);
+  border-radius: var(--radius-sm);
+  font-size: 15px;
+  color: var(--brown);
+  background: var(--cream);
+  transition: border-color var(--transition);
+}
+
+.auth-field input:focus {
+  border-color: var(--orange);
+}
+
+.auth-error {
+  font-size: 12px;
+  color: var(--red);
+  margin-bottom: 10px;
+  min-height: 16px;
+  font-weight: 600;
+}
+
+.btn-primary {
+  width: 100%;
+  padding: 14px;
+  background: linear-gradient(135deg, var(--red), var(--orange));
+  color: var(--white);
+  border-radius: var(--radius-md);
+  font-size: 15px;
+  font-weight: 800;
+  letter-spacing: 0.3px;
+  box-shadow: 0 4px 16px rgba(192,57,43,0.3);
+  transition: all var(--transition);
+}
+
+.btn-primary:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 6px 20px rgba(192,57,43,0.4);
+}
+
+.btn-primary:active {
+  transform: translateY(0);
+}
+
+.auth-divider {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 16px 0;
+  color: var(--brown3);
+  font-size: 12px;
+}
+
+.auth-divider::before,
+.auth-divider::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: var(--cream3);
+}
+
+.btn-social {
+  width: 100%;
+  padding: 12px 14px;
+  border: 1.5px solid var(--cream3);
+  border-radius: var(--radius-md);
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--brown);
+  background: var(--white);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  margin-bottom: 10px;
+  transition: all var(--transition);
+}
+
+.btn-social:hover {
+  background: var(--cream);
+  border-color: var(--cream4);
+}
+
+.btn-social.apple {
+  background: var(--brown);
+  color: var(--white);
+  border-color: var(--brown);
+}
+
+.btn-social.apple:hover {
+  background: var(--brown2);
+}
+
+/* ============================================
+   ONBOARDING
+   ============================================ */
+
+#screen-onboarding {
+  background: var(--cream);
+}
+
+.ob-slides {
+  flex: 1;
+  position: relative;
+  overflow: hidden;
+}
+
+.ob-slide {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 40px 32px;
+  opacity: 0;
+  transform: translateX(100%);
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.ob-slide.active {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+.ob-slide.prev {
+  opacity: 0;
+  transform: translateX(-100%);
+}
+
+.ob-illustration {
+  font-size: 90px;
+  margin-bottom: 32px;
+  filter: drop-shadow(0 8px 16px rgba(44,26,14,0.15));
+  animation: ob-float 3s ease-in-out infinite;
+}
+
+@keyframes ob-float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-10px); }
+}
+
+.ob-slide h2 {
+  font-family: var(--font-title);
+  font-size: 28px;
+  font-weight: 700;
+  color: var(--brown);
+  text-align: center;
+  margin-bottom: 16px;
+  line-height: 1.3;
+}
+
+.ob-slide p {
+  font-size: 15px;
+  color: var(--brown2);
+  text-align: center;
+  line-height: 1.6;
+  max-width: 280px;
+}
+
+/* Dot indikatori */
+.ob-dots {
+  display: flex;
+  gap: 8px;
+  justify-content: center;
+  padding: 16px;
+}
+
+.ob-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--cream3);
+  transition: all var(--transition);
+}
+
+.ob-dot.active {
+  width: 24px;
+  border-radius: 4px;
+  background: var(--orange);
+}
+
+/* Onboarding navigacija */
+.ob-nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 24px 32px;
+}
+
+.btn-ob-skip {
+  font-size: 14px;
+  color: var(--brown3);
+  font-weight: 600;
+  padding: 8px 12px;
+}
+
+.btn-ob-next {
+  padding: 14px 28px;
+  background: linear-gradient(135deg, var(--red), var(--orange));
+  color: var(--white);
+  border-radius: var(--radius-md);
+  font-size: 15px;
+  font-weight: 800;
+  box-shadow: 0 4px 16px rgba(192,57,43,0.3);
+  transition: all var(--transition);
+}
+
+.btn-ob-next:hover {
+  transform: translateY(-1px);
+}
+
+.btn-ob-back {
+  font-size: 14px;
+  color: var(--brown3);
+  font-weight: 600;
+  padding: 8px 12px;
+}
+
+/* ============================================
+   MAIN APP — Tab bar + Header
+   ============================================ */
+
+#screen-app {
+  display: none;
+  flex-direction: column;
+}
+
+#screen-app.active {
+  display: flex;
+}
+
+/* Tab sadržaj */
+.tab-content {
+  flex: 1;
+  position: relative;
+  overflow: hidden;
+}
+
+.tab-pane {
+  position: absolute;
+  inset: 0;
+  display: none;
+  flex-direction: column;
+  background: var(--cream);
+  overflow: hidden;
+}
+
+.tab-pane.active {
+  display: flex;
+}
+
+/* Tab bar */
+.tab-bar {
+  display: flex;
+  background: var(--white);
+  border-top: 1px solid var(--cream2);
+  padding: 0 4px;
+  padding-bottom: env(safe-area-inset-bottom, 8px);
+  box-shadow: 0 -4px 20px rgba(44,26,14,0.06);
+  flex-shrink: 0;
+  z-index: 100;
+}
+
+.tab-btn {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 8px 2px 6px;
+  gap: 3px;
+  transition: all var(--transition);
+  border-radius: var(--radius-sm);
+  position: relative;
+}
+
+.tab-btn .tab-icon {
+  font-size: 20px;
+  transition: transform var(--transition);
+}
+
+.tab-btn .tab-label {
+  font-size: 9px;
+  font-weight: 700;
+  color: var(--brown3);
+  font-family: var(--font-mono);
+  letter-spacing: 0.3px;
+  transition: color var(--transition);
+}
+
+.tab-btn.active .tab-label {
+  color: var(--orange);
+}
+
+.tab-btn.active .tab-icon {
+  transform: translateY(-2px);
+}
+
+.tab-btn::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%) scaleX(0);
+  width: 24px;
+  height: 3px;
+  background: linear-gradient(90deg, var(--red), var(--orange));
+  border-radius: 0 0 3px 3px;
+  transition: transform var(--transition);
+}
+
+.tab-btn.active::after {
+  transform: translateX(-50%) scaleX(1);
+}
+
+/* ============================================
+   UTILITY KLASE
+   ============================================ */
+
+/* Overlay (slide-up) */
+.overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 200;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  background: rgba(44,26,14,0.5);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity var(--transition);
+  backdrop-filter: blur(4px);
+}
+
+.overlay.open {
+  opacity: 1;
+  pointer-events: all;
+}
+
+.overlay-panel {
+  background: var(--white);
+  border-radius: var(--radius-xl) var(--radius-xl) 0 0;
+  max-height: 88%;
+  overflow-y: auto;
+  transform: translateY(100%);
+  transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+  scrollbar-width: none;
+}
+
+.overlay-panel::-webkit-scrollbar { display: none; }
+
+.overlay.open .overlay-panel {
+  transform: translateY(0);
+}
+
+.overlay-handle {
+  width: 40px;
+  height: 4px;
+  background: var(--cream3);
+  border-radius: 2px;
+  margin: 12px auto 0;
+}
+
+/* Chip / Tag */
+.chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 5px 12px;
+  background: var(--cream2);
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--brown2);
+  white-space: nowrap;
+  font-family: var(--font-mono);
+}
+
+.chip.active {
+  background: linear-gradient(135deg, var(--red), var(--orange));
+  color: var(--white);
+}
+
+/* Kartica */
+.card {
+  background: var(--white);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-sm);
+  overflow: hidden;
+  transition: transform var(--transition), box-shadow var(--transition);
+}
+
+.card:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md);
+}
+
+/* Header pattern */
+.tab-header {
+  background: var(--white);
+  padding: 52px 20px 16px;
+  box-shadow: var(--shadow-sm);
+  flex-shrink: 0;
+  z-index: 10;
+}
+
+.tab-header h2 {
+  font-family: var(--font-title);
+  font-size: 26px;
+  font-weight: 700;
+  color: var(--brown);
+}
+
+.tab-header p {
+  font-size: 13px;
+  color: var(--brown3);
+  margin-top: 2px;
+}
+
+/* Badge */
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 3px 8px;
+  background: var(--cream2);
+  border-radius: 12px;
+  font-size: 11px;
+  font-weight: 700;
+  font-family: var(--font-mono);
+  color: var(--brown2);
+}
+
+/* Stars */
+.stars {
+  color: var(--orange2);
+  font-size: 13px;
+  letter-spacing: 1px;
+}
+
+/* Gradijentni hero */
+.hero-gradient {
+  background: linear-gradient(135deg, var(--brown) 0%, var(--red) 50%, var(--orange) 100%);
+  padding: 32px 20px 24px;
+  color: var(--white);
+}
+
+/* XP Progress Bar */
+.xp-bar-wrap {
+  background: var(--cream2);
+  border-radius: 20px;
+  height: 8px;
+  overflow: hidden;
+}
+
+.xp-bar-fill {
+  height: 100%;
+  border-radius: 20px;
+  background: linear-gradient(90deg, var(--orange), var(--red));
+  transition: width 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Animacije */
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes slideUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes pulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.05); }
+}
+
+@keyframes bounce {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-6px); }
+}
+
+.animate-fade { animation: fadeIn 0.3s ease; }
+.animate-up  { animation: slideUp 0.4s ease; }
+
+/* Slide screen (full tab transition) */
+.slide-screen {
+  position: absolute;
+  inset: 0;
+  background: var(--cream);
+  z-index: 150;
+  transform: translateX(100%);
+  transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.slide-screen.open {
+  transform: translateX(0);
+}
+
+.slide-screen-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 52px 20px 16px;
+  background: var(--white);
+  box-shadow: var(--shadow-sm);
+  flex-shrink: 0;
+}
+
+.btn-back {
+  width: 36px;
+  height: 36px;
+  background: var(--cream2);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+  flex-shrink: 0;
+}
+
+.slide-screen-header h3 {
+  font-family: var(--font-title);
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--brown);
+}
+
+/* Toast obavijest */
+.toast {
+  position: absolute;
+  bottom: 80px;
+  left: 50%;
+  transform: translateX(-50%) translateY(20px);
+  background: var(--brown);
+  color: var(--white);
+  padding: 12px 20px;
+  border-radius: var(--radius-md);
+  font-size: 13px;
+  font-weight: 700;
+  white-space: nowrap;
+  opacity: 0;
+  transition: all 0.3s ease;
+  z-index: 999;
+  pointer-events: none;
+}
+
+.toast.show {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
+}
+
+/* Toggle switch */
+.toggle {
+  position: relative;
+  width: 46px;
+  height: 26px;
+}
+
+.toggle input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.toggle-slider {
+  position: absolute;
+  inset: 0;
+  background: var(--cream3);
+  border-radius: 13px;
+  cursor: pointer;
+  transition: background var(--transition);
+}
+
+.toggle-slider::before {
+  content: '';
+  position: absolute;
+  width: 20px;
+  height: 20px;
+  left: 3px;
+  top: 3px;
+  background: var(--white);
+  border-radius: 50%;
+  transition: transform var(--transition);
+  box-shadow: var(--shadow-sm);
+}
+
+.toggle input:checked + .toggle-slider {
+  background: linear-gradient(135deg, var(--red), var(--orange));
+}
+
+.toggle input:checked + .toggle-slider::before {
+  transform: translateX(20px);
+}
+
+/* Scrollbar chips (horizontalni) */
+.chips-scroll {
+  display: flex;
+  gap: 8px;
+  overflow-x: auto;
+  scrollbar-width: none;
+  padding: 0 20px;
+}
+
+.chips-scroll::-webkit-scrollbar { display: none; }
+
+/* Empty state */
+.empty-state {
+  text-align: center;
+  padding: 40px 20px;
+  color: var(--brown3);
+}
+
+.empty-state .empty-icon {
+  font-size: 48px;
+  margin-bottom: 12px;
+}
+
+.empty-state p {
+  font-size: 14px;
+}
+
+/* Modal */
+.modal-backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(44,26,14,0.6);
+  z-index: 300;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  backdrop-filter: blur(4px);
+}
+
+.modal-backdrop.open {
+  display: flex;
+}
+
+.modal-box {
+  background: var(--white);
+  border-radius: var(--radius-xl);
+  padding: 28px;
+  width: 100%;
+  max-width: 320px;
+  box-shadow: var(--shadow-lg);
+  animation: slideUp 0.3s ease;
+}
+
+.modal-box h3 {
+  font-family: var(--font-title);
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--brown);
+  margin-bottom: 8px;
+}
+
+.modal-box p {
+  font-size: 14px;
+  color: var(--brown3);
+  margin-bottom: 20px;
+  line-height: 1.5;
+}
+
+/* Inline tabovi (za zajednicu itd.) */
+.inner-tabs {
+  display: flex;
+  background: var(--cream2);
+  border-radius: var(--radius-md);
+  padding: 4px;
+  margin: 12px 20px;
+  overflow-x: auto;
+  scrollbar-width: none;
+  gap: 2px;
+}
+
+.inner-tabs::-webkit-scrollbar { display: none; }
+
+.inner-tab-btn {
+  flex-shrink: 0;
+  padding: 8px 14px;
+  border-radius: 10px;
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--brown3);
+  transition: all var(--transition);
+  white-space: nowrap;
+}
+
+.inner-tab-btn.active {
+  background: var(--white);
+  color: var(--brown);
+  box-shadow: var(--shadow-sm);
+}
+
+.inner-pane {
+  display: none;
+}
+
+.inner-pane.active {
+  display: block;
+}
+
+/* Sekcija naslov */
+.section-title {
+  font-family: var(--font-title);
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--brown);
+  padding: 16px 20px 8px;
+}
+
+/* Btn secondary */
+.btn-secondary {
+  padding: 10px 20px;
+  background: var(--cream2);
+  color: var(--brown);
+  border-radius: var(--radius-md);
+  font-size: 14px;
+  font-weight: 700;
+  transition: all var(--transition);
+}
+
+.btn-secondary:hover {
+  background: var(--cream3);
+}
+
+/* Btn outline */
+.btn-outline {
+  padding: 10px 20px;
+  border: 2px solid var(--orange);
+  color: var(--orange);
+  border-radius: var(--radius-md);
+  font-size: 14px;
+  font-weight: 700;
+  background: transparent;
+  transition: all var(--transition);
+}
+
+.btn-outline:hover {
+  background: var(--orange);
+  color: var(--white);
+}
+
+/* === CSS-FOUNDATION-END === */
+
+/* === CSS-TAB1-START === */
+
+/* Sticky header */
+.t1-sticky {
+  flex-shrink: 0; background: var(--cream);
+  padding: 12px 16px 0; border-bottom: 1px solid var(--cream3);
+}
+.t1-search-wrap { position: relative; margin-bottom: 10px; }
+.t1-search-icon {
+  position: absolute; left: 12px; top: 50%; transform: translateY(-50%);
+  font-size: 15px; pointer-events: none; opacity: 0.5;
+}
+.t1-search-input {
+  width: 100%; padding: 11px 36px;
+  background: var(--white); border: 1.5px solid var(--cream3);
+  border-radius: 24px; font-size: 14px; color: var(--brown);
+  transition: border-color var(--transition); box-shadow: var(--shadow-sm);
+}
+.t1-search-input:focus { border-color: var(--orange); }
+.t1-search-clear {
+  position: absolute; right: 10px; top: 50%; transform: translateY(-50%);
+  width: 22px; height: 22px; background: var(--cream3); border-radius: 50%;
+  font-size: 10px; color: var(--brown3); display: none;
+  align-items: center; justify-content: center;
+}
+.t1-search-clear.vis { display: flex; }
+
+/* Filter chips */
+.t1-chips {
+  display: flex; gap: 6px; overflow-x: auto;
+  scrollbar-width: none; padding-bottom: 10px;
+}
+.t1-chips::-webkit-scrollbar { display: none; }
+.t1-chip {
+  flex-shrink: 0; padding: 6px 14px;
+  background: var(--white); border: 1.5px solid var(--cream3);
+  border-radius: 20px; font-size: 12px; font-weight: 700;
+  color: var(--brown3); white-space: nowrap; transition: all var(--transition);
+}
+.t1-chip.active { background: var(--red); border-color: var(--red); color: var(--white); }
+
+/* Lista view wrapper */
+.t1-lista-view { flex: 1; overflow: hidden; display: flex; flex-direction: column; }
+
+/* Mini mapa */
+.t1-mini-map {
+  height: 200px; flex-shrink: 0; position: relative; z-index: 1;
+}
+.t1-mini-map.expanded {
+  position: absolute; inset: 0; height: auto !important; z-index: 500;
+}
+#t1-map { position: absolute; inset: 0; }
+
+/* Map overlay buttons */
+.t1-map-expand-btn {
+  position: absolute; bottom: 10px; right: 10px; z-index: 1000;
+  background: var(--white); border-radius: var(--radius-sm);
+  padding: 7px 11px; font-size: 11px; font-weight: 800;
+  color: var(--brown); box-shadow: var(--shadow-md);
+  font-family: var(--font-body); border: none; cursor: pointer;
+}
+.t1-map-shrink-btn {
+  position: absolute; top: 48px; left: 10px; z-index: 1000;
+  background: var(--white); border-radius: var(--radius-sm);
+  padding: 7px 11px; font-size: 11px; font-weight: 800;
+  color: var(--brown); box-shadow: var(--shadow-md);
+  font-family: var(--font-body); border: none; cursor: pointer; display: none;
+}
+.t1-mini-map.expanded .t1-map-expand-btn { display: none; }
+.t1-mini-map.expanded .t1-map-shrink-btn { display: block; }
+
+/* Map legend */
+.t1-map-legend {
+  position: absolute; top: 10px; right: 10px; z-index: 1000;
+  background: rgba(255,255,255,0.94); border-radius: var(--radius-sm);
+  padding: 7px 10px; font-size: 10px; font-weight: 700;
+  color: var(--brown); box-shadow: var(--shadow-sm); line-height: 1.9;
+}
+.t1-legend-row { display: flex; align-items: center; gap: 6px; }
+.t1-legend-dot { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; }
+.t1-mini-map.expanded .t1-map-legend { top: 56px; }
+
+/* Map bottom card */
+.t1-map-bottom {
+  position: absolute; bottom: 0; left: 0; right: 0;
+  background: var(--white);
+  border-radius: var(--radius-lg) var(--radius-lg) 0 0;
+  padding: 14px 16px 20px;
+  box-shadow: 0 -4px 24px rgba(44,26,14,0.16);
+  transform: translateY(100%);
+  transition: transform 0.3s cubic-bezier(0.4,0,0.2,1);
+  z-index: 400; cursor: pointer;
+}
+.t1-map-bottom.open { transform: translateY(0); }
+.t1-mb-inner { display: flex; align-items: center; gap: 12px; }
+.t1-mb-emoji { font-size: 28px; flex-shrink: 0; }
+.t1-mb-info { flex: 1; min-width: 0; }
+.t1-mb-name {
+  font-family: var(--font-title); font-size: 14px; font-weight: 700;
+  color: var(--brown); white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+.t1-mb-sub { font-size: 11px; color: var(--brown3); margin-top: 2px; }
+.t1-mb-arrow { font-size: 20px; color: var(--brown3); }
+
+/* List scroll */
+.t1-list-scroll {
+  flex: 1; overflow-y: auto; -webkit-overflow-scrolling: touch; scrollbar-width: none;
+}
+.t1-list-scroll::-webkit-scrollbar { display: none; }
+
+/* Section label */
+.t1-section-lbl {
+  font-size: 11px; font-weight: 800; text-transform: uppercase;
+  letter-spacing: 1px; color: var(--brown3); font-family: var(--font-mono);
+  padding: 14px 16px 8px; display: flex; align-items: center; gap: 6px;
+}
+
+/* Restaurant card — vertical centered */
+.t1-card {
+  background: var(--cream); border-radius: var(--radius-lg);
+  margin: 0 16px 12px; padding: 16px; cursor: pointer;
+  transition: transform 0.15s ease; border: 1px solid var(--cream3);
+}
+.t1-card:active { transform: scale(0.98); }
+.t1-card-emoji-wrap { display: flex; justify-content: center; margin-bottom: 10px; }
+.t1-card-emoji {
+  width: 64px; height: 64px; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center; font-size: 32px;
+}
+.t1-card-name {
+  font-family: var(--font-title); font-size: 18px; font-weight: 700;
+  color: var(--brown); margin-bottom: 8px;
+}
+.t1-card-tags {
+  display: flex; flex-wrap: wrap; align-items: center; margin-bottom: 10px;
+}
+.t1-card-tag {
+  font-size: 10px; font-weight: 700; font-family: var(--font-mono);
+  color: var(--brown3); display: flex; align-items: center; gap: 3px; white-space: nowrap;
+}
+.t1-card-tag + .t1-card-tag::before { content: ' • '; margin: 0 4px; opacity: 0.5; }
+.t1-card-rating { display: flex; align-items: center; gap: 8px; }
+.t1-rating-dots { display: flex; gap: 3px; }
+.t1-rating-dot { width: 14px; height: 14px; border-radius: 50%; background: var(--orange); }
+.t1-rating-dot.dim { opacity: 0.2; }
+.t1-rating-num-lg { font-size: 22px; font-weight: 800; color: var(--brown); font-family: var(--font-mono); }
+.t1-rating-count { font-size: 11px; color: var(--brown3); }
+
+/* Empty */
+.t1-empty { text-align: center; padding: 40px 20px; color: var(--brown3); }
+.t1-empty-icon { font-size: 44px; margin-bottom: 8px; }
+
+/* ─── Detail slide screen ─── */
+#t1-detail { z-index: 200; }
+.t1-detail-hero {
+  flex-shrink: 0; height: 160px;
+  display: flex; align-items: center; justify-content: center; position: relative;
+}
+.t1-detail-hero-emoji { font-size: 72px; filter: drop-shadow(0 4px 12px rgba(0,0,0,0.15)); }
+.t1-detail-back {
+  position: absolute; top: 48px; left: 16px;
+  width: 36px; height: 36px; background: rgba(255,255,255,0.88);
+  border-radius: 50%; display: flex; align-items: center; justify-content: center;
+  font-size: 18px; box-shadow: var(--shadow-sm);
+}
+.t1-detail-scroll {
+  flex: 1; overflow-y: auto; -webkit-overflow-scrolling: touch; scrollbar-width: none;
+}
+.t1-detail-scroll::-webkit-scrollbar { display: none; }
+.t1-detail-body { padding: 16px 16px 32px; }
+.t1-detail-name {
+  font-family: var(--font-title); font-size: 26px; font-weight: 700;
+  color: var(--brown); margin-bottom: 10px;
+}
+.t1-detail-chip-row { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 16px; }
+.t1-detail-chip {
+  padding: 4px 12px; border-radius: 20px; font-size: 11px; font-weight: 800;
+  background: var(--cream2); color: var(--brown3);
+}
+.t1-detail-rating-box {
+  background: var(--cream); border-radius: var(--radius-md);
+  padding: 14px 16px; margin-bottom: 14px; border: 1px solid var(--cream3);
+}
+.t1-detail-rating-top { display: flex; align-items: center; gap: 10px; margin-bottom: 4px; }
+.t1-detail-rating-count { font-size: 12px; color: var(--brown3); }
+.t1-detail-opis { font-size: 14px; color: var(--brown); line-height: 1.6; margin-bottom: 16px; }
+.t1-detail-actions { display: flex; gap: 8px; margin-bottom: 10px; }
+.t1-act {
+  flex: 1; padding: 13px 8px; border-radius: var(--radius-md);
+  font-size: 13px; font-weight: 800; text-align: center; transition: opacity 0.15s;
+  display: flex; align-items: center; justify-content: center; gap: 6px;
+}
+.t1-act:active { opacity: 0.75; }
+.t1-act-nav  { background: linear-gradient(135deg, var(--red), var(--orange)); color: var(--white); }
+.t1-act-rate { background: var(--cream2); color: var(--brown); }
+.t1-act-smjestaj-btn {
+  width: 100%; padding: 13px; border-radius: var(--radius-md);
+  background: linear-gradient(135deg, #1a3a8f, #2563eb);
+  color: var(--white); font-size: 13px; font-weight: 800;
+  display: flex; align-items: center; justify-content: center; gap: 6px;
+  margin-bottom: 20px; border: none; cursor: pointer; transition: opacity 0.15s;
+}
+.t1-act-smjestaj-btn:active { opacity: 0.85; }
+.t1-reviews-lbl {
+  font-size: 10px; font-weight: 800; text-transform: uppercase; letter-spacing: 1px;
+  color: var(--brown3); font-family: var(--font-mono); margin-bottom: 10px;
+}
+.t1-review {
+  background: var(--cream); border-radius: var(--radius-md);
+  padding: 12px; margin-bottom: 8px; border: 1px solid var(--cream3);
+}
+.t1-review-top { display: flex; align-items: center; gap: 8px; margin-bottom: 6px; }
+.t1-review-avatar {
+  width: 34px; height: 34px; border-radius: 50%; background: var(--cream3);
+  display: flex; align-items: center; justify-content: center; font-size: 16px; flex-shrink: 0;
+}
+.t1-review-meta { flex: 1; min-width: 0; }
+.t1-review-user { font-size: 12px; font-weight: 800; color: var(--brown); font-family: var(--font-mono); }
+.t1-review-badge { font-size: 10px; color: var(--brown3); }
+.t1-review-dana { font-size: 10px; color: var(--brown3); flex-shrink: 0; }
+.t1-review-tekst { font-size: 13px; color: var(--brown); line-height: 1.5; font-style: italic; }
+
+/* Smještaj bottom sheet */
+.t1-smjestaj-modal {
+  position: absolute; inset: 0;
+  background: rgba(44,26,14,0.5); z-index: 600;
+  display: none; align-items: flex-end; backdrop-filter: blur(4px);
+}
+.t1-smjestaj-modal.open { display: flex; }
+.t1-smjestaj-sheet {
+  background: var(--white); border-radius: var(--radius-xl) var(--radius-xl) 0 0;
+  padding: 20px 20px 36px; width: 100%; animation: slideUp 0.3s ease;
+}
+.t1-smjestaj-sheet-title {
+  font-family: var(--font-title); font-size: 20px; font-weight: 700;
+  color: var(--brown); margin-bottom: 4px;
+}
+.t1-smjestaj-sheet-sub { font-size: 12px; color: var(--brown3); margin-bottom: 16px; line-height: 1.45; }
+.t1-sheet-close { float: right; font-size: 22px; color: var(--brown3); cursor: pointer; margin-top: -4px; background: none; border: none; }
+.t1-smjestaj-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 14px; }
+.t1-smjestaj-field { display: flex; flex-direction: column; gap: 4px; }
+.t1-smjestaj-lbl {
+  font-size: 10px; font-weight: 700; color: var(--brown3);
+  text-transform: uppercase; letter-spacing: 0.6px; font-family: var(--font-mono);
+}
+.t1-smjestaj-inp {
+  padding: 10px 12px; background: var(--cream); border: 1.5px solid var(--cream3);
+  border-radius: var(--radius-sm); font-size: 13px; color: var(--brown);
+  width: 100%; transition: border-color var(--transition);
+}
+.t1-smjestaj-inp:focus { border-color: var(--orange); }
+.t1-booking-btn {
+  width: 100%; padding: 14px; background: linear-gradient(135deg, #003580, #0057b8);
+  color: var(--white); border-radius: var(--radius-md); font-size: 14px; font-weight: 800;
+  display: flex; align-items: center; justify-content: center; gap: 8px; border: none; cursor: pointer;
+}
+.t1-booking-btn:active { opacity: 0.85; }
+
+/* === CSS-TAB1-END === */
+
+/* === PLACEHOLDER ZA CSS OSTALIH TABOVA ===
+   Tab 2 — Kuhinja    → // CSS-TAB2-START / END
+/* === CSS-TAB2-START === */
+
+/* ── Sticky header ── */
+.t2-sticky {
+  flex-shrink: 0;
+  background: var(--cream);
+  padding: 14px 16px 0;
+  border-bottom: 1px solid var(--cream3);
+}
+.t2-title { font-family: var(--font-title); font-size: 26px; font-weight: 700; color: var(--brown); margin-bottom: 10px; }
+.t2-title em { color: var(--red); font-style: italic; }
+.t2-chips { display: flex; gap: 6px; overflow-x: auto; scrollbar-width: none; padding-bottom: 10px; }
+.t2-chips::-webkit-scrollbar { display: none; }
+.t2-chip {
+  flex-shrink: 0; padding: 6px 14px;
+  background: var(--white); border: 1.5px solid var(--cream3);
+  border-radius: 20px; font-size: 12px; font-weight: 700;
+  color: var(--brown3); white-space: nowrap; transition: all var(--transition);
+}
+.t2-chip.active { background: var(--red); border-color: var(--red); color: var(--white); }
+
+/* ── Hero kartica ── */
+.t2-hero {
+  margin: 14px 16px 0;
+  background: var(--cream2);
+  border-radius: var(--radius-lg);
+  padding: 16px;
+  border: 1px solid var(--cream3);
+  position: relative;
+  overflow: hidden;
+  cursor: pointer;
+}
+.t2-hero:active { opacity: 0.9; }
+.t2-hero-label {
+  font-size: 10px; font-weight: 800; letter-spacing: 1.2px;
+  font-family: var(--font-mono); color: var(--orange2);
+  display: flex; align-items: center; gap: 6px; margin-bottom: 6px;
+}
+.t2-hero-naziv {
+  font-family: var(--font-title); font-size: 22px; font-weight: 700;
+  color: var(--brown); margin-bottom: 10px; line-height: 1.2;
+}
+.t2-hero-chips { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 14px; }
+.t2-hero-chip {
+  padding: 4px 10px; background: var(--white); border-radius: 20px;
+  font-size: 11px; font-weight: 700; color: var(--brown3);
+  display: flex; align-items: center; gap: 4px;
+}
+.t2-hero-emoji {
+  position: absolute; right: 12px; top: 12px;
+  font-size: 52px; opacity: 0.18; pointer-events: none;
+}
+.t2-hero-btn {
+  width: 100%; padding: 13px;
+  background: linear-gradient(135deg, var(--red), var(--orange));
+  color: var(--white); border-radius: var(--radius-md);
+  font-size: 15px; font-weight: 800;
+  display: flex; align-items: center; justify-content: center; gap: 8px;
+  transition: opacity var(--transition);
+}
+.t2-hero-btn:active { opacity: 0.85; }
+
+/* ── Section label ── */
+.t2-section-lbl {
+  font-size: 11px; font-weight: 800; text-transform: uppercase;
+  letter-spacing: 1px; color: var(--brown3); font-family: var(--font-mono);
+  padding: 16px 16px 8px;
+}
+
+/* ── 2-col grid ── */
+.t2-grid {
+  display: grid; grid-template-columns: 1fr 1fr;
+  gap: 10px; padding: 0 16px;
+}
+.t2-recipe-card {
+  background: var(--cream2); border-radius: var(--radius-md);
+  padding: 14px; cursor: pointer;
+  transition: transform 0.15s; border: 1px solid var(--cream3);
+  position: relative;
+}
+.t2-recipe-card:active { transform: scale(0.97); }
+.t2-recipe-emoji { font-size: 28px; margin-bottom: 8px; display: block; }
+.t2-recipe-naziv {
+  font-family: var(--font-title); font-size: 14px; font-weight: 700;
+  color: var(--brown); margin-bottom: 2px; line-height: 1.2;
+}
+.t2-recipe-subtitle { font-size: 11px; color: var(--brown3); }
+.t2-save-btn {
+  position: absolute; top: 10px; right: 10px;
+  font-size: 16px; background: none; border: none; cursor: pointer;
+  opacity: 0.4; transition: opacity var(--transition);
+}
+.t2-save-btn.saved { opacity: 1; }
+
+/* ── Kalkulator ── */
+.t2-kalkulator {
+  margin: 16px 16px 0;
+  background: var(--cream2); border-radius: var(--radius-lg);
+  padding: 16px; border: 1px solid var(--cream3);
+}
+.t2-kalk-title {
+  font-size: 10px; font-weight: 800; text-transform: uppercase;
+  letter-spacing: 1px; color: var(--brown3); font-family: var(--font-mono);
+  margin-bottom: 12px; display: flex; align-items: center; gap: 6px;
+}
+.t2-kalk-row { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 12px; }
+.t2-kalk-field { display: flex; flex-direction: column; gap: 4px; }
+.t2-kalk-lbl {
+  font-size: 10px; font-weight: 700; color: var(--brown3);
+  text-transform: uppercase; letter-spacing: 0.6px; font-family: var(--font-mono);
+}
+.t2-kalk-select {
+  padding: 9px 10px; background: var(--white); border: 1.5px solid var(--cream3);
+  border-radius: var(--radius-sm); font-size: 13px; color: var(--brown);
+  font-family: var(--font-body); transition: border-color var(--transition);
+}
+.t2-kalk-select:focus { border-color: var(--orange); outline: none; }
+.t2-kalk-stats { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px; margin-bottom: 10px; }
+.t2-kalk-stat {
+  background: var(--white); border-radius: var(--radius-sm);
+  padding: 10px; text-align: center;
+}
+.t2-kalk-stat-val { font-size: 22px; font-weight: 800; font-family: var(--font-mono); }
+.t2-kalk-stat-lbl { font-size: 9px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.8px; color: var(--brown3); font-family: var(--font-mono); }
+.t2-kalk-activity {
+  background: var(--white); border-radius: var(--radius-sm);
+  padding: 10px 12px; margin-bottom: 10px;
+  display: flex; align-items: center; gap: 8px;
+  font-size: 12px; color: var(--brown); font-weight: 600;
+}
+.t2-kalk-activity-icon { font-size: 20px; flex-shrink: 0; }
+.t2-kalk-activity-sub { font-size: 11px; color: var(--brown3); font-style: italic; }
+.t2-kalk-tagovi { display: flex; flex-wrap: wrap; gap: 6px; }
+.t2-kalk-tag {
+  padding: 4px 10px; border-radius: 20px;
+  background: var(--cream3); font-size: 11px; font-weight: 700; color: var(--brown3);
+  display: flex; align-items: center; gap: 4px;
+}
+
+/* ── Detail slide screen ── */
+#t2-detail { z-index: 200; }
+.t2-detail-hero {
+  flex-shrink: 0; height: 150px;
+  display: flex; align-items: center; justify-content: center; position: relative;
+}
+.t2-detail-back {
+  position: absolute; top: 48px; left: 16px;
+  width: 36px; height: 36px; background: rgba(255,255,255,0.88);
+  border-radius: 50%; display: flex; align-items: center; justify-content: center;
+  font-size: 18px; box-shadow: var(--shadow-sm);
+}
+.t2-detail-save {
+  position: absolute; top: 48px; right: 16px;
+  width: 36px; height: 36px; background: rgba(255,255,255,0.88);
+  border-radius: 50%; display: flex; align-items: center; justify-content: center;
+  font-size: 18px; box-shadow: var(--shadow-sm);
+}
+.t2-detail-emoji { font-size: 64px; filter: drop-shadow(0 4px 12px rgba(0,0,0,0.15)); }
+.t2-detail-scroll { flex: 1; overflow-y: auto; -webkit-overflow-scrolling: touch; scrollbar-width: none; }
+.t2-detail-scroll::-webkit-scrollbar { display: none; }
+.t2-detail-body { padding: 16px 16px 32px; }
+.t2-detail-naziv { font-family: var(--font-title); font-size: 24px; font-weight: 700; color: var(--brown); margin-bottom: 8px; }
+.t2-detail-chips { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 16px; }
+.t2-detail-chip {
+  padding: 4px 10px; background: var(--cream2); border-radius: 20px;
+  font-size: 11px; font-weight: 700; color: var(--brown3);
+  display: flex; align-items: center; gap: 4px;
+}
+
+/* Portion scaler */
+.t2-porcije-row {
+  display: flex; align-items: center; gap: 10px;
+  background: var(--cream2); border-radius: var(--radius-sm);
+  padding: 8px 12px; margin-bottom: 14px;
+}
+.t2-porcije-lbl { font-size: 12px; font-weight: 700; color: var(--brown3); flex: 1; }
+.t2-porcije-val { font-size: 16px; font-weight: 800; color: var(--brown); font-family: var(--font-mono); min-width: 24px; text-align: center; }
+.t2-porcije-btn {
+  width: 28px; height: 28px; border-radius: 50%;
+  background: var(--white); border: 1.5px solid var(--cream3);
+  font-size: 16px; font-weight: 700; color: var(--brown);
+  display: flex; align-items: center; justify-content: center;
+  cursor: pointer; transition: all var(--transition);
+}
+.t2-porcije-btn:active { background: var(--cream3); }
+
+/* Sastojci */
+.t2-sub-lbl {
+  font-size: 10px; font-weight: 800; text-transform: uppercase;
+  letter-spacing: 1px; color: var(--brown3); font-family: var(--font-mono);
+  margin-bottom: 8px;
+}
+.t2-sastojci-box {
+  background: var(--cream2); border-radius: var(--radius-md);
+  overflow: hidden; margin-bottom: 16px; border: 1px solid var(--cream3);
+}
+.t2-sastojak {
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 10px 14px; font-size: 13px; color: var(--brown);
+}
+.t2-sastojak + .t2-sastojak { border-top: 1px solid var(--cream3); }
+.t2-sastojak-kol { font-weight: 800; color: var(--orange); font-family: var(--font-mono); }
+
+/* Koraci */
+.t2-koraci { display: flex; flex-direction: column; gap: 10px; margin-bottom: 16px; }
+.t2-korak {
+  display: flex; gap: 12px; align-items: flex-start;
+  background: var(--cream2); border-radius: var(--radius-md);
+  padding: 12px; border: 1px solid var(--cream3);
+}
+.t2-korak-br {
+  width: 28px; height: 28px; border-radius: 50%;
+  background: var(--red); color: var(--white);
+  font-size: 13px; font-weight: 800;
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0; font-family: var(--font-mono);
+}
+.t2-korak-tekst { flex: 1; font-size: 13px; color: var(--brown); line-height: 1.55; }
+.t2-korak-tekst strong { color: var(--brown); }
+.t2-korak-tekst em { color: var(--red); font-style: normal; font-weight: 700; }
+
+/* Srodni recepti */
+.t2-srodni-scroll { display: flex; gap: 10px; overflow-x: auto; scrollbar-width: none; margin-bottom: 16px; }
+.t2-srodni-scroll::-webkit-scrollbar { display: none; }
+.t2-srodni-card {
+  flex-shrink: 0; width: 120px;
+  background: var(--cream2); border-radius: var(--radius-md);
+  padding: 12px; text-align: center;
+  cursor: pointer; border: 1px solid var(--cream3);
+  transition: transform 0.15s;
+}
+.t2-srodni-card:active { transform: scale(0.96); }
+.t2-srodni-emoji { font-size: 26px; display: block; margin-bottom: 6px; }
+.t2-srodni-naziv { font-size: 11px; font-weight: 700; color: var(--brown); line-height: 1.3; }
+
+/* Videi */
+.t2-videi { display: flex; flex-direction: column; gap: 8px; }
+.t2-video-card {
+  display: flex; gap: 10px; align-items: center;
+  background: var(--cream2); border-radius: var(--radius-md);
+  padding: 10px; border: 1px solid var(--cream3); cursor: pointer;
+  transition: opacity 0.15s;
+}
+.t2-video-card:active { opacity: 0.75; }
+.t2-video-thumb {
+  width: 72px; height: 48px; background: #222;
+  border-radius: var(--radius-sm); flex-shrink: 0;
+  display: flex; align-items: center; justify-content: center;
+  position: relative; overflow: hidden;
+}
+.t2-video-play {
+  width: 24px; height: 24px; background: var(--red);
+  border-radius: 50%; display: flex; align-items: center; justify-content: center;
+  font-size: 10px; color: var(--white);
+}
+.t2-video-dur {
+  position: absolute; bottom: 3px; right: 4px;
+  background: rgba(0,0,0,0.8); color: white;
+  font-size: 9px; font-weight: 700; padding: 1px 4px;
+  border-radius: 3px; font-family: var(--font-mono);
+}
+.t2-video-info { flex: 1; min-width: 0; }
+.t2-video-naziv { font-size: 12px; font-weight: 700; color: var(--brown); line-height: 1.3; margin-bottom: 3px; }
+.t2-video-meta { font-size: 10px; color: var(--brown3); }
+
+/* === CSS-TAB2-END === */
+   Tab 3 — Akademija  → // CSS-TAB3-START / END
+   Tab 4 — Zajednica  → // CSS-TAB4-START / END
+   Tab 6 — Profil     → // CSS-TAB6-START / END
+   Overlays/Glazba    → // CSS-OVERLAYS-START / END
+   ========================================= */
+
+  </style>
+</head>
+<body>
+
+<div class="app-shell">
+  <div class="phone" id="app">
+
+    <!-- ============================================
+         AUTH EKRAN
+         ============================================ -->
+    <div class="screen active" id="screen-auth">
+      <div class="auth-logo">
+        <span class="logo-emoji">🥩</span>
+        <h1>ChevApp</h1>
+        <p>Tvoj vodič kroz svijet ćevapa</p>
+      </div>
+
+      <div class="auth-card">
+        <!-- Tabovi -->
+        <div class="auth-tabs">
+          <button class="auth-tab-btn active" onclick="switchAuthTab('login')">Prijava</button>
+          <button class="auth-tab-btn" onclick="switchAuthTab('register')">Registracija</button>
+        </div>
+
+        <!-- Login forma -->
+        <div class="auth-form active" id="auth-form-login">
+          <div class="auth-field">
+            <label>Email</label>
+            <input type="email" id="login-email" placeholder="tvoj@email.com" />
+          </div>
+          <div class="auth-field">
+            <label>Lozinka</label>
+            <input type="password" id="login-password" placeholder="••••••••" />
+          </div>
+          <div class="auth-error" id="login-error"></div>
+          <button class="btn-primary" onclick="doLogin()">Prijava →</button>
+
+          <div class="auth-divider">ili</div>
+
+          <button class="btn-social" onclick="doGoogleLogin()">
+            <svg width="18" height="18" viewBox="0 0 24 24"><path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/><path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/><path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" fill="#FBBC05"/><path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/></svg>
+            Nastavi s Googleom
+          </button>
+          <button class="btn-social apple" onclick="doAppleLogin()">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="white"><path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.8-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/></svg>
+            Nastavi s Appleom
+          </button>
+        </div>
+
+        <!-- Register forma -->
+        <div class="auth-form" id="auth-form-register">
+          <div class="auth-field">
+            <label>Ime</label>
+            <input type="text" id="reg-name" placeholder="Tvoje ime" />
+          </div>
+          <div class="auth-field">
+            <label>Email</label>
+            <input type="email" id="reg-email" placeholder="tvoj@email.com" />
+          </div>
+          <div class="auth-field">
+            <label>Lozinka</label>
+            <input type="password" id="reg-password" placeholder="min. 6 znakova" />
+          </div>
+          <div class="auth-error" id="reg-error"></div>
+          <button class="btn-primary" onclick="doRegister()">Registracija →</button>
+
+          <div class="auth-divider">ili</div>
+
+          <button class="btn-social" onclick="doGoogleLogin()">
+            <svg width="18" height="18" viewBox="0 0 24 24"><path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/><path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/><path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" fill="#FBBC05"/><path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/></svg>
+            Nastavi s Googleom
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ============================================
+         ONBOARDING
+         ============================================ -->
+    <div class="screen" id="screen-onboarding">
+      <div class="ob-slides" id="ob-slides">
+
+        <div class="ob-slide active" data-slide="0">
+          <div class="ob-illustration">🥩</div>
+          <h2>Dobrodošao u ChevApp!</h2>
+          <p>Tvoj ultimativni vodič kroz čarobni svijet bosanskih ćevapa — od tanjira do tradicije.</p>
+        </div>
+
+        <div class="ob-slide" data-slide="1">
+          <div class="ob-illustration">🗺️</div>
+          <h2>Pronađi Savršeni Restoran</h2>
+          <p>Interaktivna mapa, ocjene i opisi najboljihćevabdžinica u tvojoj blizini i diljem Bosne.</p>
+        </div>
+
+        <div class="ob-slide" data-slide="2">
+          <div class="ob-illustration">🎓</div>
+          <h2>Postani Majstor Roštilja</h2>
+          <p>Uči kroz kvizove, osvajaj XP bodove i napreduj od Početnika do legendarnog Majstora Roštilja.</p>
+        </div>
+
+        <div class="ob-slide" data-slide="3">
+          <div class="ob-illustration">🏆</div>
+          <h2>Pridruži se Zajednici</h2>
+          <p>Dijeli iskustva, glasaj za bisere mudrosti i natječi se na tjednoj ljestvici!</p>
+        </div>
+
+      </div>
+
+      <div class="ob-dots" id="ob-dots">
+        <div class="ob-dot active"></div>
+        <div class="ob-dot"></div>
+        <div class="ob-dot"></div>
+        <div class="ob-dot"></div>
+      </div>
+
+      <div class="ob-nav">
+        <button class="btn-ob-back" id="ob-back-btn" onclick="obBack()" style="visibility:hidden">← Natrag</button>
+        <button class="btn-ob-skip" onclick="finishOnboarding()">Preskoči</button>
+        <button class="btn-ob-next" id="ob-next-btn" onclick="obNext()">Dalje →</button>
+      </div>
+    </div>
+
+    <!-- ============================================
+         GLAVNI APP EKRAN
+         ============================================ -->
+    <div class="screen" id="screen-app">
+
+      <!-- Tab sadržaj -->
+      <div class="tab-content">
+
+        <!-- TAB 1: Tražilica -->
+        <div class="tab-pane active" id="tab-trazilica">
+                    <!-- HTML-TAB1-START -->
+
+          <!-- Sticky header -->
+          <div class="t1-sticky">
+            <div class="t1-search-wrap">
+              <span class="t1-search-icon">🔍</span>
+              <input class="t1-search-input" id="t1-search" type="text"
+                placeholder="Traži ćevabdžinicu, grad..."
+                oninput="t1OnSearch(this.value)" autocomplete="off" />
+              <button class="t1-search-clear" id="t1-clear" onclick="t1ClearSearch()">✕</button>
+            </div>
+            <div class="t1-chips" id="t1-chips"></div>
+          </div>
+
+          <!-- Lista view: mini-mapa uvijek gore + lista ispod -->
+          <div class="t1-lista-view">
+
+            <!-- Mini mapa -->
+            <div class="t1-mini-map" id="t1-mini-map">
+              <div id="t1-map"></div>
+              <div class="t1-map-legend">
+                <div class="t1-legend-row">
+                  <div class="t1-legend-dot" style="background:#C0392B"></div>
+                  Naši restorani
+                </div>
+              </div>
+              <button class="t1-map-expand-btn" onclick="t1ExpandMap()">🔍 Povećaj</button>
+              <button class="t1-map-shrink-btn" onclick="t1ShrinkMap()">✕ Smanji</button>
+              <div class="t1-map-bottom" id="t1-map-bottom" onclick="t1OpenDetailFromMap()">
+                <div class="t1-mb-inner">
+                  <div class="t1-mb-emoji" id="t1-mb-emoji"></div>
+                  <div class="t1-mb-info">
+                    <div class="t1-mb-name" id="t1-mb-name"></div>
+                    <div class="t1-mb-sub"  id="t1-mb-sub"></div>
+                  </div>
+                  <div class="t1-mb-arrow">›</div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Scrollable lista -->
+            <div class="t1-list-scroll">
+              <div class="t1-section-lbl">⭐ Najbolje ocijenjeni u blizini</div>
+              <div id="t1-cards"></div>
+              <div class="t1-empty" id="t1-empty" style="display:none">
+                <div class="t1-empty-icon">🔍</div>
+                <p>Nema rezultata za tvoju pretragu</p>
+              </div>
+              <div style="height:16px"></div>
+            </div>
+
+          </div>
+
+          <!-- HTML-TAB1-END -->
+        </div>
+
+        <!-- TAB 2: Kuhinja -->
+        <div class="tab-pane" id="tab-kuhinja">
+                    <!-- HTML-TAB2-START -->
+
+          <!-- Sticky: title + filter chips -->
+          <div class="t2-sticky">
+            <div class="t2-title">The <em>Kuhinja</em></div>
+            <div class="t2-chips" id="t2-chips"></div>
+          </div>
+
+          <!-- Scrollable sadržaj -->
+          <div class="tab-scroll" id="t2-scroll">
+
+            <!-- Specijalitet dana -->
+            <div class="t2-hero" id="t2-hero" onclick="t2HeroClick()">
+              <div class="t2-hero-emoji" id="t2-hero-emoji"></div>
+              <div class="t2-hero-label">⭐ SPECIJALITET DANA</div>
+              <div class="t2-hero-naziv" id="t2-hero-naziv"></div>
+              <div class="t2-hero-chips" id="t2-hero-chips"></div>
+              <button class="t2-hero-btn">Počni kuhati 🔥</button>
+            </div>
+
+            <!-- Grid recepata -->
+            <div class="t2-section-lbl" id="t2-section-lbl">SVI RECEPTI</div>
+            <div class="t2-grid" id="t2-grid"></div>
+
+            <!-- Kalkulator obroka -->
+            <div class="t2-kalkulator">
+              <div class="t2-kalk-title">🔥 KALKULATOR OBROKA</div>
+              <div class="t2-kalk-row">
+                <div class="t2-kalk-field">
+                  <label class="t2-kalk-lbl">Stil ćevapa</label>
+                  <select class="t2-kalk-select" id="t2-kalk-stil" onchange="t2Kalkulator()">
+                    <option>Sarajevski (60/40)</option>
+                    <option>Banjalučki (svinjetina)</option>
+                    <option>Tuzlanski (janjetina)</option>
+                  </select>
+                </div>
+                <div class="t2-kalk-field">
+                  <label class="t2-kalk-lbl">Broj ćevapa</label>
+                  <select class="t2-kalk-select" id="t2-kalk-broj" onchange="t2Kalkulator()">
+                    <option value="5">5 komada</option>
+                    <option value="10" selected>10 komada</option>
+                    <option value="15">15 komada</option>
+                    <option value="20">20 komada</option>
+                  </select>
+                </div>
+              </div>
+              <div class="t2-kalk-stats">
+                <div class="t2-kalk-stat">
+                  <div class="t2-kalk-stat-val" id="t2-kcal" style="color:var(--red)"></div>
+                  <div class="t2-kalk-stat-lbl">KCAL</div>
+                </div>
+                <div class="t2-kalk-stat">
+                  <div class="t2-kalk-stat-val" id="t2-prot" style="color:var(--orange)"></div>
+                  <div class="t2-kalk-stat-lbl">PROTEINI</div>
+                </div>
+                <div class="t2-kalk-stat">
+                  <div class="t2-kalk-stat-val" id="t2-masti" style="color:var(--brown3)"></div>
+                  <div class="t2-kalk-stat-lbl">MASTI</div>
+                </div>
+              </div>
+              <div class="t2-kalk-activity">
+                <div class="t2-kalk-activity-icon">🏃</div>
+                <div>
+                  <div id="t2-activity-txt"></div>
+                  <div class="t2-kalk-activity-sub">Ali isplatilo se. Bez rasprave.</div>
+                </div>
+              </div>
+              <div class="t2-kalk-tagovi" id="t2-kalk-tagovi"></div>
+            </div>
+
+            <div style="height:24px"></div>
+          </div>
+
+          <!-- HTML-TAB2-END -->
+        </div>
+
+        <!-- TAB 3: Akademija -->
+        <div class="tab-pane" id="tab-akademija">
+          <!-- HTML-TAB3-START -->
+          <div class="tab-header">
+            <h2>🎓 Akademija</h2>
+            <p>Učenje i mini igre</p>
+          </div>
+          <div class="tab-scroll">
+            <div style="padding:20px;text-align:center;color:var(--brown3);">
+              <p style="font-size:40px">🏗️</p>
+              <p>Tab 3 se učitava...</p>
+            </div>
+          </div>
+          <!-- HTML-TAB3-END -->
+        </div>
+
+        <!-- TAB 4: Zajednica -->
+        <div class="tab-pane" id="tab-zajednica">
+          <!-- HTML-TAB4-START -->
+          <div class="tab-header">
+            <h2>👥 Zajednica</h2>
+            <p>Feed, biseri i događaji</p>
+          </div>
+          <div class="tab-scroll">
+            <div style="padding:20px;text-align:center;color:var(--brown3);">
+              <p style="font-size:40px">🏗️</p>
+              <p>Tab 4 se učitava...</p>
+            </div>
+          </div>
+          <!-- HTML-TAB4-END -->
+        </div>
+
+        <!-- TAB 5: Profil (was TAB 6) -->
+        <div class="tab-pane" id="tab-profil">
+          <!-- HTML-TAB6-START -->
+          <div class="tab-scroll">
+            <div style="padding:20px;text-align:center;color:var(--brown3);padding-top:60px;">
+              <p style="font-size:40px">🏗️</p>
+              <p>Tab 6 se učitava...</p>
+            </div>
+          </div>
+          <!-- HTML-TAB6-END -->
+        </div>
+
+      </div><!-- /tab-content -->
+
+      <!-- Tab Bar -->
+      <nav class="tab-bar">
+        <button class="tab-btn active" data-tab="trazilica" onclick="switchTab(this)">
+          <span class="tab-icon">🗺️</span>
+          <span class="tab-label">Tražilica</span>
+        </button>
+        <button class="tab-btn" data-tab="kuhinja" onclick="switchTab(this)">
+          <span class="tab-icon">🔪</span>
+          <span class="tab-label">Kuhinja</span>
+        </button>
+        <button class="tab-btn" data-tab="akademija" onclick="switchTab(this)">
+          <span class="tab-icon">🎓</span>
+          <span class="tab-label">Akademija</span>
+        </button>
+        <button class="tab-btn" data-tab="zajednica" onclick="switchTab(this)">
+          <span class="tab-icon">👥</span>
+          <span class="tab-label">Zajednica</span>
+        </button>
+        <button class="tab-btn" data-tab="profil" onclick="switchTab(this)">
+          <span class="tab-icon">👤</span>
+          <span class="tab-label">Profil</span>
+        </button>
+      </nav>
+
+            <!-- ============================================
+           DETAIL SCREEN — Tab 1 Tražilica
+           ============================================ -->
+      <div class="slide-screen" id="t1-detail">
+
+        <!-- Hero -->
+        <div class="t1-detail-hero" id="t1-detail-hero">
+          <button class="t1-detail-back" onclick="closeSlideScreen('t1-detail')">←</button>
+          <span class="t1-detail-hero-emoji" id="t1-detail-emoji"></span>
+        </div>
+
+        <!-- Scroll content -->
+        <div class="t1-detail-scroll">
+          <div class="t1-detail-body">
+
+            <div class="t1-detail-name" id="t1-detail-name"></div>
+            <div class="t1-detail-chip-row" id="t1-detail-chips"></div>
+
+            <!-- Rating box -->
+            <div class="t1-detail-rating-box">
+              <div class="t1-detail-rating-top">
+                <div class="t1-rating-dots" id="t1-detail-dots"></div>
+                <div class="t1-rating-num-lg" id="t1-detail-num"></div>
+              </div>
+              <div class="t1-detail-rating-count" id="t1-detail-count"></div>
+            </div>
+
+            <!-- Opis -->
+            <div class="t1-detail-opis" id="t1-detail-opis"></div>
+
+            <!-- Action buttons -->
+            <div class="t1-detail-actions">
+              <button class="t1-act t1-act-nav"  onclick="t1Navigate()">📖 Upute</button>
+              <button class="t1-act t1-act-rate" onclick="t1Ocijeni()">🎯 Ocijeni</button>
+            </div>
+            <button class="t1-act-smjestaj-btn" onclick="t1OpenSmjestaj()">🏨 Smještaj</button>
+
+            <!-- Reviews -->
+            <div class="t1-reviews-lbl">Nedavne recenzije</div>
+            <div id="t1-detail-reviews"></div>
+
+          </div>
+        </div>
+
+        <!-- Smještaj bottom sheet -->
+        <div class="t1-smjestaj-modal" id="t1-smjestaj-modal" onclick="t1CloseSmjestaj(event)">
+          <div class="t1-smjestaj-sheet">
+            <button class="t1-sheet-close" onclick="t1CloseSmjestaj()">✕</button>
+            <div class="t1-smjestaj-sheet-title">🏨 Pronađi smještaj</div>
+            <div class="t1-smjestaj-sheet-sub" id="t1-smjestaj-sub">Rezerviraj noćenje u blizini restorana.</div>
+            <div class="t1-smjestaj-grid">
+              <div class="t1-smjestaj-field">
+                <label class="t1-smjestaj-lbl">Dolazak</label>
+                <input type="date" class="t1-smjestaj-inp" id="t1-checkin" />
+              </div>
+              <div class="t1-smjestaj-field">
+                <label class="t1-smjestaj-lbl">Odlazak</label>
+                <input type="date" class="t1-smjestaj-inp" id="t1-checkout" />
+              </div>
+              <div class="t1-smjestaj-field">
+                <label class="t1-smjestaj-lbl">Gosti</label>
+                <select class="t1-smjestaj-inp" id="t1-guests">
+                  <option value="1">1 gost</option>
+                  <option value="2" selected>2 gosta</option>
+                  <option value="3">3 gosta</option>
+                  <option value="4">4 gosta</option>
+                </select>
+              </div>
+              <div class="t1-smjestaj-field">
+                <label class="t1-smjestaj-lbl">Sobe</label>
+                <select class="t1-smjestaj-inp" id="t1-rooms">
+                  <option value="1" selected>1 soba</option>
+                  <option value="2">2 sobe</option>
+                  <option value="3">3 sobe</option>
+                </select>
+              </div>
+            </div>
+            <button class="t1-booking-btn" onclick="t1OpenBooking()">🔍 Pretraži na Booking.com</button>
+          </div>
+        </div>
+
+      </div><!-- /t1-detail -->
+
+      <!-- ============================================
+           DETAIL SCREEN — Tab 2 Kuhinja
+           ============================================ -->
+      <div class="slide-screen" id="t2-detail">
+
+        <div class="t2-detail-hero" id="t2-detail-hero">
+          <button class="t2-detail-back" onclick="closeSlideScreen('t2-detail')">←</button>
+          <span class="t2-detail-emoji" id="t2-detail-emoji"></span>
+          <button class="t2-detail-save" id="t2-detail-save-btn" onclick="t2ToggleSave()">🔖</button>
+        </div>
+
+        <div class="t2-detail-scroll">
+          <div class="t2-detail-body">
+
+            <div class="t2-detail-naziv" id="t2-detail-naziv"></div>
+            <div class="t2-detail-chips" id="t2-detail-chips"></div>
+
+            <!-- Porcije scaler -->
+            <div class="t2-porcije-row">
+              <span class="t2-porcije-lbl">👥 Porcije</span>
+              <button class="t2-porcije-btn" onclick="t2ScalePorcije(-1)">−</button>
+              <span class="t2-porcije-val" id="t2-porcije-val">4</span>
+              <button class="t2-porcije-btn" onclick="t2ScalePorcije(+1)">+</button>
+            </div>
+
+            <!-- Sastojci -->
+            <div class="t2-sub-lbl">SASTOJCI</div>
+            <div class="t2-sastojci-box" id="t2-sastojci"></div>
+
+            <!-- Koraci -->
+            <div class="t2-sub-lbl" style="margin-top:16px">PRIPREMA</div>
+            <div class="t2-koraci" id="t2-koraci"></div>
+
+            <!-- Srodni recepti -->
+            <div class="t2-sub-lbl" style="margin-top:4px" id="t2-srodni-lbl"></div>
+            <div class="t2-srodni-scroll" id="t2-srodni"></div>
+
+            <!-- Videi -->
+            <div class="t2-sub-lbl">VIDEI O OVOM RECEPTU <span style="float:right;font-weight:400;text-transform:none;letter-spacing:0;font-family:var(--font-body)">po gledanosti</span></div>
+            <div class="t2-videi" id="t2-videi"></div>
+
+          </div>
+        </div>
+      </div><!-- /t2-detail -->
+
+    </div><!-- /screen-app -->
+
+    <!-- Toast (globalni) -->
+    <div class="toast" id="toast"></div>
+
+    <!-- HTML-OVERLAYS-START -->
+    <!-- Overlay za Glazbu, Fitness, Admin i Impressum idu ovdje (Tab 7) -->
+    <!-- HTML-OVERLAYS-END -->
+
+  </div><!-- /phone -->
+</div><!-- /app-shell -->
+
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script>
+/* ============================================
+   CHEVAPP — FOUNDATION JS
+   ============================================
+   SADRŽAJ:
+   ✅ localStorage helperi
+   ✅ Upravljanje korisnicima (getCurrentUser itd.)
+   ✅ XP sustav (updateXP, getNextRank)
+   ✅ Streak sustav
+   ✅ Auth logika (login, register, Google, Apple)
+   ✅ Onboarding logika (slide, swipe)
+   ✅ Tab switching
+   ✅ Toast helper
+   ✅ Overlay helper
+   ✅ Auto-login + init
+   ============================================ */
+
+/* === JS-FOUNDATION-START === */
+
+/* ---- localStorage helperi ---- */
+const LS = {
+  get(key, fallback = null) {
+    try { const v = localStorage.getItem(key); return v ? JSON.parse(v) : fallback; }
+    catch { return fallback; }
+  },
+  set(key, val) {
+    try { localStorage.setItem(key, JSON.stringify(val)); }
+    catch {}
+  },
+  remove(key) { localStorage.removeItem(key); }
+};
+
+/* ---- Rangovi ---- */
+const RANKS = [
+  { title: '🌱 Početnik',           xpMin: 0,    xpMax: 499  },
+  { title: '🍖 Redoviti posjetitelj', xpMin: 500,  xpMax: 1999 },
+  { title: '🔥 Iskusni degustator',   xpMin: 2000, xpMax: 4999 },
+  { title: '👑 Majstor roštilja',     xpMin: 5000, xpMax: Infinity }
+];
+
+function getRank(xp) {
+  return RANKS.slice().reverse().find(r => xp >= r.xpMin) || RANKS[0];
+}
+
+function getNextRank(xp) {
+  return RANKS.find(r => xp < r.xpMin) || null;
+}
+
+function getXpProgress(xp) {
+  const curr = getRank(xp);
+  const next = getNextRank(xp);
+  if (!next) return 100;
+  const range = next.xpMin - curr.xpMin;
+  const done  = xp - curr.xpMin;
+  return Math.min(100, Math.round((done / range) * 100));
+}
+
+/* ---- Upravljanje korisnicima ---- */
+function getAllUsers() { return LS.get('ca_users', {}); }
+function saveAllUsers(u) { LS.set('ca_users', u); }
+
+function getCurrentUser() { return LS.get('ca_session', null); }
+
+function saveUser(user) {
+  LS.set('ca_session', user);
+  const all = getAllUsers();
+  all[user.email] = user;
+  saveAllUsers(all);
+}
+
+function createNewUser(name, email) {
+  return {
+    name,
+    email,
+    avatar: '👤',
+    avatarImg: null,
+    bio: '',
+    city: '',
+    rank: '🌱 Početnik',
+    xp: 0,
+    streak: 0,
+    lastLogin: new Date().toDateString(),
+    reviews: 0,
+    gems: 0,
+    notifications: true,
+    badges: ['🥩'],
+    joinDate: new Date().toISOString()
+  };
+}
+
+/* ---- XP sustav ---- */
+function updateXP(amount) {
+  const user = getCurrentUser();
+  if (!user) return;
+  user.xp = (user.xp || 0) + amount;
+  user.rank = getRank(user.xp).title;
+  saveUser(user);
+  showToast(`+${amount} XP! 🔥`);
+  refreshProfileUI();
+  return user.xp;
+}
+
+/* ---- Streak sustav ---- */
+function updateStreak() {
+  const user = getCurrentUser();
+  if (!user) return;
+  const today = new Date().toDateString();
+  const yesterday = new Date(Date.now() - 86400000).toDateString();
+  if (user.lastLogin === today) return;
+  if (user.lastLogin === yesterday) {
+    user.streak = (user.streak || 0) + 1;
+  } else {
+    user.streak = 1;
+  }
+  user.lastLogin = today;
+  saveUser(user);
+}
+
+/* ---- Auth logika ---- */
+function switchAuthTab(tab) {
+  document.querySelectorAll('.auth-tab-btn').forEach((b, i) => {
+    b.classList.toggle('active', (i === 0 && tab === 'login') || (i === 1 && tab === 'register'));
+  });
+  document.getElementById('auth-form-login').classList.toggle('active', tab === 'login');
+  document.getElementById('auth-form-register').classList.toggle('active', tab === 'register');
+}
+
+function doLogin() {
+  const email = document.getElementById('login-email').value.trim();
+  const pass  = document.getElementById('login-password').value;
+  const errEl = document.getElementById('login-error');
+  errEl.textContent = '';
+
+  if (!email || !pass) { errEl.textContent = 'Molimo unesi email i lozinku.'; return; }
+
+  const all = getAllUsers();
+  const user = all[email];
+
+  if (!user) { errEl.textContent = 'Korisnik ne postoji. Registriraj se.'; return; }
+  if (user.password !== btoa(pass)) { errEl.textContent = 'Pogrešna lozinka.'; return; }
+
+  updateStreak();
+  saveUser(user);
+  enterApp();
+}
+
+function doRegister() {
+  const name  = document.getElementById('reg-name').value.trim();
+  const email = document.getElementById('reg-email').value.trim();
+  const pass  = document.getElementById('reg-password').value;
+  const errEl = document.getElementById('reg-error');
+  errEl.textContent = '';
+
+  if (!name)            { errEl.textContent = 'Unesi ime.'; return; }
+  if (!email || !email.includes('@')) { errEl.textContent = 'Unesi ispravan email.'; return; }
+  if (pass.length < 6) { errEl.textContent = 'Lozinka mora imati min. 6 znakova.'; return; }
+
+  const all = getAllUsers();
+  if (all[email])       { errEl.textContent = 'Korisnik s tim emailom već postoji.'; return; }
+
+  const user = createNewUser(name, email);
+  user.password = btoa(pass);
+  saveUser(user);
+  enterApp();
+}
+
+function doGoogleLogin() {
+  const email = 'google_' + Date.now() + '@google.mock';
+  const all   = getAllUsers();
+  let user    = Object.values(all).find(u => u.email.startsWith('google_'));
+  if (!user) {
+    user = createNewUser('Google Korisnik', email);
+    user.avatar = '🔵';
+  }
+  updateStreak();
+  saveUser(user);
+  enterApp();
+}
+
+function doAppleLogin() {
+  const email = 'apple_' + Date.now() + '@apple.mock';
+  const all   = getAllUsers();
+  let user    = Object.values(all).find(u => u.email.startsWith('apple_'));
+  if (!user) {
+    user = createNewUser('Apple Korisnik', email);
+    user.avatar = '🍎';
+  }
+  updateStreak();
+  saveUser(user);
+  enterApp();
+}
+
+function doLogout() {
+  LS.remove('ca_session');
+  showScreen('screen-auth');
+  switchAuthTab('login');
+}
+
+/* ---- Onboarding ---- */
+let obCurrent = 0;
+const OB_TOTAL = 4;
+
+function showObSlide(idx) {
+  document.querySelectorAll('.ob-slide').forEach((s, i) => {
+    s.classList.remove('active', 'prev');
+    if (i === idx) s.classList.add('active');
+    else if (i < idx) s.classList.add('prev');
+  });
+  document.querySelectorAll('.ob-dot').forEach((d, i) => {
+    d.classList.toggle('active', i === idx);
+  });
+  document.getElementById('ob-back-btn').style.visibility = idx === 0 ? 'hidden' : 'visible';
+  const nextBtn = document.getElementById('ob-next-btn');
+  nextBtn.textContent = idx === OB_TOTAL - 1 ? 'Počnimo! 🔥' : 'Dalje →';
+}
+
+function obNext() {
+  if (obCurrent < OB_TOTAL - 1) { obCurrent++; showObSlide(obCurrent); }
+  else finishOnboarding();
+}
+
+function obBack() {
+  if (obCurrent > 0) { obCurrent--; showObSlide(obCurrent); }
+}
+
+function finishOnboarding() {
+  LS.set('ca_ob', true);
+  showScreen('screen-auth');
+}
+
+/* Swipe na onboardingu */
+(function initObSwipe() {
+  let startX = 0;
+  const el = document.getElementById('ob-slides');
+  if (!el) return;
+  el.addEventListener('touchstart', e => { startX = e.touches[0].clientX; }, { passive: true });
+  el.addEventListener('touchend', e => {
+    const diff = startX - e.changedTouches[0].clientX;
+    if (Math.abs(diff) > 50) { diff > 0 ? obNext() : obBack(); }
+  }, { passive: true });
+})();
+
+/* ---- Tab switching ---- */
+function switchTab(btn) {
+  const tab = btn.dataset.tab;
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  document.querySelectorAll('.tab-pane').forEach(p => p.classList.remove('active'));
+  const pane = document.getElementById('tab-' + tab);
+  if (pane) {
+    pane.classList.add('active');
+    if (typeof onTabActivated === 'function') onTabActivated(tab);
+  }
+}
+
+/* Programatski prebaci na tab */
+function goToTab(tabName) {
+  const btn = document.querySelector(`.tab-btn[data-tab="${tabName}"]`);
+  if (btn) switchTab(btn);
+}
+
+/* ---- Screen switching ---- */
+function showScreen(id) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  const s = document.getElementById(id);
+  if (s) s.classList.add('active');
+}
+
+/* ---- Overlay helperi ---- */
+function openOverlay(id) {
+  const el = document.getElementById(id);
+  if (el) { el.classList.add('open'); }
+}
+
+function closeOverlay(id) {
+  const el = document.getElementById(id);
+  if (el) { el.classList.remove('open'); }
+}
+
+/* ---- Slide screen helperi ---- */
+function openSlideScreen(id) {
+  const el = document.getElementById(id);
+  if (el) { el.classList.add('open'); }
+}
+
+function closeSlideScreen(id) {
+  const el = document.getElementById(id);
+  if (el) { el.classList.remove('open'); }
+}
+
+/* ---- Modal helperi ---- */
+function openModal(id) {
+  const el = document.getElementById(id);
+  if (el) el.classList.add('open');
+}
+
+function closeModal(id) {
+  const el = document.getElementById(id);
+  if (el) el.classList.remove('open');
+}
+
+/* ---- Toast ---- */
+let toastTimer = null;
+function showToast(msg, duration = 2500) {
+  const t = document.getElementById('toast');
+  if (!t) return;
+  t.textContent = msg;
+  t.classList.add('show');
+  if (toastTimer) clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => t.classList.remove('show'), duration);
+}
+
+/* ---- Stub: refreshProfileUI ---- */
+/* Ovu funkciju će pregaziti Tab 6 modul */
+function refreshProfileUI() {}
+
+/* ---- App entry point ---- */
+function enterApp() {
+  updateStreak();
+  showScreen('screen-app');
+  if (typeof onAppEnter === 'function') onAppEnter();
+}
+
+/* ---- Init ---- */
+(function init() {
+  const user    = getCurrentUser();
+  const obDone  = LS.get('ca_ob', false);
+
+  if (user) {
+    // Auto-login
+    updateStreak();
+    showScreen('screen-app');
+    if (typeof onAppEnter === 'function') onAppEnter();
+    return;
+  }
+
+  if (!obDone) {
+    showScreen('screen-onboarding');
+    showObSlide(0);
+  } else {
+    showScreen('screen-auth');
+  }
+})();
+
+/* === JS-FOUNDATION-END === */
+
+/* === JS-TAB1-START === */
+(function () {
+
+/* ─── Podaci ─── */
+const T1_DATA = [
+  {
+    id:1, ime:'Ćevabdžinica Željo', grad:'Sarajevo', adresa:'Kundurdžiluk 19, Sarajevo',
+    lat:43.8573, lng:18.4142, stil:'Sarajevski', meso:'Govedina/Janjetina',
+    ocjena:4.9, recenzija_count:1247, udaljenost:'0.6',
+    telefon:'+387 33 447 000', radno:'08:00–22:00', emoji:'🥩', boja:'#C0392B',
+    opis:'Najlegendarnija ćevabdžinica u Sarajevu, od 1954. Somun se peče svježi svakih 30 minuta. Uvijek red, uvijek vrijedi.',
+    reviews:[
+      { user:'mujo_sarajlija', badge:'🔥 Majstor roštilja', avatar:'👨', dana:2, tekst:'Savršenstvo. Sam miris ugljena opravdava red.' },
+      { user:'ana_foodie_zagreb', badge:'🌿 Iskusni degustator', avatar:'👩', dana:5, tekst:'Došla iz Zagreba samo zbog ovoga. Vrijelo je.' },
+    ]
+  },
+  {
+    id:2, ime:'Ćevabdžinica Peđa', grad:'Sarajevo', adresa:'Bašćaršija 12, Sarajevo',
+    lat:43.8563, lng:18.4131, stil:'Sarajevski', meso:'Govedina/Janjetina',
+    ocjena:4.7, recenzija_count:892, udaljenost:'0.8',
+    telefon:'+387 33 123 456', radno:'09:00–22:00', emoji:'🥩', boja:'#E8712A',
+    opis:'Pravi sarajevski ćevapi na ugljenu, u srcu Bašćaršije. Domaći somuni, svježe meso i ljubaznost na prvom mjestu.',
+    reviews:[
+      { user:'kenan_bh', badge:'⭐ Lokalni poznavatelj', avatar:'👨', dana:1, tekst:'Remek-djelo. Svaki put kao prvi put.' },
+      { user:'jovanka_ns', badge:'🧳 Putnik degustator', avatar:'👩', dana:7, tekst:'Iz Novog Sada specijalno zbog ćevapa. Preporuka!' },
+    ]
+  },
+  {
+    id:3, ime:'Kod Muje', grad:'Mostar', adresa:'Stari Grad bb, Mostar',
+    lat:43.3438, lng:17.8078, stil:'Mostarsko', meso:'Junetina',
+    ocjena:4.6, recenzija_count:534, udaljenost:'1.2',
+    telefon:'+387 36 456 789', radno:'10:00–21:00', emoji:'🌊', boja:'#1A7ABF',
+    opis:'S pogledom na Neretvu, pravi mostarski ćevapi. Tradicionalni recept koji se prenosi s koljena na koljeno od 1973.',
+    reviews:[
+      { user:'lejla_mostar', badge:'🌊 Lokalni poznavatelj', avatar:'👩', dana:3, tekst:'Pogled na Stari most dok jedeš ćevape. Neponovljivo.' },
+      { user:'ivan_split', badge:'🌊 Ljubitelj Jadrana', avatar:'👦', dana:10, tekst:'Dolazim svaki put kad prolazim kroz Mostar.' },
+    ]
+  },
+  {
+    id:4, ime:'Stara Bosna Grill', grad:'Banja Luka', adresa:'Gospodska 5, Banja Luka',
+    lat:44.7722, lng:17.1910, stil:'Banjalučki', meso:'Svinjetina/Junetina',
+    ocjena:4.4, recenzija_count:321, udaljenost:'2.1',
+    telefon:'+387 51 215 555', radno:'10:00–22:00', emoji:'🌿', boja:'#27AE60',
+    opis:'Banjalučki ćevapi sa svinjetinom — specifičan okus koji nema drugdje. Lijepa bašta, opuštena atmosfera.',
+    reviews:[
+      { user:'dragan_bl', badge:'🏆 Veteran roštilja', avatar:'👨', dana:4, tekst:'Jedini pravi banjalučki ćevap. Svinjetina radi razliku.' },
+    ]
+  },
+  {
+    id:5, ime:'Bosna Grill Zagreb', grad:'Zagreb', adresa:'Ilica 44, Zagreb',
+    lat:45.8130, lng:15.9760, stil:'Sarajevski', meso:'Govedina/Janjetina',
+    ocjena:4.5, recenzija_count:678, udaljenost:'3.4',
+    telefon:'+385 1 4822 333', radno:'09:00–23:00', emoji:'🏙️', boja:'#8E44AD',
+    opis:'Komad Sarajeva u Zagrebu. Svježe meso, pravi somuni i okus kakav možeš naći samo u Bosni — sad i u Ilici.',
+    reviews:[
+      { user:'zagreb_foodie', badge:'🍽️ Urbani gurman', avatar:'👩', dana:2, tekst:'Jedino mjesto u ZG gdje se mogu podsjetiti na Sarajevo.' },
+      { user:'pero_hr', badge:'🦁 Roštilj entuzijast', avatar:'👨', dana:8, tekst:'Za ove ćevape prelazim pola Zagreba pješice.' },
+    ]
+  },
+  {
+    id:6, ime:'Tifan Ćevapi', grad:'Tuzla', adresa:'Turalibegova 22, Tuzla',
+    lat:44.5382, lng:18.6766, stil:'Sarajevski', meso:'Govedina/Janjetina',
+    ocjena:4.3, recenzija_count:287, udaljenost:'1.8',
+    telefon:'+387 35 281 100', radno:'09:00–21:00', emoji:'🫙', boja:'#E67E22',
+    opis:'Porodični restoran u Tuzli koji drži tradiciju sarajevskog ćevapa. Domaće, toplo i pristupačno.',
+    reviews:[
+      { user:'mirza_tz', badge:'🌟 Porodični gurman', avatar:'👦', dana:6, tekst:'Sa djecom uvijek ovdje. Ljubazni i ukusno.' },
+    ]
+  },
+  {
+    id:7, ime:'Ćevabdžinica Kod Ferke', grad:'Split', adresa:'Marmontova 15, Split',
+    lat:43.5081, lng:16.4402, stil:'Sarajevski', meso:'Govedina/Janjetina',
+    ocjena:4.7, recenzija_count:445, udaljenost:'0.5',
+    telefon:'+385 21 344 222', radno:'10:00–23:00', emoji:'🌊', boja:'#2E86C1',
+    opis:'Sarajevski ćevapi u dalmatinskom okruženju. Ferka je u Split donio recept iz Sarajeva i nikada nije pogriješio.',
+    reviews:[
+      { user:'marin_split', badge:'☀️ Dalmatinski gurman', avatar:'👨', dana:1, tekst:'Ovo nije dalmatinska hrana ali dolazimo stalno.' },
+      { user:'suzana_travnik', badge:'🧳 Putnica', avatar:'👩', dana:12, tekst:'Podsjeća me na doma. Hvala Ferki!' },
+    ]
+  },
+  {
+    id:8, ime:'Sarajka', grad:'Sarajevo', adresa:'Ferhadija 18, Sarajevo',
+    lat:43.8590, lng:18.4280, stil:'Sarajevski', meso:'Govedina/Janjetina',
+    ocjena:4.5, recenzija_count:512, udaljenost:'0.9',
+    telefon:'+387 33 667 790', radno:'08:00–23:00', emoji:'☕', boja:'#6D4C41',
+    opis:'U srcu Ferhadije, Sarajka servira ćevape s tradicijom od sedamdesetih. Idealno za brzi ručak ili večeru uz kafu.',
+    reviews:[
+      { user:'amra_sa', badge:'☕ Kafa & ćevapi', avatar:'👩', dana:3, tekst:'Jutarnji ćevap uz bosansku kafu — savršeni start dana.' },
+      { user:'haris_bh', badge:'🏙️ Urbanist', avatar:'👨', dana:9, tekst:'Ferhadija bez Sarajke nije Ferhadija.' },
+    ]
+  },
+];
+
+/* ─── State ─── */
+let t1State = { stil: 'sve', query: '' };
+let t1Map = null, t1Markers = [], t1ActiveRest = null;
+
+/* ─── Helpers ─── */
+function t1IsOpen(radno) {
+  const now = new Date();
+  const cur = now.getHours() * 60 + now.getMinutes();
+  const parts = radno.split('–');
+  if (parts.length < 2) return true;
+  const toMin = t => { const [h, m] = t.trim().split(':').map(Number); return h * 60 + (m || 0); };
+  return cur >= toMin(parts[0]) && cur <= toMin(parts[1]);
+}
+
+function t1RatingDots(ocjena) {
+  const full = Math.round(ocjena);
+  let html = '';
+  for (let i = 0; i < 5; i++) html += `<div class="t1-rating-dot${i >= full ? ' dim' : ''}"></div>`;
+  return html;
+}
+
+function t1GetFiltered() {
+  return T1_DATA.filter(r => {
+    if (t1State.stil !== 'sve' && r.stil !== t1State.stil) return false;
+    if (t1State.query) {
+      const q = t1State.query.toLowerCase();
+      if (!r.ime.toLowerCase().includes(q) && !r.grad.toLowerCase().includes(q)) return false;
+    }
+    return true;
+  });
+}
+
+/* ─── Chips ─── */
+function t1RenderChips() {
+  const stilovi = [...new Set(T1_DATA.map(r => r.stil))];
+  const icons = { Sarajevski: '🗺️', Banjalučki: '🌿', Mostarsko: '🌊', Travnički: '🏔️' };
+  let html = `<button class="t1-chip active" data-stil="sve" onclick="t1SetStil('sve',this)">SVE</button>`;
+  stilovi.forEach(s => {
+    html += `<button class="t1-chip" data-stil="${s}" onclick="t1SetStil('${s}',this)">${icons[s] || '🥩'} ${s.toUpperCase()}</button>`;
+  });
+  document.getElementById('t1-chips').innerHTML = html;
+}
+
+/* ─── Cards ─── */
+function t1RenderList() {
+  const filtered = t1GetFiltered();
+  const container = document.getElementById('t1-cards');
+  const empty = document.getElementById('t1-empty');
+  if (!filtered.length) {
+    container.innerHTML = '';
+    empty.style.display = 'block';
+    return;
+  }
+  empty.style.display = 'none';
+  container.innerHTML = filtered.map(r => `
+    <div class="t1-card animate-fade" onclick="t1OpenDetail(${r.id})">
+      <div class="t1-card-emoji-wrap">
+        <div class="t1-card-emoji" style="background:${r.boja}22">${r.emoji}</div>
+      </div>
+      <div class="t1-card-name">${r.ime}</div>
+      <div class="t1-card-tags">
+        <span class="t1-card-tag">🗺️ ${r.stil.toUpperCase()}</span>
+        <span class="t1-card-tag">🥩 ${r.meso.toUpperCase()}</span>
+        <span class="t1-card-tag">📍 ${r.udaljenost} KM</span>
+      </div>
+      <div class="t1-card-rating">
+        <div class="t1-rating-dots">${t1RatingDots(r.ocjena)}</div>
+        <span class="t1-rating-num-lg">${r.ocjena}</span>
+        <span class="t1-rating-count">(${r.recenzija_count.toLocaleString('hr')} recenzija)</span>
+      </div>
+    </div>`).join('');
+}
+
+/* ─── Filters ─── */
+window.t1SetStil = function (stil, btn) {
+  t1State.stil = stil;
+  document.querySelectorAll('#t1-chips .t1-chip').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  t1RenderList();
+  t1UpdateMap();
+};
+
+window.t1OnSearch = function (val) {
+  t1State.query = val.trim();
+  document.getElementById('t1-clear').classList.toggle('vis', !!val);
+  t1RenderList();
+  t1UpdateMap();
+};
+
+window.t1ClearSearch = function () {
+  document.getElementById('t1-search').value = '';
+  t1OnSearch('');
+};
+
+/* ─── Map ─── */
+function t1InitMap() {
+  if (t1Map) return;
+  t1Map = L.map('t1-map', { zoomControl: false, attributionControl: false }).setView([44.1, 17.6], 6);
+  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(t1Map);
+}
+
+function t1PinIcon(color) {
+  return L.divIcon({
+    className: '',
+    html: `<svg width="28" height="40" viewBox="0 0 28 40" xmlns="http://www.w3.org/2000/svg"><path d="M14 0C6.3 0 0 6.3 0 14c0 10.5 14 26 14 26S28 24.5 28 14C28 6.3 21.7 0 14 0z" fill="${color}"/><circle cx="14" cy="14" r="6" fill="white" opacity="0.9"/></svg>`,
+    iconSize: [28, 40],
+    iconAnchor: [14, 40],
+  });
+}
+
+function t1UpdateMap() {
+  if (!t1Map) return;
+  t1Markers.forEach(m => m.remove());
+  t1Markers = [];
+  const filtered = t1GetFiltered();
+  filtered.forEach(r => {
+    const marker = L.marker([r.lat, r.lng], { icon: t1PinIcon(r.boja) })
+      .addTo(t1Map)
+      .on('click', () => t1ShowMapCard(r));
+    t1Markers.push(marker);
+  });
+  if (filtered.length) t1Map.fitBounds(L.featureGroup(t1Markers).getBounds().pad(0.3));
+}
+
+function t1ShowMapCard(r) {
+  t1ActiveRest = r;
+  const open = t1IsOpen(r.radno);
+  document.getElementById('t1-mb-emoji').textContent = r.emoji;
+  document.getElementById('t1-mb-name').textContent = r.ime;
+  document.getElementById('t1-mb-sub').innerHTML =
+    `${r.grad} · <span style="color:${open ? '#14873a' : 'var(--red)'};">${open ? 'Otvoreno' : 'Zatvoreno'}</span> · ⭐ ${r.ocjena}`;
+  document.getElementById('t1-map-bottom').classList.add('open');
+}
+
+window.t1OpenDetailFromMap = function () { if (t1ActiveRest) t1OpenDetail(t1ActiveRest.id); };
+
+/* ─── Map expand/shrink ─── */
+window.t1ExpandMap = function () {
+  document.getElementById('t1-mini-map').classList.add('expanded');
+  setTimeout(() => t1Map && t1Map.invalidateSize(), 50);
+};
+window.t1ShrinkMap = function () {
+  document.getElementById('t1-mini-map').classList.remove('expanded');
+  document.getElementById('t1-map-bottom').classList.remove('open');
+  setTimeout(() => t1Map && t1Map.invalidateSize(), 50);
+};
+
+/* ─── Detail screen ─── */
+window.t1OpenDetail = function (id) {
+  const r = T1_DATA.find(x => x.id === id);
+  if (!r) return;
+  t1ActiveRest = r;
+  const open = t1IsOpen(r.radno);
+
+  document.getElementById('t1-detail-hero').style.background =
+    `linear-gradient(135deg, ${r.boja}33, ${r.boja}18)`;
+  document.getElementById('t1-detail-emoji').textContent = r.emoji;
+  document.getElementById('t1-detail-name').textContent = r.ime;
+  document.getElementById('t1-detail-chips').innerHTML = [
+    `<span class="t1-detail-chip">🗺️ ${r.stil}</span>`,
+    `<span class="t1-detail-chip">🥩 ${r.meso}</span>`,
+    `<span class="t1-detail-chip">${open ? '🟢 Otvoreno' : '🔴 Zatvoreno'}</span>`,
+  ].join('');
+  document.getElementById('t1-detail-dots').innerHTML = t1RatingDots(r.ocjena);
+  document.getElementById('t1-detail-num').textContent = r.ocjena;
+  document.getElementById('t1-detail-count').textContent = r.recenzija_count.toLocaleString('hr') + ' recenzija';
+  document.getElementById('t1-detail-opis').textContent = r.opis;
+  document.getElementById('t1-detail-reviews').innerHTML = r.reviews.map(rv => `
+    <div class="t1-review">
+      <div class="t1-review-top">
+        <div class="t1-review-avatar">${rv.avatar}</div>
+        <div class="t1-review-meta">
+          <div class="t1-review-user">${rv.user}</div>
+          <div class="t1-review-badge">${rv.badge}</div>
+        </div>
+        <div class="t1-review-dana">${rv.dana} dana</div>
+      </div>
+      <div class="t1-review-tekst">${rv.tekst}</div>
+    </div>`).join('');
+
+  document.getElementById('t1-smjestaj-sub').textContent =
+    `Rezerviraj smještaj u ${r.grad} za posjetu restorana ${r.ime}.`;
+  const d1 = new Date(); d1.setDate(d1.getDate() + 1);
+  const d2 = new Date(); d2.setDate(d2.getDate() + 2);
+  const fmt = d => d.toISOString().split('T')[0];
+  document.getElementById('t1-checkin').value = fmt(d1);
+  document.getElementById('t1-checkout').value = fmt(d2);
+
+  openSlideScreen('t1-detail');
+};
+
+/* ─── Smještaj sheet ─── */
+window.t1OpenSmjestaj = function () {
+  document.getElementById('t1-smjestaj-modal').classList.add('open');
+};
+window.t1CloseSmjestaj = function (e) {
+  if (!e || e.target === document.getElementById('t1-smjestaj-modal'))
+    document.getElementById('t1-smjestaj-modal').classList.remove('open');
+};
+window.t1OpenBooking = function () {
+  const r = t1ActiveRest;
+  if (!r) return;
+  const ci = document.getElementById('t1-checkin').value;
+  const co = document.getElementById('t1-checkout').value;
+  if (!ci || !co) { showToast('Odaberi datume!'); return; }
+  window.open(
+    'https://www.booking.com/searchresults.html?ss=' + encodeURIComponent(r.grad) +
+    '&checkin=' + ci + '&checkout=' + co +
+    '&group_adults=' + document.getElementById('t1-guests').value +
+    '&no_rooms=' + document.getElementById('t1-rooms').value + '&lang=hr', '_blank');
+};
+
+/* ─── Action buttons ─── */
+window.t1Navigate = function () {
+  const r = t1ActiveRest; if (!r) return;
+  window.open('https://maps.google.com/?q=' + r.lat + ',' + r.lng, '_blank');
+};
+window.t1Ocijeni = function () { showToast('Ocjenjivanje dolazi uskoro! ⭐'); };
+
+/* ─── Init ─── */
+t1RenderChips();
+t1RenderList();
+setTimeout(() => { t1InitMap(); t1UpdateMap(); }, 150);
+
+}());
+/* === JS-TAB1-END === */
+
+/* === JS-TAB2-START === */
+(function () {
+
+/* ─── Podaci ─── */
+const T2_DATA = [
+  {
+    id:1, naziv:'Sarajevski Ćevapi — Original', emoji:'🥩', subtitle:'Legendarni recept od 1954.',
+    kategorija:'Klasici', tagovi:['ćevapi','sarajevski','govedina','janjetina','ugljen'],
+    vrijemeMin:45, vrijemeExtra:'+ 24h', porcije:4, tezina:'Srednje', boja:'#C0392B',
+    sastojci:[
+      {naziv:'Mljevena govedina (80/20)', kol:300, jed:'g'},
+      {naziv:'Mljevena janjetina',        kol:200, jed:'g'},
+      {naziv:'Fina morska sol (1,5%)',    kol:7.5, jed:'g'},
+    ],
+    koraci:[
+      {naslov:'Pomiješajte meso.',       opis:'Pomiješajte 60% svježe mljevene govedine s 40% mljevene janjetine. Koristite <em>hladno meso</em> izravno iz hladnjaka.'},
+      {naslov:'Začinite samo solju.',    opis:'Dodajte 1,5% ukupne težine mesa u finoj morskoj soli. <em>Bez papra. Bez kima. Bez češnjaka.</em> Odolite iskušenju. Miješajte 3 minute.'},
+      {naslov:'Odmarajte u hladnjaku.', opis:'Pokrijte prozirnom folijom. Odmarajte <em>najmanje 24 sata</em>. 48 sati je primjetno bolje. Ovo je najvažniji korak.'},
+      {naslov:'Oblikujte ćevape.',       opis:'Rolajte u valjčiće ~8cm duljine, 2,5cm promjera. Hladne ruke, brzi pokreti. <em>Ujednačena veličina = ravnomjerno pečenje.</em>'},
+      {naslov:'Pecite na ugljenu.',      opis:'Visoka temperatura, čista rešetka. 2-3 min po strani. Cvrči ali bez plamena. <em>Nikad ne bušite.</em> Odmah poslužite u toplom somunu.'},
+    ],
+    videi:[
+      {naziv:'Pravi sarajevski ćevap — originalni recept',         kanal:'Kuhinja BiH',      pregledi:'2.4M', trajanje:'12:34'},
+      {naziv:'Sarajevski ćevap kod kuće — korak po korak',         kanal:'Balkanska Kuhinja', pregledi:'1.8M', trajanje:'9:12'},
+      {naziv:'Tehnika mljevenja mesa za ćevap — majstorska lekcija',kanal:'Roštilj Majstor',  pregledi:'940K', trajanje:'7:45'},
+      {naziv:'Zašto je sol jedini začin u ćevapima?',              kanal:'Recept TV',         pregledi:'620K', trajanje:'5:20'},
+    ],
+  },
+  {
+    id:2, naziv:'Somun / Lepinja', emoji:'🫓', subtitle:'Sveti kruh',
+    kategorija:'Dodaci', tagovi:['somun','lepinja','kruh','tijesto'],
+    vrijemeMin:90, vrijemeExtra:'', porcije:8, tezina:'Teže', boja:'#E67E22',
+    sastojci:[
+      {naziv:'Brašno T550',  kol:500, jed:'g'},
+      {naziv:'Topla voda',   kol:300, jed:'ml'},
+      {naziv:'Suhi kvasac',  kol:7,   jed:'g'},
+      {naziv:'Sol',          kol:10,  jed:'g'},
+      {naziv:'Šećer',        kol:5,   jed:'g'},
+    ],
+    koraci:[
+      {naslov:'Aktivirajte kvasac.',  opis:'Pomiješajte kvasac sa šećerom i 50ml tople vode. Ostavite <em>10 minuta</em> dok ne zapjeni.'},
+      {naslov:'Zamijesite tijesto.', opis:'Dodajte preostalu vodu i sol u brašno. Mijesite <em>10 minuta</em> do glatke, elastične mase.'},
+      {naslov:'Prvo dizanje.',        opis:'Pokrijte vlažnom krpom. Ostavite na toplom <em>1 sat</em>. Tijesto treba udvostručiti volumen.'},
+      {naslov:'Oblikujte somune.',    opis:'Podijelite na 8 jednakih loptica. Razvaljajte na <em>1cm debljine</em>, okruglog oblika.'},
+      {naslov:'Pecite na tavi.',      opis:'Suha, vrela tava bez ulja. 3-4 minute po strani. <em>Zlatno-smeđ s tipičnim mjehurima.</em>'},
+    ],
+    videi:[
+      {naziv:'Domaći somun za ćevape — tajni recept', kanal:'Kuhinja BiH',      pregledi:'1.1M', trajanje:'8:22'},
+      {naziv:'Somun vs lepinja — koja je razlika?',   kanal:'Balkanska Kuhinja', pregledi:'540K', trajanje:'6:15'},
+    ],
+  },
+  {
+    id:3, naziv:'Ajvar', emoji:'🫑', subtitle:'Pečena paprika',
+    kategorija:'Dodaci', tagovi:['ajvar','paprika','zimnica','prilog'],
+    vrijemeMin:120, vrijemeExtra:'', porcije:10, tezina:'Srednje', boja:'#E74C3C',
+    sastojci:[
+      {naziv:'Crvena babura paprika', kol:2000, jed:'g'},
+      {naziv:'Patlidžan',             kol:500,  jed:'g'},
+      {naziv:'Češnjak',               kol:4,    jed:'češnja'},
+      {naziv:'Ulje',                  kol:100,  jed:'ml'},
+      {naziv:'Sol i papar',           kol:1,    jed:'po ukusu'},
+    ],
+    koraci:[
+      {naslov:'Pecite povrće.',      opis:'Paprike i patlidžan pecite na <em>250°C</em> dok kožica ne pocrnni sa svih strana.'},
+      {naslov:'Ogulite i ocijedite.',opis:'Stavite u vrećicu 15 minuta da se pare. Ogulite, uklonite sjemenke, ocijedite višak tekućine.'},
+      {naslov:'Sameljite.',          opis:'Sameljite u mašini ili blenderom — ali <em>ne previše glatko</em>. Tekstura je važna.'},
+      {naslov:'Kuhajte s uljem.',    opis:'Miješajte s uljem <em>45-60 minuta</em>. Gotovo kada kapljica na tanjuriću ne širi vodu.'},
+      {naslov:'Konzervirajte.',      opis:'Vruć ajvar punite u sterilizovane staklenke. Okrenite naopako 10 minuta.'},
+    ],
+    videi:[
+      {naziv:'Domaći ajvar — pravi balkanski recept',  kanal:'Zimnica TV',    pregledi:'3.2M', trajanje:'14:50'},
+      {naziv:'Ajvar za ćevape — savršena kombinacija', kanal:'Roštilj Majstor',pregledi:'890K', trajanje:'7:30'},
+    ],
+  },
+  {
+    id:4, naziv:'Kajmak', emoji:'🥛', subtitle:'Domaći skorup',
+    kategorija:'Dodaci', tagovi:['kajmak','mlijeko','mlječni','prilog'],
+    vrijemeMin:30, vrijemeExtra:'+ 48h', porcije:6, tezina:'Lako', boja:'#F39C12',
+    sastojci:[
+      {naziv:'Punomasno svježe mlijeko', kol:2000, jed:'ml'},
+      {naziv:'Sol',                       kol:5,    jed:'g'},
+    ],
+    koraci:[
+      {naslov:'Zagrijte mlijeko.',    opis:'Zagrijte na <em>85°C</em> — ne smije ključati.'},
+      {naslov:'Ohladite polako.',     opis:'Ostavite 2-3 sata. Na površini se formira <em>zlatna korica</em>.'},
+      {naslov:'Skupite kajmak.',      opis:'Skinite gornji sloj u plitku posudu. Malo posolite. Ponavljajte 2-3 dana.'},
+      {naslov:'Odmarajte 24-48h.',   opis:'Kajmak treba <em>odležati</em> da dobije pravi okus.'},
+    ],
+    videi:[
+      {naziv:'Domaći kajmak — jednostavni recept', kanal:'Kuhinja BiH', pregledi:'780K', trajanje:'6:40'},
+    ],
+  },
+  {
+    id:5, naziv:'Banjalučki Ćevapi', emoji:'🐷', subtitle:'Širi, masni valovi',
+    kategorija:'Varijante', tagovi:['ćevapi','banjalučki','svinjetina','junetina'],
+    vrijemeMin:40, vrijemeExtra:'+ 12h', porcije:4, tezina:'Srednje', boja:'#27AE60',
+    sastojci:[
+      {naziv:'Mljevena svinjetina (60%)', kol:300, jed:'g'},
+      {naziv:'Mljevena junetina (40%)',   kol:200, jed:'g'},
+      {naziv:'Sol',                        kol:8,   jed:'g'},
+      {naziv:'Bijeli luk',                 kol:2,   jed:'češnja'},
+      {naziv:'Soda bikarbona',             kol:1,   jed:'g'},
+    ],
+    koraci:[
+      {naslov:'Pomiješajte smjesu.', opis:'Svinjetina daje karakteristični <em>masni okus</em> banjalučkih ćevapa.'},
+      {naslov:'Začinite.',           opis:'Sol, iscijeđeni češnjak, soda bikarbona. Soda čini teksturu <em>mekanom</em>. Miješajte 5 minuta.'},
+      {naslov:'Odmarajte 12h.',     opis:'Za razliku od sarajevskih, banjalučki ne zahtijeva 24h.'},
+      {naslov:'Oblikujte šire.',     opis:'<em>~10cm duljine, 3cm promjera.</em> Karakteristično rebrasto oblikovanje.'},
+      {naslov:'Pecite na roštilju.',opis:'Srednje-visoka temperatura. 4-5 minuta po strani. <em>Svinjetina mora biti dobro pečena.</em>'},
+    ],
+    videi:[
+      {naziv:'Banjalučki ćevapi — originalni recept',  kanal:'Roštilj Majstor', pregledi:'1.5M', trajanje:'10:20'},
+      {naziv:'Sarajevski vs Banjalučki — usporedba',   kanal:'ĆevapTV',         pregledi:'2.1M', trajanje:'15:00'},
+    ],
+  },
+  {
+    id:6, naziv:'Tuzlanski Ćevapi', emoji:'🐑', subtitle:'Jagnjeći varijetet',
+    kategorija:'Varijante', tagovi:['ćevapi','tuzlanski','janjetina'],
+    vrijemeMin:50, vrijemeExtra:'+ 24h', porcije:4, tezina:'Srednje', boja:'#8E44AD',
+    sastojci:[
+      {naziv:'Mljevena janjetina (70%)', kol:350, jed:'g'},
+      {naziv:'Mljevena govedina (30%)',  kol:150, jed:'g'},
+      {naziv:'Sol',                       kol:8,   jed:'g'},
+      {naziv:'Crni luk (sitno)',          kol:30,  jed:'g'},
+    ],
+    koraci:[
+      {naslov:'Pripremite smjesu.',  opis:'Omjer <em>70/30</em> janjetina/govedina daje intenzivniji okus.'},
+      {naslov:'Dodajte luk.',        opis:'Sitno nasjeckani luk daje <em>vlažnost i aromu</em> — specifičnost tuzlanskog stila.'},
+      {naslov:'Odmarajte 24h.',     opis:'Jednako važno kao i kod sarajevskog.'},
+      {naslov:'Oblikujte tanje.',    opis:'Sličniji sarajevskom obliku, ali od janjetine.'},
+      {naslov:'Roštilj na ugljenu.',opis:'Visoka temperatura. <em>2-3 minute po strani.</em> Zlatno-smeđa korica.'},
+    ],
+    videi:[
+      {naziv:'Tuzlanski ćevapi — recept iz Tuzle', kanal:'Kuhinja BiH', pregledi:'680K', trajanje:'9:00'},
+    ],
+  },
+  {
+    id:7, naziv:'Luk — Pravilno Rezanje', emoji:'🧅', subtitle:'Bez suza, s stilom',
+    kategorija:'Trikovi', tagovi:['luk','rezanje','tehnika','priprema'],
+    vrijemeMin:10, vrijemeExtra:'', porcije:1, tezina:'Lako', boja:'#E67E22',
+    sastojci:[
+      {naziv:'Bijeli luk',  kol:2, jed:'glavice'},
+      {naziv:'Oštri nož',   kol:1, jed:'kom'},
+    ],
+    koraci:[
+      {naslov:'Ohladite luk.',         opis:'<em>30 minuta u hladnjaku.</em> Hladnoća smanjuje isparavanje sumpornih spojeva koji izazivaju suze.'},
+      {naslov:'Prerežite na pola.',    opis:'Odrežite vrh, <em>ne korijenski dio</em>. Korijen drži listove zajedno.'},
+      {naslov:'Narezujte vodoravno.', opis:'2-3 horizontalna reza prema korijenu. <em>Ne sijecite korijen.</em>'},
+      {naslov:'Narezujte vertikalno.',opis:'Okomito od vrha prema korijenu, jednaka razmaka.'},
+      {naslov:'Sjecite poprečno.',    opis:'Dobivate <em>savršenu kockicu.</em> Korijen bacite.'},
+    ],
+    videi:[
+      {naziv:'Profesionalna tehnika rezanja luka',        kanal:'Chef Škola',    pregledi:'4.5M', trajanje:'5:15'},
+      {naziv:'Zašto luk izaziva suze — i kako to spriječiti', kanal:'Kuhinja Nauka', pregledi:'2.8M', trajanje:'4:30'},
+    ],
+  },
+  {
+    id:8, naziv:'Roštilj — Temperatura', emoji:'🔥', subtitle:'Savladaj vatru',
+    kategorija:'Trikovi', tagovi:['roštilj','ugljen','temperatura','tehnika'],
+    vrijemeMin:20, vrijemeExtra:'', porcije:1, tezina:'Srednje', boja:'#C0392B',
+    sastojci:[
+      {naziv:'Ugljen (bukva)',      kol:2, jed:'kg'},
+      {naziv:'Papir za paljenje',   kol:1, jed:'kom'},
+      {naziv:'Strpljenje',          kol:1, jed:'∞'},
+    ],
+    koraci:[
+      {naslov:'Koristite bukvin ugljen.', opis:'Gori dulje i ravnomjernije. <em>Nikad briket za ćevape.</em>'},
+      {naslov:'Zapalite bez tekućine.',   opis:'Koristite dimnjak ili papir. <em>Nikad benzin</em> — daje okus mesu.'},
+      {naslov:'Pričekajte 20-30 min.',   opis:'Ugljen je spreman kada postane <em>bijelo-siv, bez plamena.</em>'},
+      {naslov:'Testirajte rukom.',        opis:'Ruka 10cm od rešetke: <em>2s = prevruće, 4s = savršeno za ćevape, 6s = prenisko.</em>'},
+      {naslov:'Čistite rešetku.',         opis:'Vruću rešetku četkom, namažite uljem. <em>Čista rešetka = meso se ne lijepi.</em>'},
+    ],
+    videi:[
+      {naziv:'Savršeni roštilj — kontrola temperature', kanal:'Roštilj Majstor', pregledi:'1.9M', trajanje:'11:00'},
+      {naziv:'Ugljen vs. drvo — što je bolje za ćevape?',kanal:'BBQ Akademija',   pregledi:'1.1M', trajanje:'8:45'},
+    ],
+  },
+];
+
+const T2_KALK = {
+  'Sarajevski (60/40)':       {kcal:41, prot:3.2, masti:2.4, tagovi:['🔥 Visoko proteinski','✗ Gluten FREE','🐄 Govedina/Janjetina']},
+  'Banjalučki (svinjetina)':  {kcal:48, prot:2.8, masti:3.8, tagovi:['✗ Gluten FREE','🐷 Svinjetina/Junetina']},
+  'Tuzlanski (janjetina)':    {kcal:44, prot:3.5, masti:3.2, tagovi:['🔥 Visoko proteinski','✗ Gluten FREE','🐑 Janjetina']},
+};
+
+/* ─── State ─── */
+let t2Kategorija = 'sve';
+let t2ActiveRecept = null;
+let t2Porcije = 4, t2BasePorcije = 4;
+const T2_SAVED_KEY = 'ca_t2_saved';
+
+/* ─── Saved ─── */
+function t2GetSaved() { return JSON.parse(localStorage.getItem(T2_SAVED_KEY) || '[]'); }
+function t2IsSaved(id) { return t2GetSaved().includes(id); }
+function t2ToggleSave() {
+  const r = t2ActiveRecept; if (!r) return;
+  let saved = t2GetSaved();
+  if (saved.includes(r.id)) {
+    saved = saved.filter(x => x !== r.id);
+    showToast('Uklonjeno iz spremljenih 🗑️');
+  } else {
+    saved.push(r.id);
+    showToast('Recept spremljen! 🔖');
+  }
+  localStorage.setItem(T2_SAVED_KEY, JSON.stringify(saved));
+  document.getElementById('t2-detail-save-btn').textContent = t2IsSaved(r.id) ? '🔖' : '🔖';
+  document.getElementById('t2-detail-save-btn').style.opacity = t2IsSaved(r.id) ? '1' : '0.5';
+  t2RenderGrid();
+}
+
+/* ─── Chips ─── */
+function t2RenderChips() {
+  const cats = ['sve', ...new Set(T2_DATA.map(r => r.kategorija)), 'spremljeni'];
+  const labels = { sve:'Sve', spremljeni:'🔖 Moji' };
+  document.getElementById('t2-chips').innerHTML = cats.map(c =>
+    `<button class="t2-chip${c === t2Kategorija ? ' active' : ''}" onclick="t2SetKat('${c}',this)">${labels[c] || c}</button>`
+  ).join('');
+}
+
+/* ─── Grid ─── */
+function t2GetFiltered() {
+  if (t2Kategorija === 'sve') return T2_DATA;
+  if (t2Kategorija === 'spremljeni') { const s = t2GetSaved(); return T2_DATA.filter(r => s.includes(r.id)); }
+  return T2_DATA.filter(r => r.kategorija === t2Kategorija);
+}
+
+function t2RenderGrid() {
+  const filtered = t2GetFiltered();
+  const saved = t2GetSaved();
+  const lbl = document.getElementById('t2-section-lbl');
+  lbl.textContent = t2Kategorija === 'sve' ? 'SVI RECEPTI' :
+                    t2Kategorija === 'spremljeni' ? 'MOJI RECEPTI' :
+                    t2Kategorija.toUpperCase();
+  document.getElementById('t2-grid').innerHTML = filtered.map(r => `
+    <div class="t2-recipe-card animate-fade" onclick="t2OpenDetail(${r.id})">
+      <button class="t2-save-btn${saved.includes(r.id) ? ' saved' : ''}"
+              onclick="event.stopPropagation();t2QuickSave(${r.id},this)">🔖</button>
+      <span class="t2-recipe-emoji">${r.emoji}</span>
+      <div class="t2-recipe-naziv">${r.naziv}</div>
+      <div class="t2-recipe-subtitle">${r.subtitle}</div>
+    </div>`).join('') || '<div style="grid-column:span 2;padding:24px;text-align:center;color:var(--brown3)">Nema spremljenih recepata.</div>';
+}
+
+window.t2QuickSave = function(id, btn) {
+  let saved = t2GetSaved();
+  if (saved.includes(id)) { saved = saved.filter(x => x !== id); btn.classList.remove('saved'); showToast('Uklonjeno 🗑️'); }
+  else { saved.push(id); btn.classList.add('saved'); showToast('Spremljeno 🔖'); }
+  localStorage.setItem(T2_SAVED_KEY, JSON.stringify(saved));
+};
+
+window.t2SetKat = function(kat, btn) {
+  t2Kategorija = kat;
+  document.querySelectorAll('.t2-chip').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  t2RenderGrid();
+};
+
+/* ─── Hero ─── */
+function t2RenderHero() {
+  const day = Math.floor((Date.now() - new Date(new Date().getFullYear(), 0, 0)) / 86400000);
+  const r = T2_DATA[day % T2_DATA.length];
+  window._t2HeroId = r.id;
+  document.getElementById('t2-hero-emoji').textContent = r.emoji;
+  document.getElementById('t2-hero-naziv').textContent = r.naziv;
+  document.getElementById('t2-hero-chips').innerHTML = [
+    `<span class="t2-hero-chip">⏱ ${r.vrijemeMin} min${r.vrijemeExtra ? ' ' + r.vrijemeExtra : ''}</span>`,
+    `<span class="t2-hero-chip">👥 ${r.porcije} porcije</span>`,
+    `<span class="t2-hero-chip">📊 ${r.tezina}</span>`,
+  ].join('');
+}
+window.t2HeroClick = function() { if (window._t2HeroId) t2OpenDetail(window._t2HeroId); };
+
+/* ─── Kalkulator ─── */
+window.t2Kalkulator = function() {
+  const stil  = document.getElementById('t2-kalk-stil').value;
+  const broj  = parseInt(document.getElementById('t2-kalk-broj').value);
+  const k = T2_KALK[stil];
+  const kcal  = Math.round(k.kcal  * broj);
+  const prot  = Math.round(k.prot  * broj * 10) / 10;
+  const masti = Math.round(k.masti * broj * 10) / 10;
+  document.getElementById('t2-kcal').textContent  = kcal;
+  document.getElementById('t2-prot').textContent  = prot + 'g';
+  document.getElementById('t2-masti').textContent = masti + 'g';
+  const trcanje = Math.round(kcal / 8.5);
+  const hodanje = Math.round(kcal / 5.5);
+  document.getElementById('t2-activity-txt').textContent = `= ${trcanje} min trčanja ili ${hodanje} min hodanja`;
+  document.getElementById('t2-kalk-tagovi').innerHTML = k.tagovi.map(t =>
+    `<span class="t2-kalk-tag">${t}</span>`).join('');
+};
+
+/* ─── Porcije scaler ─── */
+window.t2ScalePorcije = function(delta) {
+  t2Porcije = Math.max(1, Math.min(20, t2Porcije + delta));
+  document.getElementById('t2-porcije-val').textContent = t2Porcije;
+  t2RenderSastojci();
+};
+
+function t2RenderSastojci() {
+  const r = t2ActiveRecept; if (!r) return;
+  const factor = t2Porcije / t2BasePorcije;
+  document.getElementById('t2-sastojci').innerHTML = r.sastojci.map(s => {
+    const kol = s.jed === 'po ukusu' || s.jed === '∞' ? s.jed :
+                Number.isInteger(s.kol * factor) ? (s.kol * factor) : (Math.round(s.kol * factor * 10) / 10);
+    return `<div class="t2-sastojak">
+      <span>${s.naziv}</span>
+      <span class="t2-sastojak-kol">${typeof kol === 'number' ? kol + s.jed : kol}</span>
+    </div>`;
+  }).join('');
+}
+
+/* ─── Srodni recepti (spreman za API: filter po tagovima) ─── */
+function t2GetSrodni(r) {
+  /* Ovo će se zamijeniti API pozivom: GET /recepti?tagovi=ćevapi,sarajevski */
+  return T2_DATA.filter(x => x.id !== r.id && x.tagovi.some(t => r.tagovi.includes(t))).slice(0, 4);
+}
+
+/* ─── Detail screen ─── */
+window.t2OpenDetail = function(id) {
+  const r = T2_DATA.find(x => x.id === id); if (!r) return;
+  t2ActiveRecept = r;
+  t2BasePorcije  = r.porcije;
+  t2Porcije      = r.porcije;
+
+  document.getElementById('t2-detail-hero').style.background =
+    `linear-gradient(135deg, ${r.boja}33, ${r.boja}18)`;
+  document.getElementById('t2-detail-emoji').textContent = r.emoji;
+  document.getElementById('t2-detail-naziv').textContent = r.naziv;
+
+  document.getElementById('t2-detail-chips').innerHTML = [
+    `<span class="t2-detail-chip">⏱ ${r.vrijemeMin} min${r.vrijemeExtra ? ' ' + r.vrijemeExtra : ''}</span>`,
+    `<span class="t2-detail-chip">👥 ${r.porcije} porcije</span>`,
+    `<span class="t2-detail-chip">📊 ${r.tezina}</span>`,
+  ].join('');
+
+  document.getElementById('t2-porcije-val').textContent = t2Porcije;
+  t2RenderSastojci();
+
+  document.getElementById('t2-koraci').innerHTML = r.koraci.map((k, i) => `
+    <div class="t2-korak">
+      <div class="t2-korak-br">${i + 1}</div>
+      <div class="t2-korak-tekst"><strong>${k.naslov}</strong> ${k.opis}</div>
+    </div>`).join('');
+
+  const srodni = t2GetSrodni(r);
+  const srodniEl = document.getElementById('t2-srodni');
+  const srodniLbl = document.getElementById('t2-srodni-lbl');
+  if (srodni.length) {
+    srodniLbl.textContent = 'SRODNI RECEPTI';
+    srodniEl.innerHTML = srodni.map(s =>
+      `<div class="t2-srodni-card" onclick="t2OpenDetail(${s.id})">
+        <span class="t2-srodni-emoji">${s.emoji}</span>
+        <div class="t2-srodni-naziv">${s.naziv}</div>
+      </div>`).join('');
+  } else {
+    srodniLbl.textContent = '';
+    srodniEl.innerHTML = '';
+  }
+
+  document.getElementById('t2-videi').innerHTML = r.videi.map(v => `
+    <div class="t2-video-card">
+      <div class="t2-video-thumb">
+        <div class="t2-video-play">▶</div>
+        <div class="t2-video-dur">${v.trajanje}</div>
+      </div>
+      <div class="t2-video-info">
+        <div class="t2-video-naziv">${v.naziv}</div>
+        <div class="t2-video-meta">${v.kanal} · ▶ ${v.pregledi} pregleda</div>
+      </div>
+    </div>`).join('');
+
+  const saveBtn = document.getElementById('t2-detail-save-btn');
+  saveBtn.style.opacity = t2IsSaved(r.id) ? '1' : '0.5';
+
+  openSlideScreen('t2-detail');
+};
+
+/* ─── Init ─── */
+t2RenderChips();
+t2RenderHero();
+t2RenderGrid();
+t2Kalkulator();
+
+}());
+/* === JS-TAB2-END === */
+
+/* === PLACEHOLDER ZA JS OSTALIH TABOVA ===
+   Tab 3 → // JS-TAB3-START / END
+   Tab 4 → // JS-TAB4-START / END
+   Tab 6 → // JS-TAB6-START / END
+   Overlays → // JS-OVERLAYS-START / END
+   ========================================= */
+</script>
+</body>
+</html>
