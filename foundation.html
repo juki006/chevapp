@@ -1025,389 +1025,261 @@ a {
 
 /* === CSS-TAB1-START === */
 
-/* --- Sticky header --- */
+/* Sticky header */
 .t1-sticky {
-  flex-shrink: 0;
-  background: var(--cream);
-  padding: 12px 16px 0;
-  border-bottom: 1px solid var(--cream3);
+  flex-shrink: 0; background: var(--cream);
+  padding: 12px 16px 0; border-bottom: 1px solid var(--cream3);
 }
-
-/* Search bar */
-.t1-search-wrap {
-  position: relative;
-  margin-bottom: 10px;
-}
+.t1-search-wrap { position: relative; margin-bottom: 10px; }
 .t1-search-icon {
-  position: absolute;
-  left: 12px;
-  top: 50%;
-  transform: translateY(-50%);
-  font-size: 15px;
-  pointer-events: none;
-  opacity: 0.5;
+  position: absolute; left: 12px; top: 50%; transform: translateY(-50%);
+  font-size: 15px; pointer-events: none; opacity: 0.5;
 }
 .t1-search-input {
-  width: 100%;
-  padding: 11px 36px 11px 36px;
-  background: var(--white);
-  border: 1.5px solid var(--cream3);
-  border-radius: 24px;
-  font-size: 14px;
-  color: var(--brown);
-  transition: border-color var(--transition);
-  box-shadow: var(--shadow-sm);
+  width: 100%; padding: 11px 36px;
+  background: var(--white); border: 1.5px solid var(--cream3);
+  border-radius: 24px; font-size: 14px; color: var(--brown);
+  transition: border-color var(--transition); box-shadow: var(--shadow-sm);
 }
 .t1-search-input:focus { border-color: var(--orange); }
 .t1-search-clear {
-  position: absolute;
-  right: 10px;
-  top: 50%;
-  transform: translateY(-50%);
-  width: 22px;
-  height: 22px;
-  background: var(--cream3);
-  border-radius: 50%;
-  font-size: 10px;
-  color: var(--brown3);
-  display: none;
-  align-items: center;
-  justify-content: center;
+  position: absolute; right: 10px; top: 50%; transform: translateY(-50%);
+  width: 22px; height: 22px; background: var(--cream3); border-radius: 50%;
+  font-size: 10px; color: var(--brown3); display: none;
+  align-items: center; justify-content: center;
 }
 .t1-search-clear.vis { display: flex; }
 
 /* Filter chips */
 .t1-chips {
-  display: flex;
-  gap: 6px;
-  overflow-x: auto;
-  scrollbar-width: none;
-  padding-bottom: 10px;
+  display: flex; gap: 6px; overflow-x: auto;
+  scrollbar-width: none; padding-bottom: 10px;
 }
 .t1-chips::-webkit-scrollbar { display: none; }
 .t1-chip {
-  flex-shrink: 0;
-  padding: 6px 12px;
-  background: var(--white);
-  border: 1.5px solid var(--cream3);
-  border-radius: 20px;
-  font-size: 12px;
-  font-weight: 700;
-  color: var(--brown3);
-  white-space: nowrap;
-  transition: all var(--transition);
+  flex-shrink: 0; padding: 6px 14px;
+  background: var(--white); border: 1.5px solid var(--cream3);
+  border-radius: 20px; font-size: 12px; font-weight: 700;
+  color: var(--brown3); white-space: nowrap; transition: all var(--transition);
 }
-.t1-chip.active {
-  background: var(--brown);
-  border-color: var(--brown);
-  color: var(--white);
-}
-.t1-chip.chip-green.active {
-  background: var(--green2);
-  border-color: var(--green2);
-  color: var(--white);
-}
+.t1-chip.active { background: var(--red); border-color: var(--red); color: var(--white); }
 
-/* View toggle */
-.t1-view-toggle {
-  display: flex;
-  background: var(--cream2);
-  border-radius: var(--radius-md);
-  padding: 3px;
-  margin: 0 0 10px;
-}
-.t1-view-btn {
-  flex: 1;
-  padding: 7px;
-  border-radius: 10px;
-  font-size: 12px;
-  font-weight: 700;
-  color: var(--brown3);
-  transition: all var(--transition);
-}
-.t1-view-btn.active {
-  background: var(--white);
-  color: var(--brown);
-  box-shadow: var(--shadow-sm);
-}
+/* Lista view wrapper */
+.t1-lista-view { flex: 1; overflow: hidden; display: flex; flex-direction: column; }
 
-/* List / Map wrappers */
-.t1-list-view {
-  flex: 1;
-  overflow: hidden;
-  display: flex;
-  flex-direction: column;
+/* Mini mapa */
+.t1-mini-map {
+  height: 200px; flex-shrink: 0; position: relative; z-index: 1;
 }
-.t1-map-view {
-  flex: 1;
-  position: relative;
-  overflow: hidden;
-  display: none;
+.t1-mini-map.expanded {
+  position: absolute; inset: 0; height: auto !important; z-index: 500;
 }
-#t1-map {
-  position: absolute;
-  inset: 0;
-}
+#t1-map { position: absolute; inset: 0; }
 
-/* Count label */
-.t1-count {
-  font-size: 11px;
-  color: var(--brown3);
-  padding: 10px 16px 4px;
-  font-family: var(--font-mono);
+/* Map overlay buttons */
+.t1-map-expand-btn {
+  position: absolute; bottom: 10px; right: 10px; z-index: 1000;
+  background: var(--white); border-radius: var(--radius-sm);
+  padding: 7px 11px; font-size: 11px; font-weight: 800;
+  color: var(--brown); box-shadow: var(--shadow-md);
+  font-family: var(--font-body); border: none; cursor: pointer;
 }
+.t1-map-shrink-btn {
+  position: absolute; top: 48px; left: 10px; z-index: 1000;
+  background: var(--white); border-radius: var(--radius-sm);
+  padding: 7px 11px; font-size: 11px; font-weight: 800;
+  color: var(--brown); box-shadow: var(--shadow-md);
+  font-family: var(--font-body); border: none; cursor: pointer; display: none;
+}
+.t1-mini-map.expanded .t1-map-expand-btn { display: none; }
+.t1-mini-map.expanded .t1-map-shrink-btn { display: block; }
 
-/* Restaurant card */
-.t1-card {
-  display: flex;
-  background: var(--white);
-  border-radius: var(--radius-md);
-  margin: 6px 16px;
-  overflow: hidden;
-  box-shadow: var(--shadow-sm);
-  cursor: pointer;
-  transition: transform 0.15s ease, box-shadow 0.15s ease;
+/* Map legend */
+.t1-map-legend {
+  position: absolute; top: 10px; right: 10px; z-index: 1000;
+  background: rgba(255,255,255,0.94); border-radius: var(--radius-sm);
+  padding: 7px 10px; font-size: 10px; font-weight: 700;
+  color: var(--brown); box-shadow: var(--shadow-sm); line-height: 1.9;
 }
-.t1-card:active { transform: scale(0.98); }
-.t1-card-photo {
-  width: 88px;
-  flex-shrink: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 34px;
-}
-.t1-card-body {
-  flex: 1;
-  padding: 10px 12px;
-  min-width: 0;
-}
-.t1-card-top {
-  display: flex;
-  align-items: flex-start;
-  justify-content: space-between;
-  gap: 4px;
-  margin-bottom: 2px;
-}
-.t1-card-name {
-  font-family: var(--font-title);
-  font-size: 14px;
-  font-weight: 700;
-  color: var(--brown);
-  line-height: 1.25;
-}
-.t1-badge {
-  flex-shrink: 0;
-  padding: 2px 7px;
-  border-radius: 10px;
-  font-size: 9px;
-  font-weight: 800;
-  font-family: var(--font-mono);
-  white-space: nowrap;
-}
-.t1-badge-open  { background: #e6f9ee; color: #14873a; }
-.t1-badge-closed{ background: #fdeaea; color: var(--red); }
-.t1-card-city {
-  font-size: 11px;
-  color: var(--brown3);
-  margin-bottom: 6px;
-}
-.t1-card-meta {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  flex-wrap: wrap;
-}
-.t1-stars { color: var(--orange2); font-size: 11px; letter-spacing: -1px; }
-.t1-rating-num { font-size: 11px; font-weight: 800; color: var(--brown); font-family: var(--font-mono); }
-.t1-price { font-size: 11px; font-weight: 700; color: var(--green2); font-family: var(--font-mono); }
-.t1-dist { font-size: 10px; color: var(--brown3); font-family: var(--font-mono); margin-left: auto; }
-
-/* Empty */
-.t1-empty {
-  text-align: center;
-  padding: 48px 20px;
-  color: var(--brown3);
-}
-.t1-empty .t1-empty-icon { font-size: 48px; margin-bottom: 8px; }
-.t1-empty p { font-size: 14px; }
+.t1-legend-row { display: flex; align-items: center; gap: 6px; }
+.t1-legend-dot { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; }
+.t1-mini-map.expanded .t1-map-legend { top: 56px; }
 
 /* Map bottom card */
 .t1-map-bottom {
-  position: absolute;
-  bottom: 0; left: 0; right: 0;
+  position: absolute; bottom: 0; left: 0; right: 0;
   background: var(--white);
   border-radius: var(--radius-lg) var(--radius-lg) 0 0;
   padding: 14px 16px 20px;
   box-shadow: 0 -4px 24px rgba(44,26,14,0.16);
   transform: translateY(100%);
   transition: transform 0.3s cubic-bezier(0.4,0,0.2,1);
-  z-index: 400;
-  cursor: pointer;
+  z-index: 400; cursor: pointer;
 }
 .t1-map-bottom.open { transform: translateY(0); }
-.t1-map-bottom-inner { display: flex; align-items: center; gap: 12px; }
-.t1-map-bottom-photo {
-  width: 52px; height: 52px;
-  border-radius: var(--radius-sm);
-  display: flex; align-items: center; justify-content: center;
-  font-size: 24px; flex-shrink: 0;
+.t1-mb-inner { display: flex; align-items: center; gap: 12px; }
+.t1-mb-emoji { font-size: 28px; flex-shrink: 0; }
+.t1-mb-info { flex: 1; min-width: 0; }
+.t1-mb-name {
+  font-family: var(--font-title); font-size: 14px; font-weight: 700;
+  color: var(--brown); white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
 }
-.t1-map-bottom-info { flex: 1; min-width: 0; }
-.t1-map-bottom-name {
-  font-family: var(--font-title);
-  font-size: 14px; font-weight: 700; color: var(--brown);
-  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+.t1-mb-sub { font-size: 11px; color: var(--brown3); margin-top: 2px; }
+.t1-mb-arrow { font-size: 20px; color: var(--brown3); }
+
+/* List scroll */
+.t1-list-scroll {
+  flex: 1; overflow-y: auto; -webkit-overflow-scrolling: touch; scrollbar-width: none;
 }
-.t1-map-bottom-sub { font-size: 11px; color: var(--brown3); margin-top: 2px; }
-.t1-map-bottom-arrow {
-  font-size: 20px; color: var(--brown3); flex-shrink: 0;
+.t1-list-scroll::-webkit-scrollbar { display: none; }
+
+/* Section label */
+.t1-section-lbl {
+  font-size: 11px; font-weight: 800; text-transform: uppercase;
+  letter-spacing: 1px; color: var(--brown3); font-family: var(--font-mono);
+  padding: 14px 16px 8px; display: flex; align-items: center; gap: 6px;
 }
 
-/* --- Detail slide screen --- */
+/* Restaurant card — vertical centered */
+.t1-card {
+  background: var(--cream); border-radius: var(--radius-lg);
+  margin: 0 16px 12px; padding: 16px; cursor: pointer;
+  transition: transform 0.15s ease; border: 1px solid var(--cream3);
+}
+.t1-card:active { transform: scale(0.98); }
+.t1-card-emoji-wrap { display: flex; justify-content: center; margin-bottom: 10px; }
+.t1-card-emoji {
+  width: 64px; height: 64px; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center; font-size: 32px;
+}
+.t1-card-name {
+  font-family: var(--font-title); font-size: 18px; font-weight: 700;
+  color: var(--brown); margin-bottom: 8px;
+}
+.t1-card-tags {
+  display: flex; flex-wrap: wrap; align-items: center; margin-bottom: 10px;
+}
+.t1-card-tag {
+  font-size: 10px; font-weight: 700; font-family: var(--font-mono);
+  color: var(--brown3); display: flex; align-items: center; gap: 3px; white-space: nowrap;
+}
+.t1-card-tag + .t1-card-tag::before { content: ' • '; margin: 0 4px; opacity: 0.5; }
+.t1-card-rating { display: flex; align-items: center; gap: 8px; }
+.t1-rating-dots { display: flex; gap: 3px; }
+.t1-rating-dot { width: 14px; height: 14px; border-radius: 50%; background: var(--orange); }
+.t1-rating-dot.dim { opacity: 0.2; }
+.t1-rating-num-lg { font-size: 22px; font-weight: 800; color: var(--brown); font-family: var(--font-mono); }
+.t1-rating-count { font-size: 11px; color: var(--brown3); }
+
+/* Empty */
+.t1-empty { text-align: center; padding: 40px 20px; color: var(--brown3); }
+.t1-empty-icon { font-size: 44px; margin-bottom: 8px; }
+
+/* ─── Detail slide screen ─── */
 #t1-detail { z-index: 200; }
-
-.t1-detail-photo {
-  flex-shrink: 0;
-  height: 180px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 64px;
-  position: relative;
+.t1-detail-hero {
+  flex-shrink: 0; height: 160px;
+  display: flex; align-items: center; justify-content: center; position: relative;
 }
+.t1-detail-hero-emoji { font-size: 72px; filter: drop-shadow(0 4px 12px rgba(0,0,0,0.15)); }
 .t1-detail-back {
-  position: absolute;
-  top: 48px; left: 16px;
-  width: 36px; height: 36px;
-  background: rgba(255,255,255,0.9);
-  border-radius: 50%;
-  display: flex; align-items: center; justify-content: center;
-  font-size: 18px;
-  box-shadow: var(--shadow-sm);
-  z-index: 10;
+  position: absolute; top: 48px; left: 16px;
+  width: 36px; height: 36px; background: rgba(255,255,255,0.88);
+  border-radius: 50%; display: flex; align-items: center; justify-content: center;
+  font-size: 18px; box-shadow: var(--shadow-sm);
 }
 .t1-detail-scroll {
-  flex: 1;
-  overflow-y: auto;
-  -webkit-overflow-scrolling: touch;
-  scrollbar-width: none;
+  flex: 1; overflow-y: auto; -webkit-overflow-scrolling: touch; scrollbar-width: none;
 }
 .t1-detail-scroll::-webkit-scrollbar { display: none; }
-
-.t1-detail-info { padding: 16px 20px 0; }
+.t1-detail-body { padding: 16px 16px 32px; }
 .t1-detail-name {
-  font-family: var(--font-title);
-  font-size: 22px; font-weight: 700; color: var(--brown);
-  margin-bottom: 2px;
+  font-family: var(--font-title); font-size: 26px; font-weight: 700;
+  color: var(--brown); margin-bottom: 10px;
 }
-.t1-detail-grad { font-size: 12px; color: var(--brown3); margin-bottom: 10px; }
-.t1-detail-rating-row {
-  display: flex; align-items: center; gap: 8px; margin-bottom: 14px;
+.t1-detail-chip-row { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 16px; }
+.t1-detail-chip {
+  padding: 4px 12px; border-radius: 20px; font-size: 11px; font-weight: 800;
+  background: var(--cream2); color: var(--brown3);
 }
-.t1-detail-meta {
-  border-top: 1px solid var(--cream2);
-  padding-top: 12px;
-  display: flex; flex-direction: column; gap: 10px;
+.t1-detail-rating-box {
+  background: var(--cream); border-radius: var(--radius-md);
+  padding: 14px 16px; margin-bottom: 14px; border: 1px solid var(--cream3);
 }
-.t1-meta-row {
-  display: flex; align-items: center; gap: 10px;
-  font-size: 13px; color: var(--brown);
+.t1-detail-rating-top { display: flex; align-items: center; gap: 10px; margin-bottom: 4px; }
+.t1-detail-rating-count { font-size: 12px; color: var(--brown3); }
+.t1-detail-opis { font-size: 14px; color: var(--brown); line-height: 1.6; margin-bottom: 16px; }
+.t1-detail-actions { display: flex; gap: 8px; margin-bottom: 10px; }
+.t1-act {
+  flex: 1; padding: 13px 8px; border-radius: var(--radius-md);
+  font-size: 13px; font-weight: 800; text-align: center; transition: opacity 0.15s;
+  display: flex; align-items: center; justify-content: center; gap: 6px;
 }
-.t1-meta-icon {
-  width: 30px; height: 30px;
-  background: var(--cream2);
-  border-radius: var(--radius-sm);
-  display: flex; align-items: center; justify-content: center;
-  font-size: 15px; flex-shrink: 0;
-}
-
-.t1-detail-actions {
-  display: flex; gap: 8px;
-  padding: 14px 20px 0;
-}
-.t1-act-btn {
-  flex: 1;
-  padding: 11px 6px;
-  border-radius: var(--radius-md);
-  font-size: 11px; font-weight: 800;
-  text-align: center;
-  transition: opacity var(--transition);
-}
-.t1-act-btn:active { opacity: 0.75; }
+.t1-act:active { opacity: 0.75; }
 .t1-act-nav  { background: linear-gradient(135deg, var(--red), var(--orange)); color: var(--white); }
-.t1-act-call { background: var(--cream2); color: var(--brown); }
-.t1-act-share{ background: var(--cream2); color: var(--brown); }
+.t1-act-rate { background: var(--cream2); color: var(--brown); }
+.t1-act-smjestaj-btn {
+  width: 100%; padding: 13px; border-radius: var(--radius-md);
+  background: linear-gradient(135deg, #1a3a8f, #2563eb);
+  color: var(--white); font-size: 13px; font-weight: 800;
+  display: flex; align-items: center; justify-content: center; gap: 6px;
+  margin-bottom: 20px; border: none; cursor: pointer; transition: opacity 0.15s;
+}
+.t1-act-smjestaj-btn:active { opacity: 0.85; }
+.t1-reviews-lbl {
+  font-size: 10px; font-weight: 800; text-transform: uppercase; letter-spacing: 1px;
+  color: var(--brown3); font-family: var(--font-mono); margin-bottom: 10px;
+}
+.t1-review {
+  background: var(--cream); border-radius: var(--radius-md);
+  padding: 12px; margin-bottom: 8px; border: 1px solid var(--cream3);
+}
+.t1-review-top { display: flex; align-items: center; gap: 8px; margin-bottom: 6px; }
+.t1-review-avatar {
+  width: 34px; height: 34px; border-radius: 50%; background: var(--cream3);
+  display: flex; align-items: center; justify-content: center; font-size: 16px; flex-shrink: 0;
+}
+.t1-review-meta { flex: 1; min-width: 0; }
+.t1-review-user { font-size: 12px; font-weight: 800; color: var(--brown); font-family: var(--font-mono); }
+.t1-review-badge { font-size: 10px; color: var(--brown3); }
+.t1-review-dana { font-size: 10px; color: var(--brown3); flex-shrink: 0; }
+.t1-review-tekst { font-size: 13px; color: var(--brown); line-height: 1.5; font-style: italic; }
 
-.t1-tags {
-  display: flex; flex-wrap: wrap; gap: 6px;
-  padding: 12px 20px 16px;
+/* Smještaj bottom sheet */
+.t1-smjestaj-modal {
+  position: absolute; inset: 0;
+  background: rgba(44,26,14,0.5); z-index: 600;
+  display: none; align-items: flex-end; backdrop-filter: blur(4px);
 }
-.t1-tag {
-  padding: 4px 10px;
-  background: var(--cream2);
-  border-radius: 20px;
-  font-size: 11px; font-weight: 700; color: var(--brown3);
+.t1-smjestaj-modal.open { display: flex; }
+.t1-smjestaj-sheet {
+  background: var(--white); border-radius: var(--radius-xl) var(--radius-xl) 0 0;
+  padding: 20px 20px 36px; width: 100%; animation: slideUp 0.3s ease;
 }
-
-/* Smještaj sekcija */
-.t1-smjestaj {
-  margin: 0 16px 24px;
-  background: linear-gradient(135deg, #f0f4ff 0%, #e8f0fe 100%);
-  border-radius: var(--radius-lg);
-  padding: 16px;
-  border: 1.5px solid #c5d5f5;
+.t1-smjestaj-sheet-title {
+  font-family: var(--font-title); font-size: 20px; font-weight: 700;
+  color: var(--brown); margin-bottom: 4px;
 }
-.t1-smjestaj-title {
-  font-family: var(--font-title);
-  font-size: 16px; font-weight: 700; color: #1a2c5a;
-  margin-bottom: 4px;
-}
-.t1-smjestaj-sub {
-  font-size: 12px; color: #3d5a9a; margin-bottom: 14px; line-height: 1.45;
-}
-.t1-smjestaj-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 8px;
-  margin-bottom: 12px;
-}
+.t1-smjestaj-sheet-sub { font-size: 12px; color: var(--brown3); margin-bottom: 16px; line-height: 1.45; }
+.t1-sheet-close { float: right; font-size: 22px; color: var(--brown3); cursor: pointer; margin-top: -4px; background: none; border: none; }
+.t1-smjestaj-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 14px; }
 .t1-smjestaj-field { display: flex; flex-direction: column; gap: 4px; }
-.t1-smjestaj-label {
-  font-size: 10px; font-weight: 700;
-  color: #5a78b8; text-transform: uppercase;
-  letter-spacing: 0.6px; font-family: var(--font-mono);
+.t1-smjestaj-lbl {
+  font-size: 10px; font-weight: 700; color: var(--brown3);
+  text-transform: uppercase; letter-spacing: 0.6px; font-family: var(--font-mono);
 }
-.t1-smjestaj-input {
-  padding: 9px 10px;
-  background: var(--white);
-  border: 1.5px solid #c5d5f5;
-  border-radius: var(--radius-sm);
-  font-size: 13px; color: #1a2c5a; width: 100%;
-  transition: border-color var(--transition);
+.t1-smjestaj-inp {
+  padding: 10px 12px; background: var(--cream); border: 1.5px solid var(--cream3);
+  border-radius: var(--radius-sm); font-size: 13px; color: var(--brown);
+  width: 100%; transition: border-color var(--transition);
 }
-.t1-smjestaj-input:focus { border-color: #3d5a9a; }
+.t1-smjestaj-inp:focus { border-color: var(--orange); }
 .t1-booking-btn {
-  width: 100%;
-  padding: 13px;
-  background: linear-gradient(135deg, #003580, #0057b8);
-  color: var(--white);
-  border-radius: var(--radius-md);
-  font-size: 14px; font-weight: 800;
-  display: flex; align-items: center; justify-content: center;
-  gap: 8px;
-  transition: opacity var(--transition);
-  letter-spacing: 0.2px;
+  width: 100%; padding: 14px; background: linear-gradient(135deg, #003580, #0057b8);
+  color: var(--white); border-radius: var(--radius-md); font-size: 14px; font-weight: 800;
+  display: flex; align-items: center; justify-content: center; gap: 8px; border: none; cursor: pointer;
 }
 .t1-booking-btn:active { opacity: 0.85; }
-
-/* Divider sekcije */
-.t1-section-label {
-  font-size: 11px; font-weight: 800;
-  text-transform: uppercase; letter-spacing: 0.8px;
-  color: var(--brown3); font-family: var(--font-mono);
-  padding: 16px 20px 8px;
-}
 
 /* === CSS-TAB1-END === */
 
@@ -1551,7 +1423,7 @@ a {
 
         <!-- TAB 1: Tražilica -->
         <div class="tab-pane active" id="tab-trazilica">
-          <!-- HTML-TAB1-START -->
+                    <!-- HTML-TAB1-START -->
 
           <!-- Sticky header -->
           <div class="t1-sticky">
@@ -1562,19 +1434,38 @@ a {
                 oninput="t1OnSearch(this.value)" autocomplete="off" />
               <button class="t1-search-clear" id="t1-clear" onclick="t1ClearSearch()">✕</button>
             </div>
-            <div class="t1-chips" id="t1-chips">
-              <!-- Generirano iz JS -->
-            </div>
-            <div class="t1-view-toggle">
-              <button class="t1-view-btn active" id="t1-btn-lista" onclick="t1SwitchView('lista')">📋 Lista</button>
-              <button class="t1-view-btn" id="t1-btn-mapa" onclick="t1SwitchView('mapa')">🗺️ Mapa</button>
-            </div>
+            <div class="t1-chips" id="t1-chips"></div>
           </div>
 
-          <!-- List view -->
-          <div class="t1-list-view" id="t1-lista-view">
-            <div class="tab-scroll">
-              <div class="t1-count" id="t1-count"></div>
+          <!-- Lista view: mini-mapa uvijek gore + lista ispod -->
+          <div class="t1-lista-view">
+
+            <!-- Mini mapa -->
+            <div class="t1-mini-map" id="t1-mini-map">
+              <div id="t1-map"></div>
+              <div class="t1-map-legend">
+                <div class="t1-legend-row">
+                  <div class="t1-legend-dot" style="background:#C0392B"></div>
+                  Naši restorani
+                </div>
+              </div>
+              <button class="t1-map-expand-btn" onclick="t1ExpandMap()">🔍 Povećaj</button>
+              <button class="t1-map-shrink-btn" onclick="t1ShrinkMap()">✕ Smanji</button>
+              <div class="t1-map-bottom" id="t1-map-bottom" onclick="t1OpenDetailFromMap()">
+                <div class="t1-mb-inner">
+                  <div class="t1-mb-emoji" id="t1-mb-emoji"></div>
+                  <div class="t1-mb-info">
+                    <div class="t1-mb-name" id="t1-mb-name"></div>
+                    <div class="t1-mb-sub"  id="t1-mb-sub"></div>
+                  </div>
+                  <div class="t1-mb-arrow">›</div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Scrollable lista -->
+            <div class="t1-list-scroll">
+              <div class="t1-section-lbl">⭐ Najbolje ocijenjeni u blizini</div>
               <div id="t1-cards"></div>
               <div class="t1-empty" id="t1-empty" style="display:none">
                 <div class="t1-empty-icon">🔍</div>
@@ -1582,21 +1473,7 @@ a {
               </div>
               <div style="height:16px"></div>
             </div>
-          </div>
 
-          <!-- Map view -->
-          <div class="t1-map-view" id="t1-mapa-view">
-            <div id="t1-map"></div>
-            <div class="t1-map-bottom" id="t1-map-bottom" onclick="t1OpenDetailFromMap()">
-              <div class="t1-map-bottom-inner">
-                <div class="t1-map-bottom-photo" id="t1-mb-photo"></div>
-                <div class="t1-map-bottom-info">
-                  <div class="t1-map-bottom-name" id="t1-mb-name"></div>
-                  <div class="t1-map-bottom-sub" id="t1-mb-sub"></div>
-                </div>
-                <div class="t1-map-bottom-arrow">›</div>
-              </div>
-            </div>
           </div>
 
           <!-- HTML-TAB1-END -->
@@ -1688,89 +1565,87 @@ a {
         </button>
       </nav>
 
-      <!-- ============================================
+            <!-- ============================================
            DETAIL SCREEN — Tab 1 Tražilica
            ============================================ -->
       <div class="slide-screen" id="t1-detail">
 
-        <!-- Photo header -->
-        <div class="t1-detail-photo" id="t1-detail-photo">
+        <!-- Hero -->
+        <div class="t1-detail-hero" id="t1-detail-hero">
           <button class="t1-detail-back" onclick="closeSlideScreen('t1-detail')">←</button>
-          <span id="t1-detail-emoji" style="filter:drop-shadow(0 4px 12px rgba(0,0,0,0.2))"></span>
+          <span class="t1-detail-hero-emoji" id="t1-detail-emoji"></span>
         </div>
 
-        <!-- Scrollable content -->
+        <!-- Scroll content -->
         <div class="t1-detail-scroll">
+          <div class="t1-detail-body">
 
-          <!-- Info -->
-          <div class="t1-detail-info">
             <div class="t1-detail-name" id="t1-detail-name"></div>
-            <div class="t1-detail-grad" id="t1-detail-grad"></div>
-            <div class="t1-detail-rating-row" id="t1-detail-rating"></div>
-            <div class="t1-detail-meta">
-              <div class="t1-meta-row">
-                <div class="t1-meta-icon">📍</div>
-                <span id="t1-meta-adresa"></span>
+            <div class="t1-detail-chip-row" id="t1-detail-chips"></div>
+
+            <!-- Rating box -->
+            <div class="t1-detail-rating-box">
+              <div class="t1-detail-rating-top">
+                <div class="t1-rating-dots" id="t1-detail-dots"></div>
+                <div class="t1-rating-num-lg" id="t1-detail-num"></div>
               </div>
-              <div class="t1-meta-row">
-                <div class="t1-meta-icon">📞</div>
-                <span id="t1-meta-tel"></span>
-              </div>
-              <div class="t1-meta-row">
-                <div class="t1-meta-icon">🕐</div>
-                <span id="t1-meta-hours"></span>
-              </div>
+              <div class="t1-detail-rating-count" id="t1-detail-count"></div>
             </div>
+
+            <!-- Opis -->
+            <div class="t1-detail-opis" id="t1-detail-opis"></div>
+
+            <!-- Action buttons -->
+            <div class="t1-detail-actions">
+              <button class="t1-act t1-act-nav"  onclick="t1Navigate()">📖 Upute</button>
+              <button class="t1-act t1-act-rate" onclick="t1Ocijeni()">🎯 Ocijeni</button>
+            </div>
+            <button class="t1-act-smjestaj-btn" onclick="t1OpenSmjestaj()">🏨 Smještaj</button>
+
+            <!-- Reviews -->
+            <div class="t1-reviews-lbl">Nedavne recenzije</div>
+            <div id="t1-detail-reviews"></div>
+
           </div>
+        </div>
 
-          <!-- Action buttons -->
-          <div class="t1-detail-actions">
-            <button class="t1-act-btn t1-act-nav" onclick="t1Navigate()">🧭 Navigiraj</button>
-            <button class="t1-act-btn t1-act-call" onclick="t1Call()">📞 Pozovi</button>
-            <button class="t1-act-btn t1-act-share" onclick="t1Share()">🔗 Dijeli</button>
-          </div>
-
-          <!-- Tags -->
-          <div class="t1-tags" id="t1-detail-tags"></div>
-
-          <!-- Smještaj sekcija -->
-          <div class="t1-smjestaj">
-            <div class="t1-smjestaj-title">🏨 Pronađi smještaj u blizini</div>
-            <div class="t1-smjestaj-sub" id="t1-smjestaj-sub">Rezerviraj noćenje za vrijeme posjete.</div>
+        <!-- Smještaj bottom sheet -->
+        <div class="t1-smjestaj-modal" id="t1-smjestaj-modal" onclick="t1CloseSmjestaj(event)">
+          <div class="t1-smjestaj-sheet">
+            <button class="t1-sheet-close" onclick="t1CloseSmjestaj()">✕</button>
+            <div class="t1-smjestaj-sheet-title">🏨 Pronađi smještaj</div>
+            <div class="t1-smjestaj-sheet-sub" id="t1-smjestaj-sub">Rezerviraj noćenje u blizini restorana.</div>
             <div class="t1-smjestaj-grid">
               <div class="t1-smjestaj-field">
-                <label class="t1-smjestaj-label">Dolazak</label>
-                <input type="date" class="t1-smjestaj-input" id="t1-checkin" />
+                <label class="t1-smjestaj-lbl">Dolazak</label>
+                <input type="date" class="t1-smjestaj-inp" id="t1-checkin" />
               </div>
               <div class="t1-smjestaj-field">
-                <label class="t1-smjestaj-label">Odlazak</label>
-                <input type="date" class="t1-smjestaj-input" id="t1-checkout" />
+                <label class="t1-smjestaj-lbl">Odlazak</label>
+                <input type="date" class="t1-smjestaj-inp" id="t1-checkout" />
               </div>
               <div class="t1-smjestaj-field">
-                <label class="t1-smjestaj-label">Gosti</label>
-                <select class="t1-smjestaj-input" id="t1-guests">
+                <label class="t1-smjestaj-lbl">Gosti</label>
+                <select class="t1-smjestaj-inp" id="t1-guests">
                   <option value="1">1 gost</option>
                   <option value="2" selected>2 gosta</option>
                   <option value="3">3 gosta</option>
                   <option value="4">4 gosta</option>
-                  <option value="5">5+ gostiju</option>
                 </select>
               </div>
               <div class="t1-smjestaj-field">
-                <label class="t1-smjestaj-label">Sobe</label>
-                <select class="t1-smjestaj-input" id="t1-rooms">
+                <label class="t1-smjestaj-lbl">Sobe</label>
+                <select class="t1-smjestaj-inp" id="t1-rooms">
                   <option value="1" selected>1 soba</option>
                   <option value="2">2 sobe</option>
                   <option value="3">3 sobe</option>
                 </select>
               </div>
             </div>
-            <button class="t1-booking-btn" onclick="t1OpenBooking()">
-              🔍 Pretraži na Booking.com
-            </button>
+            <button class="t1-booking-btn" onclick="t1OpenBooking()">🔍 Pretraži na Booking.com</button>
           </div>
+        </div>
 
-        </div><!-- /t1-detail-scroll -->
       </div><!-- /t1-detail -->
 
     </div><!-- /screen-app -->
@@ -2133,47 +2008,122 @@ function enterApp() {
 /* === JS-FOUNDATION-END === */
 
 /* === JS-TAB1-START === */
-(function() {
+(function () {
 
-/* ---- Podaci ---- */
+/* ─── Podaci ─── */
 const T1_DATA = [
-  { id:1, ime:'Ćevabdžinica Peđa',     grad:'Sarajevo',   adresa:'Bašćaršija 12, Sarajevo',        lat:43.8563, lng:18.4131, ocjena:4.8, cijena:1, telefon:'+387 33 123 456', radno:'09:00–22:00', tags:['tradicionalno','bašta','halal'],    emoji:'🥩', boja:'#E8712A' },
-  { id:2, ime:'Ćevabdžinica Željo',     grad:'Sarajevo',   adresa:'Kundurdžiluk 19, Sarajevo',      lat:43.8573, lng:18.4142, ocjena:4.9, cijena:1, telefon:'+387 33 447 000', radno:'08:00–22:00', tags:['legenda','centar','halal'],         emoji:'🏆', boja:'#C0392B' },
-  { id:3, ime:'Kod Muje',               grad:'Mostar',     adresa:'Stari Grad bb, Mostar',          lat:43.3438, lng:17.8078, ocjena:4.6, cijena:1, telefon:'+387 36 456 789', radno:'10:00–21:00', tags:['neretva','pogled','halal'],          emoji:'🌊', boja:'#1A7ABF' },
-  { id:4, ime:'Stara Bosna Grill',      grad:'Banja Luka', adresa:'Gospodska 5, Banja Luka',        lat:44.7722, lng:17.1910, ocjena:4.4, cijena:2, telefon:'+387 51 215 555', radno:'10:00–22:00', tags:['premium','bašta'],                  emoji:'🌿', boja:'#27AE60' },
-  { id:5, ime:'Bosna Grill Zagreb',     grad:'Zagreb',     adresa:'Ilica 44, Zagreb',               lat:45.8130, lng:15.9760, ocjena:4.5, cijena:2, telefon:'+385 1 4822 333', radno:'09:00–23:00', tags:['hrvatska','centar','dostava'],      emoji:'🏙️', boja:'#8E44AD' },
-  { id:6, ime:'Tifan Ćevapi',          grad:'Tuzla',      adresa:'Turalibegova 22, Tuzla',         lat:44.5382, lng:18.6766, ocjena:4.3, cijena:1, telefon:'+387 35 281 100', radno:'09:00–21:00', tags:['porodično','domaće'],               emoji:'🫙', boja:'#E67E22' },
-  { id:7, ime:'Ćevabdžinica Kod Ferke',grad:'Split',      adresa:'Marmontova 15, Split',           lat:43.5081, lng:16.4402, ocjena:4.7, cijena:2, telefon:'+385 21 344 222', radno:'10:00–23:00', tags:['more','dalmacija'],                 emoji:'🌊', boja:'#2E86C1' },
-  { id:8, ime:'Sarajka',               grad:'Sarajevo',   adresa:'Ferhadija 18, Sarajevo',         lat:43.8590, lng:18.4280, ocjena:4.5, cijena:2, telefon:'+387 33 667 790', radno:'08:00–23:00', tags:['centar','kafa','halal'],            emoji:'☕', boja:'#6D4C41' },
+  {
+    id:1, ime:'Ćevabdžinica Željo', grad:'Sarajevo', adresa:'Kundurdžiluk 19, Sarajevo',
+    lat:43.8573, lng:18.4142, stil:'Sarajevski', meso:'Govedina/Janjetina',
+    ocjena:4.9, recenzija_count:1247, udaljenost:'0.6',
+    telefon:'+387 33 447 000', radno:'08:00–22:00', emoji:'🥩', boja:'#C0392B',
+    opis:'Najlegendarnija ćevabdžinica u Sarajevu, od 1954. Somun se peče svježi svakih 30 minuta. Uvijek red, uvijek vrijedi.',
+    reviews:[
+      { user:'mujo_sarajlija', badge:'🔥 Majstor roštilja', avatar:'👨', dana:2, tekst:'Savršenstvo. Sam miris ugljena opravdava red.' },
+      { user:'ana_foodie_zagreb', badge:'🌿 Iskusni degustator', avatar:'👩', dana:5, tekst:'Došla iz Zagreba samo zbog ovoga. Vrijelo je.' },
+    ]
+  },
+  {
+    id:2, ime:'Ćevabdžinica Peđa', grad:'Sarajevo', adresa:'Bašćaršija 12, Sarajevo',
+    lat:43.8563, lng:18.4131, stil:'Sarajevski', meso:'Govedina/Janjetina',
+    ocjena:4.7, recenzija_count:892, udaljenost:'0.8',
+    telefon:'+387 33 123 456', radno:'09:00–22:00', emoji:'🥩', boja:'#E8712A',
+    opis:'Pravi sarajevski ćevapi na ugljenu, u srcu Bašćaršije. Domaći somuni, svježe meso i ljubaznost na prvom mjestu.',
+    reviews:[
+      { user:'kenan_bh', badge:'⭐ Lokalni poznavatelj', avatar:'👨', dana:1, tekst:'Remek-djelo. Svaki put kao prvi put.' },
+      { user:'jovanka_ns', badge:'🧳 Putnik degustator', avatar:'👩', dana:7, tekst:'Iz Novog Sada specijalno zbog ćevapa. Preporuka!' },
+    ]
+  },
+  {
+    id:3, ime:'Kod Muje', grad:'Mostar', adresa:'Stari Grad bb, Mostar',
+    lat:43.3438, lng:17.8078, stil:'Mostarsko', meso:'Junetina',
+    ocjena:4.6, recenzija_count:534, udaljenost:'1.2',
+    telefon:'+387 36 456 789', radno:'10:00–21:00', emoji:'🌊', boja:'#1A7ABF',
+    opis:'S pogledom na Neretvu, pravi mostarski ćevapi. Tradicionalni recept koji se prenosi s koljena na koljeno od 1973.',
+    reviews:[
+      { user:'lejla_mostar', badge:'🌊 Lokalni poznavatelj', avatar:'👩', dana:3, tekst:'Pogled na Stari most dok jedeš ćevape. Neponovljivo.' },
+      { user:'ivan_split', badge:'🌊 Ljubitelj Jadrana', avatar:'👦', dana:10, tekst:'Dolazim svaki put kad prolazim kroz Mostar.' },
+    ]
+  },
+  {
+    id:4, ime:'Stara Bosna Grill', grad:'Banja Luka', adresa:'Gospodska 5, Banja Luka',
+    lat:44.7722, lng:17.1910, stil:'Banjalučki', meso:'Svinjetina/Junetina',
+    ocjena:4.4, recenzija_count:321, udaljenost:'2.1',
+    telefon:'+387 51 215 555', radno:'10:00–22:00', emoji:'🌿', boja:'#27AE60',
+    opis:'Banjalučki ćevapi sa svinjetinom — specifičan okus koji nema drugdje. Lijepa bašta, opuštena atmosfera.',
+    reviews:[
+      { user:'dragan_bl', badge:'🏆 Veteran roštilja', avatar:'👨', dana:4, tekst:'Jedini pravi banjalučki ćevap. Svinjetina radi razliku.' },
+    ]
+  },
+  {
+    id:5, ime:'Bosna Grill Zagreb', grad:'Zagreb', adresa:'Ilica 44, Zagreb',
+    lat:45.8130, lng:15.9760, stil:'Sarajevski', meso:'Govedina/Janjetina',
+    ocjena:4.5, recenzija_count:678, udaljenost:'3.4',
+    telefon:'+385 1 4822 333', radno:'09:00–23:00', emoji:'🏙️', boja:'#8E44AD',
+    opis:'Komad Sarajeva u Zagrebu. Svježe meso, pravi somuni i okus kakav možeš naći samo u Bosni — sad i u Ilici.',
+    reviews:[
+      { user:'zagreb_foodie', badge:'🍽️ Urbani gurman', avatar:'👩', dana:2, tekst:'Jedino mjesto u ZG gdje se mogu podsjetiti na Sarajevo.' },
+      { user:'pero_hr', badge:'🦁 Roštilj entuzijast', avatar:'👨', dana:8, tekst:'Za ove ćevape prelazim pola Zagreba pješice.' },
+    ]
+  },
+  {
+    id:6, ime:'Tifan Ćevapi', grad:'Tuzla', adresa:'Turalibegova 22, Tuzla',
+    lat:44.5382, lng:18.6766, stil:'Sarajevski', meso:'Govedina/Janjetina',
+    ocjena:4.3, recenzija_count:287, udaljenost:'1.8',
+    telefon:'+387 35 281 100', radno:'09:00–21:00', emoji:'🫙', boja:'#E67E22',
+    opis:'Porodični restoran u Tuzli koji drži tradiciju sarajevskog ćevapa. Domaće, toplo i pristupačno.',
+    reviews:[
+      { user:'mirza_tz', badge:'🌟 Porodični gurman', avatar:'👦', dana:6, tekst:'Sa djecom uvijek ovdje. Ljubazni i ukusno.' },
+    ]
+  },
+  {
+    id:7, ime:'Ćevabdžinica Kod Ferke', grad:'Split', adresa:'Marmontova 15, Split',
+    lat:43.5081, lng:16.4402, stil:'Sarajevski', meso:'Govedina/Janjetina',
+    ocjena:4.7, recenzija_count:445, udaljenost:'0.5',
+    telefon:'+385 21 344 222', radno:'10:00–23:00', emoji:'🌊', boja:'#2E86C1',
+    opis:'Sarajevski ćevapi u dalmatinskom okruženju. Ferka je u Split donio recept iz Sarajeva i nikada nije pogriješio.',
+    reviews:[
+      { user:'marin_split', badge:'☀️ Dalmatinski gurman', avatar:'👨', dana:1, tekst:'Ovo nije dalmatinska hrana ali dolazimo stalno.' },
+      { user:'suzana_travnik', badge:'🧳 Putnica', avatar:'👩', dana:12, tekst:'Podsjeća me na doma. Hvala Ferki!' },
+    ]
+  },
+  {
+    id:8, ime:'Sarajka', grad:'Sarajevo', adresa:'Ferhadija 18, Sarajevo',
+    lat:43.8590, lng:18.4280, stil:'Sarajevski', meso:'Govedina/Janjetina',
+    ocjena:4.5, recenzija_count:512, udaljenost:'0.9',
+    telefon:'+387 33 667 790', radno:'08:00–23:00', emoji:'☕', boja:'#6D4C41',
+    opis:'U srcu Ferhadije, Sarajka servira ćevape s tradicijom od sedamdesetih. Idealno za brzi ručak ili večeru uz kafu.',
+    reviews:[
+      { user:'amra_sa', badge:'☕ Kafa & ćevapi', avatar:'👩', dana:3, tekst:'Jutarnji ćevap uz bosansku kafu — savršeni start dana.' },
+      { user:'haris_bh', badge:'🏙️ Urbanist', avatar:'👨', dana:9, tekst:'Ferhadija bez Sarajke nije Ferhadija.' },
+    ]
+  },
 ];
 
-/* ---- State ---- */
-let t1State = { grad:'sve', onlyOpen:false, query:'', view:'lista' };
+/* ─── State ─── */
+let t1State = { stil: 'sve', query: '' };
 let t1Map = null, t1Markers = [], t1ActiveRest = null;
 
-/* ---- Helpers ---- */
+/* ─── Helpers ─── */
 function t1IsOpen(radno) {
   const now = new Date();
   const cur = now.getHours() * 60 + now.getMinutes();
   const parts = radno.split('–');
   if (parts.length < 2) return true;
-  const toMin = t => { const [h,m] = t.trim().split(':').map(Number); return h*60+(m||0); };
+  const toMin = t => { const [h, m] = t.trim().split(':').map(Number); return h * 60 + (m || 0); };
   return cur >= toMin(parts[0]) && cur <= toMin(parts[1]);
 }
 
-function t1Stars(n) {
-  const full = Math.round(n);
-  return '★'.repeat(full) + '☆'.repeat(5 - full);
-}
-
-function t1PriceStr(n) {
-  return '€'.repeat(n) + '<span style="opacity:0.25">' + '€'.repeat(3-n) + '</span>';
+function t1RatingDots(ocjena) {
+  const full = Math.round(ocjena);
+  let html = '';
+  for (let i = 0; i < 5; i++) html += `<div class="t1-rating-dot${i >= full ? ' dim' : ''}"></div>`;
+  return html;
 }
 
 function t1GetFiltered() {
   return T1_DATA.filter(r => {
-    if (t1State.grad !== 'sve' && r.grad !== t1State.grad) return false;
-    if (t1State.onlyOpen && !t1IsOpen(r.radno)) return false;
+    if (t1State.stil !== 'sve' && r.stil !== t1State.stil) return false;
     if (t1State.query) {
       const q = t1State.query.toLowerCase();
       if (!r.ime.toLowerCase().includes(q) && !r.grad.toLowerCase().includes(q)) return false;
@@ -2182,249 +2132,199 @@ function t1GetFiltered() {
   });
 }
 
-/* ---- Render chips ---- */
+/* ─── Chips ─── */
 function t1RenderChips() {
-  const cities = [...new Set(T1_DATA.map(r => r.grad))];
-  let html = `<button class="t1-chip active" data-grad="sve" onclick="t1SetGrad('sve',this)">Sve</button>`;
-  cities.forEach(c => {
-    html += `<button class="t1-chip" data-grad="${c}" onclick="t1SetGrad('${c}',this)">${c}</button>`;
+  const stilovi = [...new Set(T1_DATA.map(r => r.stil))];
+  const icons = { Sarajevski: '🗺️', Banjalučki: '🌿', Mostarsko: '🌊', Travnički: '🏔️' };
+  let html = `<button class="t1-chip active" data-stil="sve" onclick="t1SetStil('sve',this)">SVE</button>`;
+  stilovi.forEach(s => {
+    html += `<button class="t1-chip" data-stil="${s}" onclick="t1SetStil('${s}',this)">${icons[s] || '🥩'} ${s.toUpperCase()}</button>`;
   });
-  html += `<button class="t1-chip chip-green" id="t1-chip-open" onclick="t1ToggleOpen(this)">Otvoren 🟢</button>`;
   document.getElementById('t1-chips').innerHTML = html;
 }
 
-/* ---- Render cards ---- */
+/* ─── Cards ─── */
 function t1RenderList() {
   const filtered = t1GetFiltered();
   const container = document.getElementById('t1-cards');
-  const empty     = document.getElementById('t1-empty');
-  const count     = document.getElementById('t1-count');
-
-  count.textContent = filtered.length + ' mjesta';
-
+  const empty = document.getElementById('t1-empty');
   if (!filtered.length) {
     container.innerHTML = '';
     empty.style.display = 'block';
     return;
   }
   empty.style.display = 'none';
-
-  container.innerHTML = filtered.map(r => {
-    const open = t1IsOpen(r.radno);
-    return `
+  container.innerHTML = filtered.map(r => `
     <div class="t1-card animate-fade" onclick="t1OpenDetail(${r.id})">
-      <div class="t1-card-photo" style="background:${r.boja}22">${r.emoji}</div>
-      <div class="t1-card-body">
-        <div class="t1-card-top">
-          <div class="t1-card-name">${r.ime}</div>
-          <span class="t1-badge ${open ? 't1-badge-open' : 't1-badge-closed'}">${open ? '● Otvoreno' : '● Zatvoreno'}</span>
-        </div>
-        <div class="t1-card-city">📍 ${r.grad}</div>
-        <div class="t1-card-meta">
-          <span class="t1-stars">${t1Stars(r.ocjena)}</span>
-          <span class="t1-rating-num">${r.ocjena}</span>
-          <span class="t1-price">${t1PriceStr(r.cijena)}</span>
-          <span class="t1-dist">${r.radno}</span>
-        </div>
+      <div class="t1-card-emoji-wrap">
+        <div class="t1-card-emoji" style="background:${r.boja}22">${r.emoji}</div>
       </div>
-    </div>`;
-  }).join('');
+      <div class="t1-card-name">${r.ime}</div>
+      <div class="t1-card-tags">
+        <span class="t1-card-tag">🗺️ ${r.stil.toUpperCase()}</span>
+        <span class="t1-card-tag">🥩 ${r.meso.toUpperCase()}</span>
+        <span class="t1-card-tag">📍 ${r.udaljenost} KM</span>
+      </div>
+      <div class="t1-card-rating">
+        <div class="t1-rating-dots">${t1RatingDots(r.ocjena)}</div>
+        <span class="t1-rating-num-lg">${r.ocjena}</span>
+        <span class="t1-rating-count">(${r.recenzija_count.toLocaleString('hr')} recenzija)</span>
+      </div>
+    </div>`).join('');
 }
 
-/* ---- Search ---- */
-window.t1OnSearch = function(val) {
-  t1State.query = val.trim();
-  const clearBtn = document.getElementById('t1-clear');
-  if (val) clearBtn.classList.add('vis'); else clearBtn.classList.remove('vis');
+/* ─── Filters ─── */
+window.t1SetStil = function (stil, btn) {
+  t1State.stil = stil;
+  document.querySelectorAll('#t1-chips .t1-chip').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
   t1RenderList();
-  if (t1State.view === 'mapa') t1UpdateMap();
+  t1UpdateMap();
 };
 
-window.t1ClearSearch = function() {
+window.t1OnSearch = function (val) {
+  t1State.query = val.trim();
+  document.getElementById('t1-clear').classList.toggle('vis', !!val);
+  t1RenderList();
+  t1UpdateMap();
+};
+
+window.t1ClearSearch = function () {
   document.getElementById('t1-search').value = '';
   t1OnSearch('');
 };
 
-/* ---- Filters ---- */
-window.t1SetGrad = function(grad, btn) {
-  t1State.grad = grad;
-  document.querySelectorAll('#t1-chips .t1-chip[data-grad]').forEach(b => b.classList.remove('active'));
-  btn.classList.add('active');
-  t1RenderList();
-  if (t1State.view === 'mapa') t1UpdateMap();
-};
-
-window.t1ToggleOpen = function(btn) {
-  t1State.onlyOpen = !t1State.onlyOpen;
-  btn.classList.toggle('active', t1State.onlyOpen);
-  t1RenderList();
-  if (t1State.view === 'mapa') t1UpdateMap();
-};
-
-/* ---- View switch ---- */
-window.t1SwitchView = function(view) {
-  t1State.view = view;
-  const listaView = document.getElementById('t1-lista-view');
-  const mapaView  = document.getElementById('t1-mapa-view');
-  const btnLista  = document.getElementById('t1-btn-lista');
-  const btnMapa   = document.getElementById('t1-btn-mapa');
-
-  if (view === 'lista') {
-    listaView.style.display = 'flex';
-    mapaView.style.display  = 'none';
-    btnLista.classList.add('active');
-    btnMapa.classList.remove('active');
-  } else {
-    listaView.style.display = 'none';
-    mapaView.style.display  = 'block';
-    btnLista.classList.remove('active');
-    btnMapa.classList.add('active');
-    setTimeout(() => { t1InitMap(); t1UpdateMap(); }, 50);
-  }
-};
-
-/* ---- Map ---- */
+/* ─── Map ─── */
 function t1InitMap() {
-  if (t1Map) { t1Map.invalidateSize(); return; }
-  t1Map = L.map('t1-map', { zoomControl: false }).setView([44.1, 17.6], 6);
-  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-    attribution: '© OpenStreetMap'
-  }).addTo(t1Map);
-  L.control.zoom({ position: 'topright' }).addTo(t1Map);
+  if (t1Map) return;
+  t1Map = L.map('t1-map', { zoomControl: false, attributionControl: false }).setView([44.1, 17.6], 6);
+  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(t1Map);
+}
+
+function t1PinIcon(color) {
+  return L.divIcon({
+    className: '',
+    html: `<svg width="28" height="40" viewBox="0 0 28 40" xmlns="http://www.w3.org/2000/svg"><path d="M14 0C6.3 0 0 6.3 0 14c0 10.5 14 26 14 26S28 24.5 28 14C28 6.3 21.7 0 14 0z" fill="${color}"/><circle cx="14" cy="14" r="6" fill="white" opacity="0.9"/></svg>`,
+    iconSize: [28, 40],
+    iconAnchor: [14, 40],
+  });
 }
 
 function t1UpdateMap() {
   if (!t1Map) return;
   t1Markers.forEach(m => m.remove());
   t1Markers = [];
-
   const filtered = t1GetFiltered();
   filtered.forEach(r => {
-    const open = t1IsOpen(r.radno);
-    const iconHtml = `<div style="background:${r.boja};color:#fff;padding:4px 9px;border-radius:20px;font-size:11px;font-weight:800;white-space:nowrap;box-shadow:0 2px 8px rgba(0,0,0,0.28);border:2px solid #fff;display:flex;align-items:center;gap:4px;">${r.emoji} <span>${r.ime.split(' ').slice(-1)[0]}</span></div>`;
-    const icon = L.divIcon({ className:'', html: iconHtml, iconAnchor:[0,16] });
-    const marker = L.marker([r.lat, r.lng], { icon })
+    const marker = L.marker([r.lat, r.lng], { icon: t1PinIcon(r.boja) })
       .addTo(t1Map)
       .on('click', () => t1ShowMapCard(r));
     t1Markers.push(marker);
   });
-
-  if (filtered.length > 0) {
-    const group = L.featureGroup(t1Markers);
-    t1Map.fitBounds(group.getBounds().pad(0.25));
-  }
+  if (filtered.length) t1Map.fitBounds(L.featureGroup(t1Markers).getBounds().pad(0.3));
 }
 
 function t1ShowMapCard(r) {
   t1ActiveRest = r;
-  const bottom = document.getElementById('t1-map-bottom');
-  document.getElementById('t1-mb-photo').style.cssText = `background:${r.boja}33`;
-  document.getElementById('t1-mb-photo').textContent = r.emoji;
-  document.getElementById('t1-mb-name').textContent = r.ime;
   const open = t1IsOpen(r.radno);
-  document.getElementById('t1-mb-sub').innerHTML = `${r.grad} • <span style="color:${open?'#14873a':'var(--red)'};">${open?'Otvoreno':'Zatvoreno'}</span> • ⭐ ${r.ocjena}`;
-  bottom.classList.add('open');
+  document.getElementById('t1-mb-emoji').textContent = r.emoji;
+  document.getElementById('t1-mb-name').textContent = r.ime;
+  document.getElementById('t1-mb-sub').innerHTML =
+    `${r.grad} · <span style="color:${open ? '#14873a' : 'var(--red)'};">${open ? 'Otvoreno' : 'Zatvoreno'}</span> · ⭐ ${r.ocjena}`;
+  document.getElementById('t1-map-bottom').classList.add('open');
 }
 
-window.t1OpenDetailFromMap = function() {
-  if (t1ActiveRest) t1OpenDetail(t1ActiveRest.id);
+window.t1OpenDetailFromMap = function () { if (t1ActiveRest) t1OpenDetail(t1ActiveRest.id); };
+
+/* ─── Map expand/shrink ─── */
+window.t1ExpandMap = function () {
+  document.getElementById('t1-mini-map').classList.add('expanded');
+  setTimeout(() => t1Map && t1Map.invalidateSize(), 50);
+};
+window.t1ShrinkMap = function () {
+  document.getElementById('t1-mini-map').classList.remove('expanded');
+  document.getElementById('t1-map-bottom').classList.remove('open');
+  setTimeout(() => t1Map && t1Map.invalidateSize(), 50);
 };
 
-/* ---- Detail screen ---- */
-window.t1OpenDetail = function(id) {
+/* ─── Detail screen ─── */
+window.t1OpenDetail = function (id) {
   const r = T1_DATA.find(x => x.id === id);
   if (!r) return;
   t1ActiveRest = r;
-
   const open = t1IsOpen(r.radno);
 
-  // Photo header
-  document.getElementById('t1-detail-photo').style.background =
-    `linear-gradient(135deg, ${r.boja}44 0%, ${r.boja}22 100%)`;
+  document.getElementById('t1-detail-hero').style.background =
+    `linear-gradient(135deg, ${r.boja}33, ${r.boja}18)`;
   document.getElementById('t1-detail-emoji').textContent = r.emoji;
-
-  // Info
   document.getElementById('t1-detail-name').textContent = r.ime;
-  document.getElementById('t1-detail-grad').textContent = r.grad + ' · ' + r.adresa;
-  document.getElementById('t1-detail-rating').innerHTML =
-    `<span style="color:var(--orange2);font-size:16px;">${t1Stars(r.ocjena)}</span>
-     <strong style="font-size:15px;">${r.ocjena}</strong>
-     <span style="color:var(--brown3);font-size:13px;">· </span>
-     <span style="font-family:var(--font-mono);font-size:13px;">${t1PriceStr(r.cijena)}</span>`;
+  document.getElementById('t1-detail-chips').innerHTML = [
+    `<span class="t1-detail-chip">🗺️ ${r.stil}</span>`,
+    `<span class="t1-detail-chip">🥩 ${r.meso}</span>`,
+    `<span class="t1-detail-chip">${open ? '🟢 Otvoreno' : '🔴 Zatvoreno'}</span>`,
+  ].join('');
+  document.getElementById('t1-detail-dots').innerHTML = t1RatingDots(r.ocjena);
+  document.getElementById('t1-detail-num').textContent = r.ocjena;
+  document.getElementById('t1-detail-count').textContent = r.recenzija_count.toLocaleString('hr') + ' recenzija';
+  document.getElementById('t1-detail-opis').textContent = r.opis;
+  document.getElementById('t1-detail-reviews').innerHTML = r.reviews.map(rv => `
+    <div class="t1-review">
+      <div class="t1-review-top">
+        <div class="t1-review-avatar">${rv.avatar}</div>
+        <div class="t1-review-meta">
+          <div class="t1-review-user">${rv.user}</div>
+          <div class="t1-review-badge">${rv.badge}</div>
+        </div>
+        <div class="t1-review-dana">${rv.dana} dana</div>
+      </div>
+      <div class="t1-review-tekst">${rv.tekst}</div>
+    </div>`).join('');
 
-  document.getElementById('t1-meta-adresa').textContent = r.adresa;
-  document.getElementById('t1-meta-tel').textContent = r.telefon;
-  document.getElementById('t1-meta-hours').innerHTML =
-    r.radno + ' <span class="t1-badge ' + (open ? 't1-badge-open' : 't1-badge-closed') + '">' +
-    (open ? '● Otvoreno' : '● Zatvoreno') + '</span>';
-
-  // Tags
-  document.getElementById('t1-detail-tags').innerHTML =
-    r.tags.map(t => `<span class="t1-tag">#${t}</span>`).join('');
-
-  // Smještaj subtitle
   document.getElementById('t1-smjestaj-sub').textContent =
-    `Rezerviraj smještaj u ${r.grad} za tvoju posjetu restorana ${r.ime}.`;
-
-  // Default dates: sutra + prekosutra
+    `Rezerviraj smještaj u ${r.grad} za posjetu restorana ${r.ime}.`;
   const d1 = new Date(); d1.setDate(d1.getDate() + 1);
   const d2 = new Date(); d2.setDate(d2.getDate() + 2);
   const fmt = d => d.toISOString().split('T')[0];
-  document.getElementById('t1-checkin').value  = fmt(d1);
+  document.getElementById('t1-checkin').value = fmt(d1);
   document.getElementById('t1-checkout').value = fmt(d2);
 
   openSlideScreen('t1-detail');
 };
 
-/* ---- Booking.com ---- */
-window.t1OpenBooking = function() {
+/* ─── Smještaj sheet ─── */
+window.t1OpenSmjestaj = function () {
+  document.getElementById('t1-smjestaj-modal').classList.add('open');
+};
+window.t1CloseSmjestaj = function (e) {
+  if (!e || e.target === document.getElementById('t1-smjestaj-modal'))
+    document.getElementById('t1-smjestaj-modal').classList.remove('open');
+};
+window.t1OpenBooking = function () {
   const r = t1ActiveRest;
   if (!r) return;
-  const checkin  = document.getElementById('t1-checkin').value;
-  const checkout = document.getElementById('t1-checkout').value;
-  const guests   = document.getElementById('t1-guests').value;
-  const rooms    = document.getElementById('t1-rooms').value;
-  if (!checkin || !checkout) { showToast('Odaberi datume!'); return; }
-  const url = 'https://www.booking.com/searchresults.html' +
-    '?ss=' + encodeURIComponent(r.grad) +
-    '&checkin=' + checkin +
-    '&checkout=' + checkout +
-    '&group_adults=' + guests +
-    '&no_rooms=' + rooms +
-    '&lang=hr';
-  window.open(url, '_blank');
+  const ci = document.getElementById('t1-checkin').value;
+  const co = document.getElementById('t1-checkout').value;
+  if (!ci || !co) { showToast('Odaberi datume!'); return; }
+  window.open(
+    'https://www.booking.com/searchresults.html?ss=' + encodeURIComponent(r.grad) +
+    '&checkin=' + ci + '&checkout=' + co +
+    '&group_adults=' + document.getElementById('t1-guests').value +
+    '&no_rooms=' + document.getElementById('t1-rooms').value + '&lang=hr', '_blank');
 };
 
-/* ---- Action buttons ---- */
-window.t1Navigate = function() {
-  const r = t1ActiveRest;
-  if (!r) return;
+/* ─── Action buttons ─── */
+window.t1Navigate = function () {
+  const r = t1ActiveRest; if (!r) return;
   window.open('https://maps.google.com/?q=' + r.lat + ',' + r.lng, '_blank');
 };
+window.t1Ocijeni = function () { showToast('Ocjenjivanje dolazi uskoro! ⭐'); };
 
-window.t1Call = function() {
-  const r = t1ActiveRest;
-  if (!r) return;
-  window.location.href = 'tel:' + r.telefon.replace(/\s/g,'');
-};
-
-window.t1Share = function() {
-  const r = t1ActiveRest;
-  if (!r) return;
-  if (navigator.share) {
-    navigator.share({ title: r.ime, text: r.ime + ' · ' + r.grad + ' ⭐' + r.ocjena });
-  } else {
-    showToast('Link kopiran!');
-  }
-};
-
-/* ---- Init ---- */
-/* Direktan poziv — Foundation-ov init() IIFE radi PRIJE ovog koda
-   pa onAppEnter hook ne bi uhvatio auto-login scenarij. */
+/* ─── Init ─── */
 t1RenderChips();
 t1RenderList();
+setTimeout(() => { t1InitMap(); t1UpdateMap(); }, 150);
 
-})();
+}());
 /* === JS-TAB1-END === */
 
 /* === PLACEHOLDER ZA JS OSTALIH TABOVA ===
