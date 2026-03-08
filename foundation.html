@@ -2419,17 +2419,10 @@ window.t1Share = function() {
 };
 
 /* ---- Init ---- */
-function t1Init() {
-  t1RenderChips();
-  t1RenderList();
-}
-
-/* Hook u app entry */
-const _origOnAppEnter = typeof onAppEnter === 'function' ? onAppEnter : null;
-window.onAppEnter = function() {
-  if (_origOnAppEnter) _origOnAppEnter();
-  t1Init();
-};
+/* Direktan poziv — Foundation-ov init() IIFE radi PRIJE ovog koda
+   pa onAppEnter hook ne bi uhvatio auto-login scenarij. */
+t1RenderChips();
+t1RenderList();
 
 })();
 /* === JS-TAB1-END === */
