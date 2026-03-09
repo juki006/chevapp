@@ -1858,6 +1858,181 @@ a {
 /* === CSS-TAB3-END === */
 
    Tab 6 — Profil     → // CSS-TAB6-START / END
+    /* === CSS-TAB5-START === */
+
+/* Hero kartica */
+.t5-hero {
+  background: linear-gradient(160deg, var(--brown) 0%, var(--brown2) 100%);
+  padding: 28px 20px 24px;
+  position: relative;
+  overflow: hidden;
+}
+.t5-hero::before {
+  content: '';
+  position: absolute;
+  top: -40px; right: -40px;
+  width: 160px; height: 160px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.04);
+}
+.t5-hero-top { display: flex; align-items: flex-start; justify-content: space-between; margin-bottom: 16px; }
+.t5-avatar-wrap { position: relative; }
+.t5-avatar {
+  width: 72px; height: 72px;
+  border-radius: 50%;
+  background: var(--cream2);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 34px;
+  border: 3px solid rgba(255,255,255,0.2);
+  cursor: pointer;
+}
+.t5-avatar-edit {
+  position: absolute; bottom: 0; right: 0;
+  width: 22px; height: 22px;
+  background: var(--orange);
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 10px; color: var(--white);
+}
+.t5-edit-btn {
+  background: rgba(255,255,255,0.12);
+  color: var(--cream);
+  border-radius: var(--radius-sm);
+  padding: 7px 14px;
+  font-size: 12px; font-weight: 700;
+}
+.t5-name { font-family: var(--font-title); font-size: 22px; color: var(--white); font-style: italic; margin-bottom: 4px; }
+.t5-rank-badge {
+  display: inline-flex; align-items: center; gap: 5px;
+  background: rgba(255,255,255,0.12);
+  border-radius: 20px;
+  padding: 4px 12px;
+  font-size: 11px; font-weight: 700; color: var(--cream3);
+  margin-bottom: 14px;
+}
+.t5-xp-bar-wrap { margin-top: 4px; }
+.t5-xp-label { display: flex; justify-content: space-between; font-size: 10px; color: rgba(255,255,255,0.55); margin-bottom: 5px; font-weight: 700; letter-spacing: 0.5px; }
+.t5-xp-track { height: 6px; background: rgba(255,255,255,0.15); border-radius: 3px; overflow: hidden; }
+.t5-xp-fill { height: 100%; border-radius: 3px; background: linear-gradient(90deg, var(--orange2), var(--orange)); transition: width 1s ease; }
+
+/* Scroll */
+.t5-scroll { overflow-y: auto; height: calc(100% - 200px); scrollbar-width: none; }
+.t5-scroll::-webkit-scrollbar { display: none; }
+.t5-body { padding: 16px; }
+
+/* Sekcija */
+.t5-section { background: var(--white); border-radius: var(--radius-lg); margin-bottom: 14px; overflow: hidden; box-shadow: var(--shadow-sm); }
+.t5-section-head { display: flex; align-items: center; justify-content: space-between; padding: 14px 16px 10px; border-bottom: 1px solid var(--cream2); }
+.t5-section-title { font-size: 10px; font-weight: 700; letter-spacing: 1.5px; color: var(--brown3); }
+.t5-section-action { font-size: 12px; font-weight: 700; color: var(--orange); }
+
+/* Bio */
+.t5-bio-text { padding: 12px 16px; font-size: 13px; line-height: 1.6; color: var(--brown2); min-height: 48px; }
+.t5-bio-input {
+  width: 100%; padding: 12px 16px;
+  font-size: 13px; line-height: 1.6; color: var(--brown2);
+  border: none; resize: none; min-height: 80px;
+  background: var(--cream);
+}
+.t5-bio-save { width: 100%; padding: 12px; background: var(--orange); color: var(--white); font-weight: 700; font-size: 14px; }
+
+/* Preference redovi */
+.t5-pref-row { display: flex; align-items: center; gap: 12px; padding: 12px 16px; border-bottom: 1px solid var(--cream); }
+.t5-pref-row:last-child { border-bottom: none; }
+.t5-pref-icon { font-size: 20px; width: 28px; text-align: center; flex-shrink: 0; }
+.t5-pref-info { flex: 1; }
+.t5-pref-label { font-size: 11px; color: var(--brown3); font-weight: 700; letter-spacing: 0.5px; }
+.t5-pref-val { font-size: 14px; font-weight: 700; color: var(--brown); margin-top: 1px; }
+.t5-pref-chevron { font-size: 14px; color: var(--brown3); }
+
+/* Statistike */
+.t5-stats-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1px; background: var(--cream2); }
+.t5-stat-cell { background: var(--white); padding: 16px 14px; }
+.t5-stat-num { font-size: 28px; font-weight: 900; font-family: var(--font-mono); color: var(--brown); line-height: 1; margin-bottom: 4px; }
+.t5-stat-num.orange { color: var(--orange); }
+.t5-stat-num.red { color: var(--red); }
+.t5-stat-num.green { color: var(--green2); }
+.t5-stat-key { font-size: 10px; font-weight: 700; letter-spacing: 1px; color: var(--brown3); }
+
+/* Omiljeni recepti */
+.t5-favs-scroll { display: flex; gap: 10px; overflow-x: auto; scrollbar-width: none; padding: 12px 16px; }
+.t5-favs-scroll::-webkit-scrollbar { display: none; }
+.t5-fav-card { flex-shrink: 0; width: 100px; background: var(--cream); border-radius: var(--radius-md); padding: 12px 8px; text-align: center; }
+.t5-fav-emoji { font-size: 30px; display: block; margin-bottom: 6px; }
+.t5-fav-name { font-size: 11px; font-weight: 700; color: var(--brown); line-height: 1.3; }
+
+/* Postavke toggle */
+.t5-toggle-row { display: flex; align-items: center; gap: 12px; padding: 13px 16px; border-bottom: 1px solid var(--cream); }
+.t5-toggle-row:last-child { border-bottom: none; }
+.t5-toggle-icon { font-size: 18px; width: 28px; text-align: center; flex-shrink: 0; }
+.t5-toggle-label { flex: 1; font-size: 14px; font-weight: 600; color: var(--brown); }
+.t5-toggle-sub { font-size: 11px; color: var(--brown3); margin-top: 1px; }
+.t5-toggle {
+  width: 44px; height: 26px;
+  border-radius: 13px;
+  background: var(--cream3);
+  position: relative;
+  cursor: pointer;
+  transition: background var(--transition);
+  flex-shrink: 0;
+}
+.t5-toggle.on { background: var(--orange); }
+.t5-toggle::after {
+  content: '';
+  position: absolute;
+  top: 3px; left: 3px;
+  width: 20px; height: 20px;
+  border-radius: 50%;
+  background: var(--white);
+  transition: transform var(--transition);
+  box-shadow: 0 1px 4px rgba(0,0,0,0.2);
+}
+.t5-toggle.on::after { transform: translateX(18px); }
+
+/* Odjava */
+.t5-logout-btn {
+  width: 100%;
+  padding: 16px;
+  background: var(--white);
+  border-radius: var(--radius-lg);
+  display: flex; align-items: center; justify-content: center; gap: 10px;
+  color: var(--red);
+  font-size: 15px; font-weight: 700;
+  box-shadow: var(--shadow-sm);
+  margin-bottom: 30px;
+}
+
+/* Avatar picker modal */
+.t5-avatar-modal {
+  position: absolute; inset: 0;
+  background: rgba(44,26,14,0.6);
+  z-index: 200;
+  display: flex; align-items: flex-end;
+  opacity: 0; pointer-events: none;
+  transition: opacity var(--transition);
+}
+.t5-avatar-modal.open { opacity: 1; pointer-events: all; }
+.t5-avatar-picker {
+  width: 100%;
+  background: var(--white);
+  border-radius: var(--radius-xl) var(--radius-xl) 0 0;
+  padding: 20px 20px 36px;
+}
+.t5-picker-title { font-size: 14px; font-weight: 700; color: var(--brown); margin-bottom: 14px; text-align: center; }
+.t5-picker-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 10px; }
+.t5-picker-emoji {
+  aspect-ratio: 1;
+  border-radius: var(--radius-md);
+  background: var(--cream);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 28px;
+  cursor: pointer;
+  transition: background var(--transition);
+}
+.t5-picker-emoji.selected { background: var(--cream3); }
+
+/* === CSS-TAB5-END === */
+
    Overlays/Glazba    → // CSS-OVERLAYS-START / END
    ========================================= */
 
@@ -2775,18 +2950,191 @@ a {
           <!-- HTML-TAB4-END -->
         </div>
 
-        <!-- TAB 5: Profil (was TAB 6) -->
+        <!-- TAB 5: Profil -->
         <div class="tab-pane" id="tab-profil">
-          <!-- HTML-TAB6-START -->
-          <div class="tab-scroll">
-            <div style="padding:20px;text-align:center;color:var(--brown3);padding-top:60px;">
-              <p style="font-size:40px">🏗️</p>
-              <p>Tab 6 se učitava...</p>
+          <!-- HTML-TAB5-START -->
+
+          <!-- Hero -->
+          <div class="t5-hero">
+            <div class="t5-hero-top">
+              <div class="t5-avatar-wrap">
+                <div class="t5-avatar" id="t5-avatar" onclick="t5OpenAvatarPicker()">🧑‍🍳</div>
+                <div class="t5-avatar-edit">✏️</div>
+              </div>
+              <button class="t5-edit-btn" onclick="t5ToggleBioEdit()">Uredi profil</button>
+            </div>
+            <div class="t5-name" id="t5-name">Džemal Hadžić</div>
+            <div class="t5-rank-badge">🔥 Ugljeni Majstor · Nivo 4</div>
+            <div class="t5-xp-bar-wrap">
+              <div class="t5-xp-label">
+                <span>1 240 XP</span>
+                <span>Sljedeći rang: 1 500 XP</span>
+              </div>
+              <div class="t5-xp-track">
+                <div class="t5-xp-fill" id="t5-xp-fill" style="width:83%"></div>
+              </div>
             </div>
           </div>
-          <!-- HTML-TAB6-END -->
-        </div>
 
+          <!-- Avatar modal -->
+          <div class="t5-avatar-modal" id="t5-avatar-modal" onclick="t5CloseAvatarPicker(event)">
+            <div class="t5-avatar-picker">
+              <div class="t5-picker-title">Odaberi avatar</div>
+              <div class="t5-picker-grid" id="t5-picker-grid"></div>
+            </div>
+          </div>
+
+          <!-- Scroll tijelo -->
+          <div class="t5-scroll">
+            <div class="t5-body">
+
+              <!-- Bio -->
+              <div class="t5-section" id="t5-bio-section">
+                <div class="t5-section-head">
+                  <span class="t5-section-title">O MENI</span>
+                  <button class="t5-section-action" onclick="t5ToggleBioEdit()">Uredi</button>
+                </div>
+                <div class="t5-bio-text" id="t5-bio-display">Strastveni ljubitelj ćevapa iz Sarajeva. Preferiram tanak ćevap sa svježim lukom i kajmakom. Svake subote obilazim novu ćevabdžinicu! 🥩</div>
+                <div id="t5-bio-edit" style="display:none">
+                  <textarea class="t5-bio-input" id="t5-bio-input" placeholder="Napiši nešto o sebi..."></textarea>
+                  <button class="t5-bio-save" onclick="t5SaveBio()">Spremi</button>
+                </div>
+              </div>
+
+              <!-- Preference -->
+              <div class="t5-section">
+                <div class="t5-section-head">
+                  <span class="t5-section-title">MOJE PREFERENCE</span>
+                </div>
+                <div class="t5-pref-row" onclick="t5EditPref('cevap')">
+                  <span class="t5-pref-icon">🥩</span>
+                  <div class="t5-pref-info">
+                    <div class="t5-pref-label">TIP ĆEVAPA</div>
+                    <div class="t5-pref-val" id="t5-pref-cevap">Tanak, dimljeni ćevap</div>
+                  </div>
+                  <span class="t5-pref-chevron">›</span>
+                </div>
+                <div class="t5-pref-row" onclick="t5EditPref('lokacija')">
+                  <span class="t5-pref-icon">📍</span>
+                  <div class="t5-pref-info">
+                    <div class="t5-pref-label">LOKACIJA</div>
+                    <div class="t5-pref-val" id="t5-pref-lokacija">Sarajevo, BiH</div>
+                  </div>
+                  <span class="t5-pref-chevron">›</span>
+                </div>
+                <div class="t5-pref-row" onclick="t5EditPref('jezik')">
+                  <span class="t5-pref-icon">🌐</span>
+                  <div class="t5-pref-info">
+                    <div class="t5-pref-label">JEZIK</div>
+                    <div class="t5-pref-val" id="t5-pref-jezik">Bosanski</div>
+                  </div>
+                  <span class="t5-pref-chevron">›</span>
+                </div>
+                <div class="t5-pref-row" onclick="t5EditPref('prilog')">
+                  <span class="t5-pref-icon">🧅</span>
+                  <div class="t5-pref-info">
+                    <div class="t5-pref-label">OMILJENI PRILOG</div>
+                    <div class="t5-pref-val" id="t5-pref-prilog">Svježi luk + kajmak</div>
+                  </div>
+                  <span class="t5-pref-chevron">›</span>
+                </div>
+              </div>
+
+              <!-- Statistike -->
+              <div class="t5-section">
+                <div class="t5-section-head">
+                  <span class="t5-section-title">MOJE STATISTIKE</span>
+                </div>
+                <div class="t5-stats-grid">
+                  <div class="t5-stat-cell">
+                    <div class="t5-stat-num orange">47</div>
+                    <div class="t5-stat-key">ĆEVABDŽINICA POSJEĆENO</div>
+                  </div>
+                  <div class="t5-stat-cell">
+                    <div class="t5-stat-num red">1 240</div>
+                    <div class="t5-stat-key">UKUPNO XP</div>
+                  </div>
+                  <div class="t5-stat-cell">
+                    <div class="t5-stat-num green">23</div>
+                    <div class="t5-stat-key">KVIZOVA RIJEŠENO</div>
+                  </div>
+                  <div class="t5-stat-cell">
+                    <div class="t5-stat-num" style="color:var(--brown)">12</div>
+                    <div class="t5-stat-key">RECEPATA NAUČENO</div>
+                  </div>
+                  <div class="t5-stat-cell">
+                    <div class="t5-stat-num orange">🔥 8</div>
+                    <div class="t5-stat-key">STREAK (DANA)</div>
+                  </div>
+                  <div class="t5-stat-cell">
+                    <div class="t5-stat-num red">94%</div>
+                    <div class="t5-stat-key">KVIZ TOČNOST</div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Omiljeni recepti -->
+              <div class="t5-section">
+                <div class="t5-section-head">
+                  <span class="t5-section-title">OMILJENI RECEPTI</span>
+                </div>
+                <div class="t5-favs-scroll">
+                  <div class="t5-fav-card"><span class="t5-fav-emoji">🥩</span><span class="t5-fav-name">Bosanski ćevap</span></div>
+                  <div class="t5-fav-card"><span class="t5-fav-emoji">🫓</span><span class="t5-fav-name">Somun domaći</span></div>
+                  <div class="t5-fav-card"><span class="t5-fav-emoji">🧅</span><span class="t5-fav-name">Luk mariniran</span></div>
+                  <div class="t5-fav-card"><span class="t5-fav-emoji">🫙</span><span class="t5-fav-name">Kajmak svježi</span></div>
+                  <div class="t5-fav-card"><span class="t5-fav-emoji">🥗</span><span class="t5-fav-name">Šopska salata</span></div>
+                </div>
+              </div>
+
+              <!-- Postavke -->
+              <div class="t5-section">
+                <div class="t5-section-head">
+                  <span class="t5-section-title">POSTAVKE</span>
+                </div>
+                <div class="t5-toggle-row">
+                  <span class="t5-toggle-icon">🔔</span>
+                  <div>
+                    <div class="t5-toggle-label">Notifikacije</div>
+                    <div class="t5-toggle-sub">Novi eventi i kvizovi</div>
+                  </div>
+                  <div class="t5-toggle on" id="t5-notif" onclick="t5ToggleSetting('notif')"></div>
+                </div>
+                <div class="t5-toggle-row">
+                  <span class="t5-toggle-icon">📍</span>
+                  <div>
+                    <div class="t5-toggle-label">Lokacija</div>
+                    <div class="t5-toggle-sub">Za pronalazak ćevabdžinica</div>
+                  </div>
+                  <div class="t5-toggle on" id="t5-loc" onclick="t5ToggleSetting('loc')"></div>
+                </div>
+                <div class="t5-toggle-row">
+                  <span class="t5-toggle-icon">📶</span>
+                  <div>
+                    <div class="t5-toggle-label">Offline mode</div>
+                    <div class="t5-toggle-sub">Spremi recepte lokalno</div>
+                  </div>
+                  <div class="t5-toggle" id="t5-offline" onclick="t5ToggleSetting('offline')"></div>
+                </div>
+                <div class="t5-toggle-row">
+                  <span class="t5-toggle-icon">🔐</span>
+                  <div>
+                    <div class="t5-toggle-label">Privatni profil</div>
+                    <div class="t5-toggle-sub">Sakrij aktivnost od zajednice</div>
+                  </div>
+                  <div class="t5-toggle" id="t5-priv" onclick="t5ToggleSetting('priv')"></div>
+                </div>
+              </div>
+
+              <!-- Odjava -->
+              <button class="t5-logout-btn" onclick="t5Logout()">
+                <span>🚪</span> Odjavi se
+              </button>
+
+            </div>
+          </div>
+          <!-- HTML-TAB5-END -->
+        </div>
       </div><!-- /tab-content -->
 
       <!-- Tab Bar -->
@@ -4598,6 +4946,110 @@ document.addEventListener('click', function(e) {
 
 }());
 /* === JS-TAB4-END === */
+
+  /* === JS-TAB5-START === */
+(function() {
+
+  const AVATARS = ['🧑‍🍳','👨‍🍳','👩‍🍳','🧔','👱','🧕','🧑','👴','👵','🧑‍🦱','🧑‍🦰','🧑‍🦳','🧑‍🦲','🦸','🧙','🥷','🤠','😎','🤓','🧑‍💼'];
+
+  const PREFS = {
+    cevap:    { title: 'Tip ćevapa',     options: ['Tanak, dimljeni ćevap','Deblji, sočni ćevap','Mix (tanak+debeli)','Pileći ćevap','Janjeći ćevap'] },
+    lokacija: { title: 'Lokacija',       options: ['Sarajevo, BiH','Mostar, BiH','Banja Luka, BiH','Tuzla, BiH','Zenica, BiH','Dijaspora'] },
+    jezik:    { title: 'Jezik',          options: ['Bosanski','Hrvatski','Srpski','English','Deutsch','Türkçe'] },
+    prilog:   { title: 'Omiljeni prilog',options: ['Svježi luk + kajmak','Luk + ajvar','Samo luk','Kajmak + pavlaka','Bez priloga'] },
+  };
+
+  let state = {
+    avatar: '🧑‍🍳',
+    bio: 'Strastveni ljubitelj ćevapa iz Sarajeva. Preferiram tanak ćevap sa svježim lukom i kajmakom. Svake subote obilazim novu ćevabdžinicu! 🥩',
+    prefs: { cevap: 'Tanak, dimljeni ćevap', lokacija: 'Sarajevo, BiH', jezik: 'Bosanski', prilog: 'Svježi luk + kajmak' },
+    settings: { notif: true, loc: true, offline: false, priv: false },
+  };
+
+  window.t5OpenAvatarPicker = function() {
+    const grid = document.getElementById('t5-picker-grid');
+    grid.innerHTML = AVATARS.map(e =>
+      `<div class="t5-picker-emoji${e === state.avatar ? ' selected' : ''}" onclick="t5PickAvatar('${e}')">${e}</div>`
+    ).join('');
+    document.getElementById('t5-avatar-modal').classList.add('open');
+  };
+
+  window.t5CloseAvatarPicker = function(e) {
+    if (e.target === document.getElementById('t5-avatar-modal'))
+      document.getElementById('t5-avatar-modal').classList.remove('open');
+  };
+
+  window.t5PickAvatar = function(emoji) {
+    state.avatar = emoji;
+    document.getElementById('t5-avatar').textContent = emoji;
+    document.getElementById('t5-avatar-modal').classList.remove('open');
+  };
+
+  window.t5ToggleBioEdit = function() {
+    const display = document.getElementById('t5-bio-display');
+    const edit    = document.getElementById('t5-bio-edit');
+    const input   = document.getElementById('t5-bio-input');
+    const showing = edit.style.display === 'none';
+    if (showing) {
+      input.value = state.bio;
+      display.style.display = 'none';
+      edit.style.display = 'block';
+    } else {
+      display.style.display = 'block';
+      edit.style.display = 'none';
+    }
+  };
+
+  window.t5SaveBio = function() {
+    const input = document.getElementById('t5-bio-input');
+    state.bio = input.value.trim() || state.bio;
+    document.getElementById('t5-bio-display').textContent = state.bio;
+    document.getElementById('t5-bio-edit').style.display = 'none';
+    document.getElementById('t5-bio-display').style.display = 'block';
+  };
+
+  window.t5EditPref = function(key) {
+    const cfg = PREFS[key];
+    const current = state.prefs[key];
+    const existing = document.getElementById('t5-pref-sheet');
+    if (existing) existing.remove();
+    const sheet = document.createElement('div');
+    sheet.id = 't5-pref-sheet';
+    sheet.style.cssText = 'position:absolute;inset:0;background:rgba(44,26,14,0.55);z-index:300;display:flex;align-items:flex-end;';
+    sheet.innerHTML = `
+      <div style="width:100%;background:#fff;border-radius:28px 28px 0 0;padding:20px 20px 40px;" onclick="event.stopPropagation()">
+        <div style="text-align:center;font-size:10px;font-weight:700;letter-spacing:1.5px;color:var(--brown3);margin-bottom:14px;">${cfg.title.toUpperCase()}</div>
+        ${cfg.options.map(o => `
+          <div onclick="t5SetPref('${key}','${o}')" style="padding:13px 16px;border-radius:12px;font-size:14px;font-weight:600;color:var(--brown);background:${o===current?'var(--cream2)':'transparent'};margin-bottom:4px;cursor:pointer;">${o===current?'✓ ':' &nbsp; '}${o}</div>
+        `).join('')}
+      </div>`;
+    sheet.addEventListener('click', () => sheet.remove());
+    document.querySelector('.app-shell').appendChild(sheet);
+  };
+
+  window.t5SetPref = function(key, val) {
+    state.prefs[key] = val;
+    document.getElementById('t5-pref-' + key).textContent = val;
+    const sheet = document.getElementById('t5-pref-sheet');
+    if (sheet) sheet.remove();
+  };
+
+  window.t5ToggleSetting = function(key) {
+    state.settings[key] = !state.settings[key];
+    const el = document.getElementById('t5-' + key);
+    el.classList.toggle('on', state.settings[key]);
+  };
+
+  window.t5Logout = function() {
+    if (confirm('Stvarno se odjavljuješ?')) {
+      document.getElementById('main-app').style.display = 'none';
+      document.getElementById('auth-screen').style.display = 'flex';
+    }
+  };
+
+}());
+/* === JS-TAB5-END === */
+
 </script>
 </body>
 </html>
