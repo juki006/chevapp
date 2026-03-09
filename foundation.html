@@ -1378,7 +1378,6 @@ a {
   opacity: 0.4; transition: opacity var(--transition);
 }
 .t2-save-btn.saved { opacity: 1; }
-
 /* ── Kalkulator ── */
 .t2-kalkulator {
   margin: 16px 16px 0;
@@ -1552,10 +1551,440 @@ a {
 
 /* === CSS-TAB2-END === */
    Tab 3 — Akademija  → // CSS-TAB3-START / END
-   Tab 4 — Zajednica  → // CSS-TAB4-START / END
+
+/* === CSS-TAB3-START === */
+
+/* ── Daily word ── */
+.t3-daily {
+  margin: 14px 16px 0; cursor: pointer;
+  background: var(--cream2); border-radius: var(--radius-lg);
+  border: 1px solid var(--cream3); overflow: hidden;
+}
+.t3-daily-top { padding: 14px; }
+.t3-daily-lbl {
+  font-size: 9px; font-weight: 800; letter-spacing: 1.4px; font-family: var(--font-mono);
+  color: var(--brown3); margin-bottom: 6px; display: flex; gap: 6px; align-items: center;
+}
+.t3-daily-lbl span { color: var(--cream3); }
+.t3-daily-rijec { font-family: var(--font-title); font-size: 26px; font-weight: 700; color: var(--brown); margin-bottom: 2px; }
+.t3-daily-sub { font-size: 12px; color: var(--brown3); display: flex; align-items: center; gap: 6px; }
+.t3-daily-arrow { transition: transform 0.25s; display: inline-block; }
+.t3-daily.open .t3-daily-arrow { transform: rotate(90deg); }
+.t3-daily-expand {
+  max-height: 0; overflow: hidden; transition: max-height 0.35s ease, padding 0.35s;
+  padding: 0 14px;
+}
+.t3-daily.open .t3-daily-expand { max-height: 200px; padding: 0 14px 14px; }
+.t3-daily-opis {
+  font-size: 13px; color: var(--brown); line-height: 1.6;
+  border-top: 1px solid var(--cream3); padding-top: 12px;
+}
+.t3-daily-tagovi { display: flex; gap: 6px; margin-top: 8px; flex-wrap: wrap; }
+.t3-daily-tag {
+  padding: 3px 9px; background: var(--white); border-radius: 20px;
+  font-size: 11px; font-weight: 700; color: var(--brown3);
+}
+
+/* ── Stats row ── */
+.t3-stats-row { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin: 10px 16px 0; }
+.t3-stat-card {
+  background: linear-gradient(135deg, var(--orange), var(--red));
+  border-radius: var(--radius-md); padding: 14px; position: relative; overflow: hidden;
+}
+.t3-stat-card.xp-card { background: linear-gradient(135deg, #2D5A27, #1A3A16); }
+.t3-stat-val { font-family: var(--font-mono); font-size: 32px; font-weight: 800; color: var(--white); line-height: 1; }
+.t3-stat-lbl { font-size: 9px; font-weight: 800; text-transform: uppercase; letter-spacing: 1px; color: rgba(255,255,255,0.7); font-family: var(--font-mono); margin-top: 3px; }
+.t3-stat-icon { position: absolute; right: 10px; top: 10px; font-size: 28px; opacity: 0.25; }
+
+/* ── Rang kartica ── */
+.t3-rank-card {
+  margin: 10px 16px 0; background: var(--cream2);
+  border-radius: var(--radius-lg); padding: 14px; border: 1px solid var(--cream3);
+}
+.t3-rank-top { display: flex; align-items: center; gap: 10px; margin-bottom: 8px; }
+.t3-rank-emoji { font-size: 36px; flex-shrink: 0; }
+.t3-rank-title { font-family: var(--font-title); font-size: 18px; font-weight: 700; color: var(--brown); }
+.t3-rank-next { font-size: 11px; color: var(--brown3); }
+.t3-rank-bar-wrap { height: 8px; background: var(--cream3); border-radius: 4px; overflow: hidden; margin-bottom: 6px; }
+.t3-rank-bar-fill { height: 100%; border-radius: 4px; background: linear-gradient(90deg, var(--orange), var(--red)); transition: width 0.8s cubic-bezier(.4,0,.2,1); }
+.t3-rank-bar-lbls { display: flex; justify-content: space-between; font-size: 10px; font-weight: 700; font-family: var(--font-mono); color: var(--brown3); }
+
+/* ── Sekcija label ── */
+.t3-section-lbl {
+  font-size: 11px; font-weight: 800; text-transform: uppercase; letter-spacing: 1px;
+  color: var(--brown3); font-family: var(--font-mono); padding: 16px 16px 8px;
+}
+
+/* ── Modul kartice ── */
+.t3-modul-list { display: flex; flex-direction: column; gap: 8px; padding: 0 16px; }
+.t3-modul-card {
+  display: flex; align-items: center; gap: 12px;
+  background: var(--cream2); border-radius: var(--radius-md); padding: 12px;
+  border: 1px solid var(--cream3); cursor: pointer; transition: opacity 0.15s;
+}
+.t3-modul-card.locked { opacity: 0.55; cursor: not-allowed; }
+.t3-modul-card:not(.locked):active { transform: scale(0.98); }
+.t3-modul-icon {
+  width: 40px; height: 40px; border-radius: var(--radius-sm);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 20px; flex-shrink: 0;
+}
+.t3-modul-info { flex: 1; min-width: 0; }
+.t3-modul-naziv { font-size: 14px; font-weight: 700; color: var(--brown); }
+.t3-modul-opis { font-size: 11px; color: var(--brown3); }
+.t3-modul-right { display: flex; flex-direction: column; align-items: flex-end; gap: 6px; flex-shrink: 0; }
+.t3-modul-xp { font-size: 11px; font-weight: 800; color: var(--orange); font-family: var(--font-mono); }
+.t3-modul-status {
+  width: 28px; height: 28px; border-radius: 6px;
+  display: flex; align-items: center; justify-content: center; font-size: 14px;
+}
+.t3-modul-status.done { background: #2D5A27; }
+.t3-modul-status.avail { background: var(--brown3); }
+.t3-modul-status.lock { background: var(--cream3); }
+
+/* ── Games grid ── */
+.t3-games-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; padding: 0 16px; }
+.t3-game-card {
+  border-radius: var(--radius-md); padding: 14px; cursor: pointer;
+  position: relative; overflow: hidden; transition: transform 0.15s;
+  min-height: 110px;
+}
+.t3-game-card:active { transform: scale(0.96); }
+.t3-game-card.coming { opacity: 0.5; cursor: not-allowed; }
+.t3-game-xp {
+  position: absolute; top: 10px; right: 10px;
+  font-size: 10px; font-weight: 800; font-family: var(--font-mono);
+  color: rgba(255,255,255,0.8);
+}
+.t3-game-emoji { font-size: 32px; display: block; margin-bottom: 6px; }
+.t3-game-naziv { font-size: 14px; font-weight: 700; color: var(--white); margin-bottom: 2px; }
+.t3-game-sub { font-size: 9px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.8px; color: rgba(255,255,255,0.6); }
+.t3-game-soon {
+  position: absolute; top: 10px; left: 10px;
+  background: rgba(255,255,255,0.15); color: rgba(255,255,255,0.8);
+  font-size: 8px; font-weight: 800; letter-spacing: 0.8px; font-family: var(--font-mono);
+  padding: 2px 6px; border-radius: 10px;
+}
+
+/* ══════════════════════════════════════════
+   KVIZ SCREEN
+   ══════════════════════════════════════════ */
+#t3-quiz { z-index: 200; }
+.t3-quiz-header {
+  flex-shrink: 0; padding: 52px 16px 16px;
+  background: var(--cream); border-bottom: 1px solid var(--cream3);
+}
+.t3-quiz-back {
+  position: absolute; top: 48px; left: 16px;
+  width: 36px; height: 36px; background: var(--cream2); border-radius: 50%;
+  display: flex; align-items: center; justify-content: center; font-size: 18px;
+  box-shadow: var(--shadow-sm);
+}
+.t3-quiz-meta { padding-left: 44px; }
+.t3-quiz-modul { font-size: 11px; font-weight: 700; color: var(--brown3); font-family: var(--font-mono); margin-bottom: 2px; }
+.t3-quiz-progress-bar { height: 4px; background: var(--cream3); border-radius: 2px; overflow: hidden; margin-top: 12px; }
+.t3-quiz-progress-fill { height: 100%; background: linear-gradient(90deg, var(--orange), var(--red)); border-radius: 2px; transition: width 0.3s; }
+.t3-quiz-qnum { font-size: 12px; font-weight: 700; color: var(--brown3); font-family: var(--font-mono); margin-top: 4px; }
+
+.t3-quiz-body { flex: 1; overflow-y: auto; padding: 20px 16px 32px; scrollbar-width: none; }
+.t3-quiz-body::-webkit-scrollbar { display: none; }
+
+.t3-quiz-q {
+  font-family: var(--font-title); font-size: 20px; font-weight: 700;
+  color: var(--brown); margin-bottom: 20px; line-height: 1.35;
+}
+.t3-quiz-options { display: flex; flex-direction: column; gap: 10px; }
+.t3-quiz-opt {
+  width: 100%; padding: 14px 16px; text-align: left;
+  background: var(--cream2); border: 2px solid var(--cream3);
+  border-radius: var(--radius-md); font-size: 14px; font-weight: 600; color: var(--brown);
+  transition: all 0.2s; cursor: pointer;
+  display: flex; align-items: center; justify-content: space-between;
+}
+.t3-quiz-opt:not([disabled]):active { transform: scale(0.98); }
+.t3-quiz-opt.correct { background: #1A3A16; border-color: #2D5A27; color: var(--white); }
+.t3-quiz-opt.wrong   { background: #3A1A1A; border-color: var(--red);   color: var(--white); }
+.t3-quiz-opt .opt-icon { font-size: 18px; opacity: 0; transition: opacity 0.2s; }
+.t3-quiz-opt.correct .opt-icon, .t3-quiz-opt.wrong .opt-icon { opacity: 1; }
+.t3-quiz-feedback {
+  margin-top: 14px; padding: 12px; border-radius: var(--radius-sm);
+  font-size: 13px; font-weight: 600; text-align: center;
+  opacity: 0; transition: opacity 0.2s;
+}
+.t3-quiz-feedback.show { opacity: 1; }
+.t3-quiz-feedback.ok { background: #1A3A1622; color: #2D5A27; }
+.t3-quiz-feedback.no { background: #3A1A1A22; color: var(--red); }
+.t3-quiz-next {
+  width: 100%; padding: 14px; margin-top: 16px;
+  background: linear-gradient(135deg, var(--red), var(--orange));
+  color: var(--white); border-radius: var(--radius-md);
+  font-size: 15px; font-weight: 800; opacity: 0; pointer-events: none;
+  transition: opacity 0.3s;
+}
+.t3-quiz-next.show { opacity: 1; pointer-events: auto; }
+
+/* Quiz results */
+.t3-quiz-result { padding: 32px 16px; text-align: center; }
+.t3-quiz-result-emoji { font-size: 64px; margin-bottom: 12px; }
+.t3-quiz-result-title { font-family: var(--font-title); font-size: 26px; font-weight: 700; color: var(--brown); margin-bottom: 6px; }
+.t3-quiz-result-sub { font-size: 14px; color: var(--brown3); margin-bottom: 20px; }
+.t3-quiz-result-xp {
+  display: inline-flex; align-items: center; gap: 6px;
+  background: linear-gradient(135deg, var(--orange), var(--red));
+  color: var(--white); padding: 10px 20px; border-radius: var(--radius-md);
+  font-size: 16px; font-weight: 800; margin-bottom: 20px;
+}
+.t3-quiz-result-score {
+  background: var(--cream2); border-radius: var(--radius-md);
+  padding: 14px; font-size: 13px; color: var(--brown); margin-bottom: 16px;
+  line-height: 1.8; font-family: var(--font-mono);
+}
+.t3-quiz-close {
+  width: 100%; padding: 14px;
+  background: var(--cream2); border: 2px solid var(--cream3);
+  color: var(--brown); border-radius: var(--radius-md);
+  font-size: 14px; font-weight: 700;
+}
+
+/* ══════════════════════════════════════════
+   MEMORY GAME SCREEN
+   ══════════════════════════════════════════ */
+#t3-memory { z-index: 200; background: var(--cream); }
+.t3-mem-header {
+  flex-shrink: 0; padding: 52px 16px 12px;
+  background: var(--cream); border-bottom: 1px solid var(--cream3);
+  display: flex; align-items: center; justify-content: space-between;
+}
+.t3-mem-back {
+  width: 36px; height: 36px; background: var(--cream2); border-radius: 50%;
+  display: flex; align-items: center; justify-content: center; font-size: 18px;
+  box-shadow: var(--shadow-sm);
+}
+.t3-mem-title { font-family: var(--font-title); font-size: 18px; font-weight: 700; color: var(--brown); }
+.t3-mem-stats { display: flex; gap: 12px; }
+.t3-mem-stat { text-align: center; }
+.t3-mem-stat-val { font-size: 16px; font-weight: 800; font-family: var(--font-mono); color: var(--brown); }
+.t3-mem-stat-lbl { font-size: 9px; font-weight: 700; text-transform: uppercase; font-family: var(--font-mono); color: var(--brown3); letter-spacing: 0.6px; }
+
+.t3-mem-grid {
+  display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px;
+  padding: 14px 16px 24px; overflow-y: auto; flex: 1; align-content: start;
+}
+.t3-mem-card {
+  aspect-ratio: 1; border-radius: var(--radius-sm);
+  cursor: pointer; perspective: 500px; position: relative;
+}
+.t3-mem-card-inner {
+  width: 100%; height: 100%; position: relative;
+  transform-style: preserve-3d; transition: transform 0.35s ease;
+  border-radius: var(--radius-sm);
+}
+.t3-mem-card.flipped .t3-mem-card-inner { transform: rotateY(180deg); }
+.t3-mem-card.matched .t3-mem-card-inner { transform: rotateY(180deg); }
+.t3-mem-card-front, .t3-mem-card-back {
+  position: absolute; inset: 0; border-radius: var(--radius-sm);
+  display: flex; align-items: center; justify-content: center;
+  backface-visibility: hidden; -webkit-backface-visibility: hidden;
+}
+.t3-mem-card-front { background: var(--brown); font-size: 22px; }
+.t3-mem-card-back { background: var(--cream2); font-size: 28px; transform: rotateY(180deg); border: 2px solid var(--cream3); }
+.t3-mem-card.matched .t3-mem-card-back { background: #1A3A16; border-color: #2D5A27; }
+
+/* Win overlay */
+.t3-mem-win {
+  position: absolute; inset: 0; background: rgba(0,0,0,0.85);
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  gap: 12px; z-index: 10; opacity: 0; pointer-events: none; transition: opacity 0.4s;
+  border-radius: var(--radius-lg);
+}
+.t3-mem-win.show { opacity: 1; pointer-events: auto; }
+.t3-mem-win-title { font-family: var(--font-title); font-size: 28px; font-weight: 700; color: var(--white); }
+.t3-mem-win-sub { font-size: 13px; color: rgba(255,255,255,0.7); }
+.t3-mem-win-xp { font-size: 20px; font-weight: 800; color: var(--orange); font-family: var(--font-mono); }
+.t3-mem-win-btn { padding: 12px 28px; background: linear-gradient(135deg, var(--red), var(--orange)); color: var(--white); border-radius: var(--radius-md); font-size: 14px; font-weight: 700; }
+
+/* ══════════════════════════════════════════
+   ROŠTILJ PANIC SCREEN
+   ══════════════════════════════════════════ */
+#t3-panic { z-index: 200; background: #1A0A00; }
+.t3-panic-header {
+  flex-shrink: 0; padding: 52px 16px 12px;
+  display: flex; align-items: center; justify-content: space-between;
+}
+.t3-panic-back {
+  width: 36px; height: 36px; background: rgba(255,255,255,0.1);
+  border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 18px;
+}
+.t3-panic-title { font-family: var(--font-title); font-size: 18px; font-weight: 700; color: var(--white); }
+.t3-panic-score-wrap { text-align: right; }
+.t3-panic-score-val { font-size: 22px; font-weight: 800; color: var(--orange); font-family: var(--font-mono); }
+.t3-panic-score-lbl { font-size: 9px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.8px; color: rgba(255,255,255,0.4); font-family: var(--font-mono); }
+
+.t3-panic-body { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 0 20px; }
+.t3-panic-grill {
+  display: grid; grid-template-columns: repeat(3,1fr); gap: 12px;
+  width: 100%; max-width: 320px;
+}
+.t3-panic-cell {
+  aspect-ratio: 1; border-radius: 12px;
+  background: rgba(255,255,255,0.06); border: 2px solid rgba(255,255,255,0.08);
+  display: flex; align-items: center; justify-content: center; cursor: pointer;
+  position: relative; overflow: hidden; transition: transform 0.1s;
+  font-size: 36px;
+}
+.t3-panic-cell:active { transform: scale(0.9); }
+.t3-panic-cell.empty { cursor: default; }
+.t3-panic-cell.active { border-color: rgba(255,120,0,0.4); background: rgba(255,80,0,0.08); }
+.t3-panic-cell.burned { border-color: rgba(255,0,0,0.6); background: rgba(255,0,0,0.1); }
+.t3-panic-burn-bar {
+  position: absolute; bottom: 0; left: 0; right: 0; height: 4px;
+  background: var(--orange); transform-origin: left;
+  transition: none;
+}
+
+.t3-panic-overlay {
+  position: absolute; inset: 0; background: rgba(0,0,0,0.9);
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  gap: 12px; z-index: 10; opacity: 0; pointer-events: none; transition: opacity 0.3s;
+}
+.t3-panic-overlay.show { opacity: 1; pointer-events: auto; }
+.t3-panic-ov-emoji { font-size: 56px; }
+.t3-panic-ov-title { font-family: var(--font-title); font-size: 26px; font-weight: 700; color: var(--white); }
+.t3-panic-ov-sub { font-size: 13px; color: rgba(255,255,255,0.6); }
+.t3-panic-ov-xp { font-size: 18px; font-weight: 800; color: var(--orange); font-family: var(--font-mono); }
+.t3-panic-ov-btn { padding: 12px 28px; background: linear-gradient(135deg, var(--red), var(--orange)); color: var(--white); border-radius: var(--radius-md); font-size: 14px; font-weight: 700; }
+.t3-panic-ov-close { font-size: 12px; color: rgba(255,255,255,0.4); text-decoration: underline; }
+
+/* === CSS-TAB3-END === */
+
    Tab 6 — Profil     → // CSS-TAB6-START / END
    Overlays/Glazba    → // CSS-OVERLAYS-START / END
    ========================================= */
+
+/* === CSS-TAB4-START === */
+
+/* Header */
+.t4-header { display: flex; align-items: center; justify-content: space-between; padding: 20px 20px 0; }
+.t4-title { font-family: var(--font-title); font-size: 28px; color: var(--brown); font-style: italic; }
+.t4-biser-btn { background: linear-gradient(135deg, var(--red), var(--orange)); color: var(--white); border-radius: var(--radius-md); padding: 8px 18px; font-size: 13px; font-weight: 700; }
+
+/* Sub-nav */
+.t4-subnav { display: flex; gap: 6px; padding: 14px 16px 12px; overflow-x: auto; scrollbar-width: none; }
+.t4-subnav::-webkit-scrollbar { display: none; }
+.t4-subnav-btn { display: flex; flex-direction: column; align-items: center; gap: 3px; min-width: 60px; padding: 8px 10px; border-radius: var(--radius-md); background: var(--cream2); color: var(--brown3); font-size: 10px; font-weight: 700; letter-spacing: 0.5px; transition: all var(--transition); flex-shrink: 0; }
+.t4-subnav-btn span { font-size: 16px; }
+.t4-subnav-btn.active { background: var(--red); color: var(--white); }
+
+/* Panels */
+.t4-panel { display: none; }
+.t4-panel.active { display: block; }
+.t4-scroll { overflow-y: auto; height: calc(100% - 140px); padding: 0 16px 20px; scrollbar-width: none; }
+.t4-scroll::-webkit-scrollbar { display: none; }
+
+/* --- OBJAVE --- */
+.t4-post { background: var(--white); border-radius: var(--radius-lg); margin-bottom: 14px; overflow: hidden; box-shadow: var(--shadow-sm); }
+.t4-post-head { display: flex; align-items: center; gap: 10px; padding: 12px 14px; }
+.t4-avatar { width: 38px; height: 38px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 18px; flex-shrink: 0; }
+.t4-post-meta { flex: 1; }
+.t4-post-user { font-size: 13px; font-weight: 700; color: var(--brown); display: flex; align-items: center; gap: 6px; flex-wrap: wrap; }
+.t4-post-rank { display: inline-block; padding: 2px 8px; border-radius: 20px; font-size: 10px; font-weight: 700; }
+.t4-rank-majstor { background: #FFF0DC; color: var(--orange); }
+.t4-rank-iskusni { background: #F0F0FF; color: #6666CC; }
+.t4-rank-ugljeni { background: #FFE8E8; color: var(--red); }
+.t4-rank-redoviti { background: #E8F5E8; color: var(--green2); }
+.t4-post-time { font-size: 11px; color: var(--brown3); }
+.t4-post-banner { height: 140px; display: flex; align-items: flex-end; padding: 12px; position: relative; overflow: hidden; }
+.t4-post-banner-emoji { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -60%); font-size: 52px; opacity: 0.9; }
+.t4-post-resto { font-family: var(--font-title); font-size: 20px; color: var(--white); font-weight: 700; text-shadow: 0 2px 8px rgba(0,0,0,0.4); z-index: 1; }
+.t4-post-body { padding: 12px 14px; }
+.t4-post-rating { display: flex; align-items: center; gap: 6px; margin-bottom: 8px; }
+.t4-post-stars { display: flex; gap: 2px; }
+.t4-star { font-size: 13px; }
+.t4-post-score { font-size: 12px; font-weight: 700; color: var(--orange); font-family: var(--font-mono); }
+.t4-post-style { font-size: 10px; font-weight: 700; letter-spacing: 1px; color: var(--brown3); }
+.t4-post-text { font-size: 13px; line-height: 1.6; color: var(--brown2); margin-bottom: 12px; }
+.t4-post-actions { display: flex; gap: 8px; border-top: 1px solid var(--cream2); padding-top: 10px; }
+.t4-action-btn { display: flex; align-items: center; gap: 5px; padding: 6px 12px; background: var(--cream); border-radius: 20px; font-size: 12px; font-weight: 600; color: var(--brown3); }
+.t4-action-btn.liked { background: #FFF0DC; color: var(--orange); }
+
+/* --- BISERI --- */
+.t4-section-label { font-size: 10px; font-weight: 700; letter-spacing: 1.5px; color: var(--brown3); padding: 4px 0 10px; display: block; }
+.t4-gems-scroll { display: flex; gap: 10px; overflow-x: auto; scrollbar-width: none; margin-bottom: 20px; padding-bottom: 4px; }
+.t4-gems-scroll::-webkit-scrollbar { display: none; }
+.t4-gem-card { flex-shrink: 0; width: 120px; background: var(--white); border-radius: var(--radius-md); padding: 12px; box-shadow: var(--shadow-sm); position: relative; }
+.t4-gem-icon { font-size: 36px; text-align: center; margin-bottom: 8px; display: block; }
+.t4-gem-name { font-size: 13px; font-weight: 700; color: var(--brown); margin-bottom: 2px; }
+.t4-gem-loc { font-size: 10px; font-weight: 700; letter-spacing: 0.5px; color: var(--brown3); text-transform: uppercase; }
+.t4-gem-badge { position: absolute; top: 8px; right: 8px; font-size: 14px; }
+.t4-vote-card { background: var(--white); border-radius: var(--radius-md); padding: 14px; box-shadow: var(--shadow-sm); margin-bottom: 12px; transition: opacity var(--transition); }
+.t4-vote-head { display: flex; align-items: center; gap: 10px; margin-bottom: 8px; }
+.t4-vote-emoji { font-size: 28px; }
+.t4-vote-name { font-size: 15px; font-weight: 700; color: var(--brown); }
+.t4-vote-sub { font-size: 11px; color: var(--brown3); }
+.t4-vote-quote { font-size: 12px; font-style: italic; color: var(--brown2); margin-bottom: 12px; line-height: 1.5; }
+.t4-vote-btns { display: flex; gap: 8px; }
+.t4-vote-odobri { flex: 1; padding: 10px; background: #E8F5E8; color: var(--green2); border-radius: var(--radius-sm); font-size: 13px; font-weight: 700; }
+.t4-vote-odbij { flex: 1; padding: 10px; background: #FFE8E8; color: var(--red); border-radius: var(--radius-sm); font-size: 13px; font-weight: 700; }
+
+/* --- DOGAĐAJI --- */
+.t4-event-card { background: var(--white); border-radius: var(--radius-md); padding: 14px; box-shadow: var(--shadow-sm); margin-bottom: 10px; }
+.t4-event-date { font-size: 10px; font-weight: 700; letter-spacing: 1px; color: var(--brown3); margin-bottom: 6px; }
+.t4-event-name { font-size: 16px; font-weight: 700; color: var(--brown); margin-bottom: 10px; }
+.t4-event-tags { display: flex; gap: 6px; flex-wrap: wrap; }
+.t4-event-tag { padding: 4px 10px; border-radius: 20px; font-size: 11px; font-weight: 600; }
+.t4-tag-plus { background: #FFF0DC; color: var(--orange); }
+.t4-tag-loc { background: var(--cream2); color: var(--brown3); }
+.t4-tag-free { background: #E8F5E8; color: var(--green2); }
+
+/* --- RANG --- */
+.t4-rang-header { font-size: 10px; font-weight: 700; letter-spacing: 1.5px; color: var(--brown3); padding: 4px 0 12px; display: block; }
+.t4-rang-row { display: flex; align-items: center; gap: 12px; background: var(--white); border-radius: var(--radius-md); padding: 12px 14px; margin-bottom: 8px; box-shadow: var(--shadow-sm); }
+.t4-rang-pos { width: 24px; font-size: 18px; text-align: center; flex-shrink: 0; }
+.t4-rang-pos.num { font-size: 14px; font-weight: 800; color: var(--brown3); font-family: var(--font-mono); }
+.t4-rang-avatar { width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 20px; flex-shrink: 0; }
+.t4-rang-info { flex: 1; }
+.t4-rang-name { font-size: 14px; font-weight: 700; color: var(--brown); }
+.t4-rang-you { font-size: 11px; color: var(--orange); font-weight: 700; margin-left: 4px; }
+.t4-rang-title { font-size: 11px; color: var(--brown3); }
+.t4-rang-xp { font-size: 14px; font-weight: 800; color: var(--orange); font-family: var(--font-mono); white-space: nowrap; }
+
+/* --- DNEVNIK --- */
+.t4-stats-banner { background: linear-gradient(135deg, var(--orange), var(--red)); border-radius: var(--radius-lg); padding: 20px; margin-bottom: 16px; color: var(--white); }
+.t4-stats-year { font-size: 10px; font-weight: 700; letter-spacing: 1.5px; opacity: 0.8; margin-bottom: 4px; }
+.t4-stats-count { font-size: 38px; font-weight: 900; font-family: var(--font-title); line-height: 1; }
+.t4-stats-label { font-size: 20px; font-style: italic; font-family: var(--font-title); opacity: 0.9; margin-bottom: 16px; }
+.t4-stats-row { display: flex; gap: 24px; }
+.t4-stats-num { font-size: 20px; font-weight: 900; font-family: var(--font-mono); }
+.t4-stats-key { font-size: 9px; font-weight: 700; letter-spacing: 1px; opacity: 0.75; text-transform: uppercase; }
+.t4-taste-section { background: var(--white); border-radius: var(--radius-lg); padding: 16px; margin-bottom: 14px; box-shadow: var(--shadow-sm); }
+.t4-taste-label { font-size: 10px; font-weight: 700; letter-spacing: 1.5px; color: var(--brown3); margin-bottom: 12px; }
+.t4-taste-row { display: flex; align-items: center; gap: 10px; margin-bottom: 10px; }
+.t4-taste-name { font-size: 13px; font-weight: 600; color: var(--brown2); width: 90px; flex-shrink: 0; }
+.t4-taste-bar-bg { flex: 1; height: 8px; background: var(--cream2); border-radius: 4px; overflow: hidden; }
+.t4-taste-bar { height: 100%; border-radius: 4px; transition: width 0.8s ease; }
+.t4-taste-pct { font-size: 12px; font-weight: 700; color: var(--brown3); font-family: var(--font-mono); width: 34px; text-align: right; }
+.t4-taste-type { font-size: 13px; color: var(--brown2); margin-top: 6px; }
+.t4-taste-type strong { color: var(--brown); }
+.t4-spotify-section { background: var(--white); border-radius: var(--radius-lg); padding: 16px; margin-bottom: 14px; box-shadow: var(--shadow-sm); }
+.t4-spotify-label { font-size: 10px; font-weight: 700; letter-spacing: 1.5px; color: var(--brown3); margin-bottom: 12px; }
+.t4-playlist-card { display: flex; align-items: center; gap: 12px; padding: 10px 0; border-bottom: 1px solid var(--cream2); }
+.t4-playlist-card:last-child { border-bottom: none; padding-bottom: 0; }
+.t4-playlist-art { width: 48px; height: 48px; border-radius: var(--radius-sm); display: flex; align-items: center; justify-content: center; font-size: 22px; flex-shrink: 0; }
+.t4-playlist-info { flex: 1; min-width: 0; }
+.t4-playlist-name { font-size: 14px; font-weight: 700; color: var(--brown); margin-bottom: 2px; }
+.t4-playlist-meta { font-size: 11px; color: var(--brown3); margin-bottom: 2px; }
+.t4-playlist-artists { font-size: 11px; color: var(--brown3); opacity: 0.8; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.t4-play-btn { width: 36px; height: 36px; border-radius: 50%; background: var(--green); display: flex; align-items: center; justify-content: center; font-size: 13px; flex-shrink: 0; color: var(--white); }
+.t4-mapa-section { background: var(--white); border-radius: var(--radius-lg); padding: 16px; box-shadow: var(--shadow-sm); margin-bottom: 20px; }
+.t4-mapa-label { font-size: 10px; font-weight: 700; letter-spacing: 1.5px; color: var(--brown3); margin-bottom: 12px; }
+.t4-mapa-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+.t4-mapa-pin { background: var(--cream); border-radius: var(--radius-md); padding: 12px; display: flex; align-items: center; gap: 8px; }
+.t4-mapa-pin-emoji { font-size: 22px; }
+.t4-mapa-pin-city { font-size: 13px; font-weight: 700; color: var(--brown); }
+.t4-mapa-pin-count { font-size: 11px; color: var(--brown3); }
+.t4-mapa-visited { font-size: 12px; color: var(--brown3); text-align: center; padding-top: 12px; }
+
+/* === CSS-TAB4-END === */
 
   </style>
 </head>
@@ -1825,33 +2254,524 @@ a {
 
         <!-- TAB 3: Akademija -->
         <div class="tab-pane" id="tab-akademija">
-          <!-- HTML-TAB3-START -->
-          <div class="tab-header">
-            <h2>🎓 Akademija</h2>
-            <p>Učenje i mini igre</p>
+                    <!-- HTML-TAB3-START -->
+
+          <!-- Sticky -->
+          <div class="t2-sticky">
+            <div class="t2-title">The <em>Akademija</em></div>
           </div>
-          <div class="tab-scroll">
-            <div style="padding:20px;text-align:center;color:var(--brown3);">
-              <p style="font-size:40px">🏗️</p>
-              <p>Tab 3 se učitava...</p>
+
+          <div class="tab-scroll" id="t3-scroll">
+
+            <!-- Riječ dana -->
+            <div class="t3-daily" id="t3-daily" onclick="t3ToggleDaily()">
+              <div class="t3-daily-top">
+                <div class="t3-daily-lbl" id="t3-daily-lbl"></div>
+                <div class="t3-daily-rijec" id="t3-daily-rijec"></div>
+                <div class="t3-daily-sub" id="t3-daily-sub"></div>
+              </div>
+              <div class="t3-daily-expand">
+                <div class="t3-daily-opis" id="t3-daily-opis"></div>
+                <div class="t3-daily-tagovi" id="t3-daily-tagovi"></div>
+              </div>
             </div>
+
+            <!-- Stats: Streak + XP -->
+            <div class="t3-stats-row">
+              <div class="t3-stat-card">
+                <div class="t3-stat-icon">🔥</div>
+                <div class="t3-stat-val" id="t3-streak">0</div>
+                <div class="t3-stat-lbl">DAN ZAREDOM</div>
+              </div>
+              <div class="t3-stat-card xp-card">
+                <div class="t3-stat-icon">⚡</div>
+                <div class="t3-stat-val" id="t3-xp">0</div>
+                <div class="t3-stat-lbl">UKUPNO BODOVA</div>
+              </div>
+            </div>
+
+            <!-- Rang kartica -->
+            <div class="t3-rank-card">
+              <div class="t3-rank-top">
+                <div class="t3-rank-emoji" id="t3-rank-emoji"></div>
+                <div>
+                  <div class="t3-rank-title" id="t3-rank-title"></div>
+                  <div class="t3-rank-next" id="t3-rank-next"></div>
+                </div>
+              </div>
+              <div class="t3-rank-bar-wrap">
+                <div class="t3-rank-bar-fill" id="t3-rank-bar" style="width:0%"></div>
+              </div>
+              <div class="t3-rank-bar-lbls">
+                <span id="t3-rank-curr-xp"></span>
+                <span id="t3-rank-next-xp"></span>
+              </div>
+            </div>
+
+            <!-- Moduli -->
+            <div class="t3-section-lbl">MODULI</div>
+            <div class="t3-modul-list" id="t3-modul-list"></div>
+
+            <!-- Igre -->
+            <div class="t3-section-lbl">ĆEVAP IGRE</div>
+            <div class="t3-games-grid">
+              <div class="t3-game-card coming" style="background:linear-gradient(135deg,#1A4A2A,#0D2A16)" onclick="showToast('Uskoro! 🐍')">
+                <div class="t3-game-soon">USKORO</div>
+                <div class="t3-game-xp">+50 XP</div>
+                <span class="t3-game-emoji">🐍</span>
+                <div class="t3-game-naziv">Ćevap Snake</div>
+                <div class="t3-game-sub">skupljaj · izbjegavaj kosti</div>
+              </div>
+              <div class="t3-game-card" style="background:linear-gradient(135deg,#1A3A4A,#0D2030)" onclick="t3StartMemory()">
+                <div class="t3-game-xp">+75 XP</div>
+                <span class="t3-game-emoji">🎴</span>
+                <div class="t3-game-naziv">Ćevap Memory</div>
+                <div class="t3-game-sub">pronađi parove · 4×5</div>
+              </div>
+              <div class="t3-game-card" style="background:linear-gradient(135deg,#4A1A0D,#2A0D00)" onclick="t3StartPanic()">
+                <div class="t3-game-xp">+60 XP</div>
+                <span class="t3-game-emoji">🔥</span>
+                <div class="t3-game-naziv">Roštilj Panic</div>
+                <div class="t3-game-sub">tapkaj · ne daj da izgore</div>
+              </div>
+              <div class="t3-game-card coming" style="background:linear-gradient(135deg,#1A2A4A,#0D1A30)" onclick="showToast('Uskoro! 🫓')">
+                <div class="t3-game-soon">USKORO</div>
+                <div class="t3-game-xp">+40 XP</div>
+                <span class="t3-game-emoji">🫓</span>
+                <div class="t3-game-naziv">Somun Flip</div>
+                <div class="t3-game-sub">timing · uhvati somun</div>
+              </div>
+            </div>
+
+            <div style="height:24px"></div>
           </div>
+
           <!-- HTML-TAB3-END -->
         </div>
 
         <!-- TAB 4: Zajednica -->
         <div class="tab-pane" id="tab-zajednica">
           <!-- HTML-TAB4-START -->
-          <div class="tab-header">
-            <h2>👥 Zajednica</h2>
-            <p>Feed, biseri i događaji</p>
+
+          <!-- Header -->
+          <div class="t4-header">
+            <h2 class="t4-title">Zajednica</h2>
+            <button class="t4-biser-btn">+ Biser</button>
           </div>
-          <div class="tab-scroll">
-            <div style="padding:20px;text-align:center;color:var(--brown3);">
-              <p style="font-size:40px">🏗️</p>
-              <p>Tab 4 se učitava...</p>
-            </div>
+
+          <!-- Sub-nav -->
+          <div class="t4-subnav">
+            <button class="t4-subnav-btn active" data-panel="objave" onclick="t4Switch(this)">
+              <span>📰</span>OBJAVE
+            </button>
+            <button class="t4-subnav-btn" data-panel="biseri" onclick="t4Switch(this)">
+              <span>💎</span>BISERI
+            </button>
+            <button class="t4-subnav-btn" data-panel="dogadjaji" onclick="t4Switch(this)">
+              <span>🎪</span>DOGAĐAJI
+            </button>
+            <button class="t4-subnav-btn" data-panel="rang" onclick="t4Switch(this)">
+              <span>🏆</span>RANG
+            </button>
+            <button class="t4-subnav-btn" data-panel="dnevnik" onclick="t4Switch(this)">
+              <span>📓</span>DNEVNIK
+            </button>
           </div>
+
+          <div class="t4-scroll">
+
+            <!-- PANEL: OBJAVE -->
+            <div class="t4-panel active" id="t4-objave">
+
+              <div class="t4-post">
+                <div class="t4-post-head">
+                  <div class="t4-avatar" style="background:#FFD580;">🧔</div>
+                  <div class="t4-post-meta">
+                    <div class="t4-post-user">mujo_sarajlija
+                      <span class="t4-post-rank t4-rank-majstor">🔥 Majstor roštilja</span>
+                    </div>
+                    <div class="t4-post-time">2h</div>
+                  </div>
+                </div>
+                <div class="t4-post-banner" style="background:linear-gradient(160deg,#6B3A2A,#C8845A);">
+                  <span class="t4-post-banner-emoji">🥩</span>
+                  <span class="t4-post-resto">Ćevabdžinica Željo</span>
+                </div>
+                <div class="t4-post-body">
+                  <div class="t4-post-rating">
+                    <div class="t4-post-stars">
+                      <span class="t4-star">🧆</span><span class="t4-star">🧆</span><span class="t4-star">🧆</span><span class="t4-star">🧆</span><span class="t4-star">🧆</span>
+                    </div>
+                    <span class="t4-post-score">5.0</span>
+                    <span class="t4-post-style">· SARAJEVSKI</span>
+                  </div>
+                  <p class="t4-post-text">Vratio se nakon 6 mjeseci u inozemstvu i Željo pogodi svaki put. Sam miris ugljena bio je dovoljan da me rastuži. Vrijedilo je svaki kilometar.</p>
+                  <div class="t4-post-actions">
+                    <button class="t4-action-btn liked">🧆 47</button>
+                    <button class="t4-action-btn">💬 4</button>
+                    <button class="t4-action-btn">⬆️ Dijeli</button>
+                  </div>
+                </div>
+              </div>
+
+              <div class="t4-post">
+                <div class="t4-post-head">
+                  <div class="t4-avatar" style="background:#AED6F1;">👩</div>
+                  <div class="t4-post-meta">
+                    <div class="t4-post-user">ana_foodie_zagreb
+                      <span class="t4-post-rank t4-rank-iskusni">🍽️ Iskusni degustator</span>
+                    </div>
+                    <div class="t4-post-time">5h</div>
+                  </div>
+                </div>
+                <div class="t4-post-banner" style="background:linear-gradient(160deg,#2C3E50,#E67E22);">
+                  <span class="t4-post-banner-emoji">🔥</span>
+                  <span class="t4-post-resto">Kod Bake Fate</span>
+                </div>
+                <div class="t4-post-body">
+                  <div class="t4-post-rating">
+                    <div class="t4-post-stars">
+                      <span class="t4-star">🧆</span><span class="t4-star">🧆</span><span class="t4-star">🧆</span><span class="t4-star">🧆</span><span class="t4-star" style="opacity:0.4">🧆</span>
+                    </div>
+                    <span class="t4-post-score">4.8</span>
+                    <span class="t4-post-style">· BANJALUČKI</span>
+                  </div>
+                  <p class="t4-post-text">Baka Fata zna šta radi. Čisti, pravi ćevapi bez kompromisa. Jedini minus — čekanje 30 minuta, ali vrijedi svake sekunde.</p>
+                  <div class="t4-post-actions">
+                    <button class="t4-action-btn">🧆 31</button>
+                    <button class="t4-action-btn">💬 7</button>
+                    <button class="t4-action-btn">⬆️ Dijeli</button>
+                  </div>
+                </div>
+              </div>
+
+              <div class="t4-post">
+                <div class="t4-post-head">
+                  <div class="t4-avatar" style="background:#A9DFBF;">🧑</div>
+                  <div class="t4-post-meta">
+                    <div class="t4-post-user">dino_k
+                      <span class="t4-post-rank t4-rank-ugljeni">🔥 Ugljeni poklonik</span>
+                    </div>
+                    <div class="t4-post-time">1d</div>
+                  </div>
+                </div>
+                <div class="t4-post-banner" style="background:linear-gradient(160deg,#5D4037,#8D6E63);">
+                  <span class="t4-post-banner-emoji">🏠</span>
+                  <span class="t4-post-resto">Kodo Muje</span>
+                </div>
+                <div class="t4-post-body">
+                  <div class="t4-post-rating">
+                    <div class="t4-post-stars">
+                      <span class="t4-star">🧆</span><span class="t4-star">🧆</span><span class="t4-star">🧆</span><span class="t4-star">🧆</span><span class="t4-star" style="opacity:0.3">🧆</span>
+                    </div>
+                    <span class="t4-post-score">4.2</span>
+                    <span class="t4-post-style">· TRAVNIČKI</span>
+                  </div>
+                  <p class="t4-post-text">Rupa u zidu kraj stare tržnice. Bez natpisa. Samo lokali znaju. Najpravi travnički izvan Travnika — i to nije malo reći.</p>
+                  <div class="t4-post-actions">
+                    <button class="t4-action-btn">🧆 19</button>
+                    <button class="t4-action-btn">💬 12</button>
+                    <button class="t4-action-btn">⬆️ Dijeli</button>
+                  </div>
+                </div>
+              </div>
+
+            </div><!-- /t4-objave -->
+
+            <!-- PANEL: BISERI -->
+            <div class="t4-panel" id="t4-biseri">
+
+              <span class="t4-section-label">NEDAVNO ODOBRENI</span>
+              <div class="t4-gems-scroll">
+                <div class="t4-gem-card">
+                  <span class="t4-gem-icon">🥩</span>
+                  <div class="t4-gem-name">Kod Džeke</div>
+                  <div class="t4-gem-loc">Mostar, BA</div>
+                  <span class="t4-gem-badge">💎</span>
+                </div>
+                <div class="t4-gem-card">
+                  <span class="t4-gem-icon">🔥</span>
+                  <div class="t4-gem-name">Mali Raj</div>
+                  <div class="t4-gem-loc">Banja Luka, BA</div>
+                  <span class="t4-gem-badge">💎</span>
+                </div>
+                <div class="t4-gem-card">
+                  <span class="t4-gem-icon">🥩</span>
+                  <div class="t4-gem-name">Ćevapi Wien</div>
+                  <div class="t4-gem-loc">Beč, AT</div>
+                  <span class="t4-gem-badge">💎</span>
+                </div>
+                <div class="t4-gem-card">
+                  <span class="t4-gem-icon">🏠</span>
+                  <div class="t4-gem-name">Stari Grad</div>
+                  <div class="t4-gem-loc">Foča, BA</div>
+                  <span class="t4-gem-badge">💎</span>
+                </div>
+              </div>
+
+              <span class="t4-section-label">ČEKA VAŠ GLAS</span>
+
+              <div class="t4-vote-card">
+                <div class="t4-vote-head">
+                  <span class="t4-vote-emoji">🏠</span>
+                  <div>
+                    <div class="t4-vote-name">Kodo Muje</div>
+                    <div class="t4-vote-sub">Predložio dino_k · Zenica, BA</div>
+                  </div>
+                </div>
+                <p class="t4-vote-quote">"Rupa u zidu kraj stare tržnice. Bez natpisa. Najbolji Travnički izvan Travnika."</p>
+                <div class="t4-vote-btns">
+                  <button class="t4-vote-odobri" onclick="t4Vote(this,'odobri')">✅ Odobri</button>
+                  <button class="t4-vote-odbij" onclick="t4Vote(this,'odbij')">✖️ Odbij</button>
+                </div>
+              </div>
+
+              <div class="t4-vote-card">
+                <div class="t4-vote-head">
+                  <span class="t4-vote-emoji">🔥</span>
+                  <div>
+                    <div class="t4-vote-name">Pečenjara Kovač</div>
+                    <div class="t4-vote-sub">Predložila ana_foodie_zagreb · Travnik, BA</div>
+                  </div>
+                </div>
+                <p class="t4-vote-quote">"Samo domaće, samo ugljen. Nema friteza, nema kompromisa. Čisto remek djelo."</p>
+                <div class="t4-vote-btns">
+                  <button class="t4-vote-odobri" onclick="t4Vote(this,'odobri')">✅ Odobri</button>
+                  <button class="t4-vote-odbij" onclick="t4Vote(this,'odbij')">✖️ Odbij</button>
+                </div>
+              </div>
+
+            </div><!-- /t4-biseri -->
+
+            <!-- PANEL: DOGAĐAJI -->
+            <div class="t4-panel" id="t4-dogadjaji">
+
+              <div class="t4-event-card">
+                <div class="t4-event-date">📅 2026-06-14 · BAŠČARŠIJA, SARAJEVO</div>
+                <div class="t4-event-name">🥩 ČevFest Sarajevo 2026</div>
+                <div class="t4-event-tags">
+                  <span class="t4-event-tag t4-tag-plus">⭐ Samo Čev+</span>
+                  <span class="t4-event-tag t4-tag-loc">📍 Baščaršija, Sarajevo</span>
+                </div>
+              </div>
+
+              <div class="t4-event-card">
+                <div class="t4-event-date">📅 2026-04-20 · RESTORAN KOD BAKE FATE</div>
+                <div class="t4-event-name">🏆 Slijepa degustacija</div>
+                <div class="t4-event-tags">
+                  <span class="t4-event-tag t4-tag-plus">⭐ Samo Čev+</span>
+                  <span class="t4-event-tag t4-tag-loc">📍 Restoran Kod Bake Fate</span>
+                </div>
+              </div>
+
+              <div class="t4-event-card">
+                <div class="t4-event-date">📅 2026-05-08 · GRILL STJEPAN, SARAJEVO</div>
+                <div class="t4-event-name">👨‍🍳 Radionica Majstora</div>
+                <div class="t4-event-tags">
+                  <span class="t4-event-tag t4-tag-plus">⭐ Samo Čev+</span>
+                  <span class="t4-event-tag t4-tag-loc">📍 Grill Stjepan, Sarajevo</span>
+                </div>
+              </div>
+
+              <div class="t4-event-card">
+                <div class="t4-event-date">📅 2026-07-02 · MOSTAR STARI GRAD</div>
+                <div class="t4-event-name">🗺️ Ćevap Tura Mostar</div>
+                <div class="t4-event-tags">
+                  <span class="t4-event-tag t4-tag-loc">📍 Stari Grad, Mostar</span>
+                  <span class="t4-event-tag t4-tag-free">🆓 Otvoreno</span>
+                </div>
+              </div>
+
+            </div><!-- /t4-dogadjaji -->
+
+            <!-- PANEL: RANG -->
+            <div class="t4-panel" id="t4-rang">
+
+              <span class="t4-rang-header">TOP KORISNICI OVOG MJESECA</span>
+
+              <div class="t4-rang-row">
+                <span class="t4-rang-pos">🥇</span>
+                <div class="t4-rang-avatar" style="background:#FFD580;">🧔</div>
+                <div class="t4-rang-info">
+                  <div class="t4-rang-name">mujo_sarajlija</div>
+                  <div class="t4-rang-title">🔥 Majstor roštilja</div>
+                </div>
+                <span class="t4-rang-xp">2.840 XP</span>
+              </div>
+
+              <div class="t4-rang-row">
+                <span class="t4-rang-pos">🥈</span>
+                <div class="t4-rang-avatar" style="background:#AED6F1;">👩</div>
+                <div class="t4-rang-info">
+                  <div class="t4-rang-name">ana_foodie_zagreb</div>
+                  <div class="t4-rang-title">🍽️ Iskusni degustator</div>
+                </div>
+                <span class="t4-rang-xp">1.120 XP</span>
+              </div>
+
+              <div class="t4-rang-row">
+                <span class="t4-rang-pos">🥉</span>
+                <div class="t4-rang-avatar" style="background:#A9DFBF;">🧑</div>
+                <div class="t4-rang-info">
+                  <div class="t4-rang-name">dino_k</div>
+                  <div class="t4-rang-title">🔥 Ugljeni poklonik</div>
+                </div>
+                <span class="t4-rang-xp">890 XP</span>
+              </div>
+
+              <div class="t4-rang-row">
+                <span class="t4-rang-pos num">4</span>
+                <div class="t4-rang-avatar" style="background:#C8E6C9;">🙂</div>
+                <div class="t4-rang-info">
+                  <div class="t4-rang-name">adnan_k <span class="t4-rang-you">← Ti</span></div>
+                  <div class="t4-rang-title">🍽️ Iskusni degustator</div>
+                </div>
+                <span class="t4-rang-xp">640 XP</span>
+              </div>
+
+              <div class="t4-rang-row">
+                <span class="t4-rang-pos num">5</span>
+                <div class="t4-rang-avatar" style="background:#FFCC80;">👩‍🦱</div>
+                <div class="t4-rang-info">
+                  <div class="t4-rang-name">belma_sarajevo</div>
+                  <div class="t4-rang-title">🌿 Redoviti gost</div>
+                </div>
+                <span class="t4-rang-xp">420 XP</span>
+              </div>
+
+            </div><!-- /t4-rang -->
+
+            <!-- PANEL: DNEVNIK -->
+            <div class="t4-panel" id="t4-dnevnik">
+
+              <!-- Stats banner -->
+              <div class="t4-stats-banner">
+                <div class="t4-stats-year">TVOJ 2026 DO SADA</div>
+                <div class="t4-stats-count">84 ćevapa</div>
+                <div class="t4-stats-label">pojeden</div>
+                <div class="t4-stats-row">
+                  <div class="t4-stats-item">
+                    <div class="t4-stats-num">6</div>
+                    <div class="t4-stats-key">Gradova</div>
+                  </div>
+                  <div class="t4-stats-item">
+                    <div class="t4-stats-num">14</div>
+                    <div class="t4-stats-key">Mjesta</div>
+                  </div>
+                  <div class="t4-stats-item">
+                    <div class="t4-stats-num">3 stila</div>
+                    <div class="t4-stats-key">Isprobano</div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Taste profile -->
+              <div class="t4-taste-section">
+                <div class="t4-taste-label">TVOJ PROFIL UKUSA</div>
+                <div class="t4-taste-row">
+                  <span class="t4-taste-name">🏛️ Sarajevski</span>
+                  <div class="t4-taste-bar-bg"><div class="t4-taste-bar" style="width:55%;background:var(--red);"></div></div>
+                  <span class="t4-taste-pct">55%</span>
+                </div>
+                <div class="t4-taste-row">
+                  <span class="t4-taste-name">🌿 Banjalučki</span>
+                  <div class="t4-taste-bar-bg"><div class="t4-taste-bar" style="width:30%;background:var(--orange);"></div></div>
+                  <span class="t4-taste-pct">30%</span>
+                </div>
+                <div class="t4-taste-row">
+                  <span class="t4-taste-name">🏔️ Travnički</span>
+                  <div class="t4-taste-bar-bg"><div class="t4-taste-bar" style="width:15%;background:var(--brown3);"></div></div>
+                  <span class="t4-taste-pct">15%</span>
+                </div>
+                <p class="t4-taste-type">🍽️ Tip si <strong>Sarajevskog purista</strong> — klasičan, bez kompromisa.</p>
+              </div>
+
+              <!-- Spotify Vibes -->
+              <div class="t4-spotify-section">
+                <div class="t4-spotify-label">🎵 SPOTIFY VIBES PO GRADU</div>
+                <div class="t4-playlist-card">
+                  <div class="t4-playlist-art" style="background:linear-gradient(135deg,#1DB954,#0A7A30);">🎸</div>
+                  <div class="t4-playlist-info">
+                    <div class="t4-playlist-name">Sarajevo večer</div>
+                    <div class="t4-playlist-meta">Sevdalinka + indie Balkans · 42 pjesme</div>
+                    <div class="t4-playlist-artists">Dino Merlin, Dubioza kolektiv, Bijelo dugme</div>
+                  </div>
+                  <button class="t4-play-btn">▶</button>
+                </div>
+                <div class="t4-playlist-card">
+                  <div class="t4-playlist-art" style="background:linear-gradient(135deg,#6C3483,#1A5276);">🎷</div>
+                  <div class="t4-playlist-info">
+                    <div class="t4-playlist-name">Banja Luka noć</div>
+                    <div class="t4-playlist-meta">Rock & turbo folk mix · 38 pjesme</div>
+                    <div class="t4-playlist-artists">Rambo Amadeus, Zabranjeno pušenje, EKV</div>
+                  </div>
+                  <button class="t4-play-btn">▶</button>
+                </div>
+                <div class="t4-playlist-card">
+                  <div class="t4-playlist-art" style="background:linear-gradient(135deg,#E67E22,#922B21);">🎺</div>
+                  <div class="t4-playlist-info">
+                    <div class="t4-playlist-name">Beč dijaspora</div>
+                    <div class="t4-playlist-meta">Nostalgija na stranom tlu · 55 pjesme</div>
+                    <div class="t4-playlist-artists">Kemal Monteno, Tifa, Edo Maajka</div>
+                  </div>
+                  <button class="t4-play-btn">▶</button>
+                </div>
+              </div>
+
+              <!-- Ćevap Mapa -->
+              <div class="t4-mapa-section">
+                <div class="t4-mapa-label">🗺️ ĆEVAP MAPA</div>
+                <div class="t4-mapa-grid">
+                  <div class="t4-mapa-pin">
+                    <span class="t4-mapa-pin-emoji">🏛️</span>
+                    <div>
+                      <div class="t4-mapa-pin-city">Sarajevo</div>
+                      <div class="t4-mapa-pin-count">6 mjesta</div>
+                    </div>
+                  </div>
+                  <div class="t4-mapa-pin">
+                    <span class="t4-mapa-pin-emoji">🌿</span>
+                    <div>
+                      <div class="t4-mapa-pin-city">Banja Luka</div>
+                      <div class="t4-mapa-pin-count">3 mjesta</div>
+                    </div>
+                  </div>
+                  <div class="t4-mapa-pin">
+                    <span class="t4-mapa-pin-emoji">🏔️</span>
+                    <div>
+                      <div class="t4-mapa-pin-city">Travnik</div>
+                      <div class="t4-mapa-pin-count">2 mjesta</div>
+                    </div>
+                  </div>
+                  <div class="t4-mapa-pin">
+                    <span class="t4-mapa-pin-emoji">🌉</span>
+                    <div>
+                      <div class="t4-mapa-pin-city">Mostar</div>
+                      <div class="t4-mapa-pin-count">2 mjesta</div>
+                    </div>
+                  </div>
+                  <div class="t4-mapa-pin">
+                    <span class="t4-mapa-pin-emoji">🏙️</span>
+                    <div>
+                      <div class="t4-mapa-pin-city">Zenica</div>
+                      <div class="t4-mapa-pin-count">1 mjesto</div>
+                    </div>
+                  </div>
+                  <div class="t4-mapa-pin">
+                    <span class="t4-mapa-pin-emoji">🌍</span>
+                    <div>
+                      <div class="t4-mapa-pin-city">Beč</div>
+                      <div class="t4-mapa-pin-count">1 mjesto</div>
+                    </div>
+                  </div>
+                </div>
+                <p class="t4-mapa-visited">6 gradova · 14 mjesta posjećeno</p>
+              </div>
+
+            </div><!-- /t4-dnevnik -->
+
+          </div><!-- /t4-scroll -->
+
           <!-- HTML-TAB4-END -->
         </div>
 
@@ -2020,6 +2940,79 @@ a {
           </div>
         </div>
       </div><!-- /t2-detail -->
+
+      <!-- ============================================
+           KVIZ SCREEN — Tab 3
+           ============================================ -->
+      <div class="slide-screen" id="t3-quiz">
+        <div class="t3-quiz-header" style="position:relative">
+          <button class="t3-quiz-back" onclick="closeSlideScreen('t3-quiz')">←</button>
+          <div class="t3-quiz-meta">
+            <div class="t3-quiz-modul" id="t3-quiz-modul-lbl"></div>
+            <div class="t3-quiz-progress-bar">
+              <div class="t3-quiz-progress-fill" id="t3-quiz-prog" style="width:0%"></div>
+            </div>
+            <div class="t3-quiz-qnum" id="t3-quiz-qnum"></div>
+          </div>
+        </div>
+        <div class="t3-quiz-body" id="t3-quiz-body"></div>
+      </div><!-- /t3-quiz -->
+
+      <!-- ============================================
+           MEMORY GAME SCREEN — Tab 3
+           ============================================ -->
+      <div class="slide-screen" id="t3-memory" style="display:flex;flex-direction:column">
+        <div class="t3-mem-header">
+          <button class="t3-mem-back" onclick="t3CloseMemory()">←</button>
+          <div class="t3-mem-title">Ćevap Memory</div>
+          <div class="t3-mem-stats">
+            <div class="t3-mem-stat">
+              <div class="t3-mem-stat-val" id="t3-mem-potezi">0</div>
+              <div class="t3-mem-stat-lbl">POTEZI</div>
+            </div>
+            <div class="t3-mem-stat">
+              <div class="t3-mem-stat-val" id="t3-mem-parovi">0/10</div>
+              <div class="t3-mem-stat-lbl">PAROVI</div>
+            </div>
+          </div>
+        </div>
+        <div style="position:relative;flex:1;display:flex;flex-direction:column">
+          <div class="t3-mem-grid" id="t3-mem-grid"></div>
+          <div class="t3-mem-win" id="t3-mem-win">
+            <div style="font-size:56px">🎉</div>
+            <div class="t3-mem-win-title">Maestro!</div>
+            <div class="t3-mem-win-sub" id="t3-mem-win-sub"></div>
+            <div class="t3-mem-win-xp" id="t3-mem-win-xp"></div>
+            <button class="t3-mem-win-btn" onclick="t3StartMemory()">Igraj ponovo</button>
+            <button style="color:rgba(255,255,255,0.5);font-size:12px;margin-top:4px" onclick="t3CloseMemory()">Zatvori</button>
+          </div>
+        </div>
+      </div><!-- /t3-memory -->
+
+      <!-- ============================================
+           ROŠTILJ PANIC SCREEN — Tab 3
+           ============================================ -->
+      <div class="slide-screen" id="t3-panic" style="background:#1A0A00">
+        <div class="t3-panic-header">
+          <button class="t3-panic-back" onclick="t3StopPanic()">←</button>
+          <div class="t3-panic-title">Roštilj Panic 🔥</div>
+          <div class="t3-panic-score-wrap">
+            <div class="t3-panic-score-val" id="t3-panic-score">0</div>
+            <div class="t3-panic-score-lbl">SPAŠENO</div>
+          </div>
+        </div>
+        <div class="t3-panic-body" style="position:relative">
+          <div class="t3-panic-grill" id="t3-panic-grill"></div>
+          <div class="t3-panic-overlay" id="t3-panic-overlay">
+            <div class="t3-panic-ov-emoji" id="t3-panic-ov-emoji">🔥</div>
+            <div class="t3-panic-ov-title" id="t3-panic-ov-title">Izgorio si!</div>
+            <div class="t3-panic-ov-sub" id="t3-panic-ov-sub"></div>
+            <div class="t3-panic-ov-xp" id="t3-panic-ov-xp"></div>
+            <button class="t3-panic-ov-btn" onclick="t3StartPanicGame()">Igraj ponovo 🔥</button>
+            <button class="t3-panic-ov-close" onclick="t3StopPanic()">Zatvori</button>
+          </div>
+        </div>
+      </div><!-- /t3-panic -->
 
     </div><!-- /screen-app -->
 
@@ -2684,7 +3677,6 @@ window.t1OpenBooking = function () {
     '&group_adults=' + document.getElementById('t1-guests').value +
     '&no_rooms=' + document.getElementById('t1-rooms').value + '&lang=hr', '_blank');
 };
-
 /* ─── Action buttons ─── */
 window.t1Navigate = function () {
   const r = t1ActiveRest; if (!r) return;
@@ -3085,12 +4077,527 @@ t2Kalkulator();
 }());
 /* === JS-TAB2-END === */
 
+/* === JS-TAB3-START === */
+(function () {
+
+/* ═══════════════════════════════════════
+   DATA
+   ═══════════════════════════════════════ */
+const T3_WORDS = [
+  { rijec:'Tepsija',    kat:'TURCIZAM',  sub:'tepsi (تپسی)',      opis:'Plitka okrugla posuda za pečenje. U BiH se koristi za baklavu, burek i pite. Tursko porijeklo, osmanski utjecaj na bosansku kuhinju.', tagovi:['turski','posuđe','pečenje'] },
+  { rijec:'Sofra',      kat:'TURCIZAM',  sub:'sufra (سفره)',      opis:'Okrugli stol ili prostirač za zajednički obrok. Sofra simbolizira gostoprimstvo — dignite sofru znači biti gostoljubiv domaćin.', tagovi:['turski','tradicija','gostoprimstvo'] },
+  { rijec:'Komšiluk',   kat:'IZRAZ',     sub:'komşuluk',          opis:'Susjedstvo u najplemenitijim smislu — zajednica gdje se dijeli hrana, pomaže u nevolji, razgovara na kapiji. Nestaje s modernim životom.', tagovi:['bosanski','tradicija','zajednica'] },
+  { rijec:'Merak',      kat:'MUDROST',   sub:'merak — strast',    opis:'Duboka strast i zadovoljstvo u nečemu što radiš s dušom. "Raditi s merakom" znači raditi s ljubavlju i uživanjem, ne za novac.', tagovi:['bosanski','filozofija'] },
+  { rijec:'Dolma',      kat:'TURCIZAM',  sub:'doldurmak — puniti',opis:'Punjeno povrće — paprika, tikvica, lišće. Dolma je filozofija: i najskromniji sastojak postaje nešto posebno kada se napuni ljubavlju.', tagovi:['turski','jelo','tradicija'] },
+  { rijec:'Čorba',      kat:'TURCIZAM',  sub:'çorba (چربا)',      opis:'Gusta juha, temelj bosanske kuhinje. "Bez čorbe nema ni ručka" — bosanska poslovica. Svaka majka ima svoju tajnu čorbu.', tagovi:['turski','jelo','tradicija'] },
+  { rijec:'Sevdah',     kat:'IZRAZ',     sub:'sevda — ljubav',    opis:'Melankolična ljubavna čežnja, ali i muzika koja tu čežnju izražava. Sevdalinka je UNESCO-va nematerijalna baština.', tagovi:['bosanski','muzika','osjećaj'] },
+  { rijec:'Mašallah',   kat:'TURCIZAM',  sub:'māšāʾallāh',        opis:'Što Bog htjede — izraz divljenja bez pohlepe. Kaže se uz lijepo dijete, dobar ručak, uspješnu osobu. Štiti od uroka, kaže tradicija.', tagovi:['arapski','tradicija','izraz'] },
+  { rijec:'Kahva',      kat:'TURCIZAM',  sub:'qahwa (قهوة)',      opis:'Bosanska kafa nije samo napitak — ceremonija je. Džezva, fildžan, rahat lokum i razgovor. Gost koji odbije kahvu — uvrijedio je domaćina.', tagovi:['arapski','tradicija','ritual'] },
+  { rijec:'Sutra',      kat:'MUDROST',   sub:'sutra — sjutra',    opis:'"Sutra se može" — bosanska filozofija opuštenog odlaganja. Ali kad dođe sutra, uvijek ima novog sutra. Sistem koji savršeno funkcionira.', tagovi:['bosanski','humor','filozofija'] },
+];
+
+const T3_MODULI = [
+  {
+    id:'m1', naziv:'Povijest ćevapa', opis:'Osmanski korijeni do modernih ikona',
+    emoji:'📜', boja:'#2D5A27', xp:100, reqXP:0,
+    pitanja:[
+      { q:'Iz koje kulture potiče ćevap?', opcije:['Perzijska i turska','Grčka','Talijanska','Kineska'], tac:0 },
+      { q:'Što znači turska riječ "kebap"?', opcije:['Pečeno meso na ražnju','Mljeveno meso','Začinjeno meso','Dimljeno meso'], tac:0 },
+      { q:'U kojoj ulici Sarajeva se nalazi najpoznatija ćevabdžinica?', opcije:['Bravadžiluk','Ferhadija','Titova','Ćumurija'], tac:0 },
+      { q:'Koji je omjer govedine u originalnom sarajevskom ćevapima?', opcije:['60% govedine / 40% janjetine','50% / 50%','70% / 30%','100% govedina'], tac:0 },
+      { q:'Koliko se ćevapa tradicionalno naručuje u jednoj porciji?', opcije:['10 komada','5 komada','8 komada','12 komada'], tac:0 },
+    ]
+  },
+  {
+    id:'m2', naziv:'Kodeks bontona', opis:'Grijeh korištenja vilice',
+    emoji:'🍽', boja:'#2D4A5A', xp:150, reqXP:0,
+    pitanja:[
+      { q:'Čime se tradicionalno jede ćevap?', opcije:['Rukama i somun kao "alat"','Vilicom','Štapićima','Žlicom'], tac:0 },
+      { q:'Što se stavlja PRVO u somun?', opcije:['Ćevap, pa luk povrh svega','Luk pa ćevap','Kajmak pa ćevap','Ajvar pa ćevap'], tac:0 },
+      { q:'Koji prilog se NE servira uz prave sarajevske ćevape?', opcije:['Majoneza','Ajvar','Kajmak','Sitno sjeckani bijeli luk'], tac:0 },
+      { q:'Koji napitak ide uz ćevape po bosanskoj tradiciji?', opcije:['Ayran ili voda','Cola','Pivo','Vino'], tac:0 },
+      { q:'Koliko je grijeh koristiti vilicu za jelo ćevapa?', opcije:['Neizmjerno velik','Samo mala nepristojnost','Potpuno prihvatljivo','Vilica je obavezna'], tac:0 },
+    ]
+  },
+  {
+    id:'m3', naziv:'Regionalno rivalstvo', opis:'Sarajevo vs. Banja Luka vs. Tuzla',
+    emoji:'🗺', boja:'#5A3A2D', xp:150, reqXP:100,
+    pitanja:[
+      { q:'Koji grad je poznat po NAJŠIRIM i najmasnijiim ćevapima?', opcije:['Banja Luka','Sarajevo','Tuzla','Mostar'], tac:0 },
+      { q:'Koji grad koristi najviše janjetine u ćevapima?', opcije:['Tuzla','Sarajevo','Banja Luka','Zenica'], tac:0 },
+      { q:'Što je specifičnost banjalučkih ćevapa vs sarajevskih?', opcije:['Svinjetina u smjesi','Samo janjetina','Riblji dodaci','Bez soli'], tac:0 },
+      { q:'Koji je karakteristični oblik tuzlanskih ćevapa?', opcije:['Tanji, sličan sarajevskom ali od janjetine','Širi i kraći od sarajevskog','Okrugli kao ćufte','Potpuno isti kao sarajevski'], tac:0 },
+      { q:'Koji grad tvrdi da ima "originalni" recept ćevapa?', opcije:['Sve tri — svaki grad','Samo Sarajevo','Samo Banja Luka','Tuzla je uvijek u pravu'], tac:0 },
+    ]
+  },
+  {
+    id:'m4', naziv:'Znanost roštilja', opis:'Ugljen vs. struja — nije ni blizu',
+    emoji:'🔥', boja:'#5A2D2D', xp:200, reqXP:250,
+    pitanja:[
+      { q:'Na kojoj temperaturi treba biti roštilj za savršeni ćevap?', opcije:['230–260°C (ugljen bijelo-siv)','150–180°C','100–120°C','300°C+'], tac:0 },
+      { q:'Koji ugljen je idealan za ćevape?', opcije:['Bukvin ugljen','Hrastov','Briket','Borový'], tac:0 },
+      { q:'Koliko minuta po strani se peče ćevap?', opcije:['2–3 minute','5–7 minuta','1 minuta','10 minuta'], tac:0 },
+      { q:'Zašto se koristi ugljen, a ne električni roštilj?', opcije:['Daje nenadomjestiv okus dima','Jeftinji je','Brže pali','Higijenski je'], tac:0 },
+      { q:'Kada je ugljen spreman za pečenje?', opcije:['Bijelo-siv, bez vidljivog plamena','Dok gori crvenim plamenom','Odmah nakon paljenja','Kada postane crn kao čađa'], tac:0 },
+    ]
+  },
+  {
+    id:'m5', naziv:'Tajne omjera mesa', opis:'Otključaj na razini Redoviti posjetitelj',
+    emoji:'🥩', boja:'#3D3D3D', xp:250, reqXP:500,
+    pitanja:[
+      { q:'Koliko % masti treba imati govedina za savršeni ćevap?', opcije:['~20% masti (80/20)','5% masti','35% masti','50% masti'], tac:0 },
+      { q:'Koliko soli (% od težine mesa) ide u pravi ćevap?', opcije:['1,5%','3%','0,5%','5%'], tac:0 },
+      { q:'Koliko dugo treba miješati meso za ćevap?', opcije:['3 minute energično','30 sekundi','10 minuta','1 sat'], tac:0 },
+      { q:'Zašto se meso odmarajte 24 sata u hladnjaku?', opcije:['Sol se veže s proteinima — meso dobiva teksturu','Meso se odmrzava','Zbog higijene','Da izgubi jak okus'], tac:0 },
+      { q:'Kojom temperaturom treba biti meso PRIJE oblikovanja ćevapa?', opcije:['Hladno, direktno iz hladnjaka','Sobna temperatura','Malo zagrijano','Smrznuto'], tac:0 },
+    ]
+  },
+];
+
+/* ═══════════════════════════════════════
+   STORAGE
+   ═══════════════════════════════════════ */
+const T3_DONE_KEY  = 'ca_t3_done';
+const T3_GAMES_KEY = 'ca_t3_games';
+function t3GetDone()  { return JSON.parse(localStorage.getItem(T3_DONE_KEY)  || '[]'); }
+function t3GetGames() { return JSON.parse(localStorage.getItem(T3_GAMES_KEY) || '{}'); }
+
+/* ═══════════════════════════════════════
+   INIT & RENDER
+   ═══════════════════════════════════════ */
+function t3Init() {
+  updateStreak();
+  t3RenderDaily();
+  t3RenderStats();
+  t3RenderModuli();
+}
+
+function t3RenderStats() {
+  const u = getCurrentUser();
+  const xp = u ? (u.xp || 0) : 0;
+  const streak = u ? (u.streak || 0) : 0;
+  document.getElementById('t3-streak').textContent = streak;
+  document.getElementById('t3-xp').textContent = xp;
+  // Rang
+  const rank = getRank(xp);
+  const next  = getNextRank(xp);
+  const pct   = getXpProgress(xp);
+  const emoji = rank.title.split(' ')[0];
+  const name  = rank.title.replace(emoji, '').trim();
+  document.getElementById('t3-rank-emoji').textContent  = emoji;
+  document.getElementById('t3-rank-title').textContent  = name;
+  document.getElementById('t3-rank-next').textContent   = next
+    ? `Sljedeće: ${next.title} na ${next.xpMin} XP`
+    : '👑 Postigao si maksimalni rang!';
+  document.getElementById('t3-rank-bar').style.width  = pct + '%';
+  document.getElementById('t3-rank-curr-xp').textContent = xp + ' XP';
+  document.getElementById('t3-rank-next-xp').textContent = next ? next.xpMin + ' XP' : '∞';
+}
+
+function t3RenderModuli() {
+  const u = getCurrentUser();
+  const xp = u ? (u.xp || 0) : 0;
+  const done = t3GetDone();
+  document.getElementById('t3-modul-list').innerHTML = T3_MODULI.map(m => {
+    const isDone   = done.includes(m.id);
+    const isLocked = xp < m.reqXP;
+    const statusHtml = isDone
+      ? `<div class="t3-modul-status done">✓</div>`
+      : isLocked
+        ? `<div class="t3-modul-status lock">🔒</div>`
+        : `<div class="t3-modul-status avail">▶</div>`;
+    return `
+      <div class="t3-modul-card animate-fade${isLocked ? ' locked' : ''}"
+           onclick="${isLocked ? `showToast('Treba ti ${m.reqXP} XP da otključaš ovaj modul 🔒')` : `t3StartQuiz('${m.id}')`}">
+        <div class="t3-modul-icon" style="background:${m.boja}22">${m.emoji}</div>
+        <div class="t3-modul-info">
+          <div class="t3-modul-naziv">${m.naziv}</div>
+          <div class="t3-modul-opis">${isLocked ? `🔒 Otključaj na ${m.reqXP} XP` : m.opis}</div>
+        </div>
+        <div class="t3-modul-right">
+          <span class="t3-modul-xp">+${m.xp} XP</span>
+          ${statusHtml}
+        </div>
+      </div>`;
+  }).join('');
+}
+
+/* ═══════════════════════════════════════
+   DAILY WORD
+   ═══════════════════════════════════════ */
+function t3RenderDaily() {
+  const day = Math.floor((Date.now() - new Date(new Date().getFullYear(), 0, 0)) / 86400000);
+  const w = T3_WORDS[day % T3_WORDS.length];
+  document.getElementById('t3-daily-lbl').innerHTML =
+    `${w.kat} <span>·</span> RIJEČ <span>·</span> MUDROST DANA`;
+  document.getElementById('t3-daily-rijec').textContent = w.rijec;
+  document.getElementById('t3-daily-sub').innerHTML =
+    `<span>${w.sub}</span> — <span>dotakni za više</span> <span class="t3-daily-arrow">→</span>`;
+  document.getElementById('t3-daily-opis').textContent = w.opis;
+  document.getElementById('t3-daily-tagovi').innerHTML =
+    w.tagovi.map(t => `<span class="t3-daily-tag">${t}</span>`).join('');
+}
+
+window.t3ToggleDaily = function() {
+  document.getElementById('t3-daily').classList.toggle('open');
+};
+
+/* ═══════════════════════════════════════
+   KVIZ
+   ═══════════════════════════════════════ */
+let t3Q = { modId:null, pitanja:[], ci:0, score:0, answered:false };
+
+window.t3StartQuiz = function(modId) {
+  const m = T3_MODULI.find(x => x.id === modId);
+  t3Q = { modId, pitanja: shuffle([...m.pitanja]), ci:0, score:0, answered:false };
+  document.getElementById('t3-quiz-modul-lbl').textContent = `${m.emoji} ${m.naziv.toUpperCase()}`;
+  t3RenderQuestion();
+  openSlideScreen('t3-quiz');
+};
+
+function shuffle(arr) {
+  for (let i = arr.length-1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i+1));
+    [arr[i], arr[j]] = [arr[j], arr[i]];
+  }
+  return arr;
+}
+
+function t3RenderQuestion() {
+  const total = t3Q.pitanja.length;
+  const ci    = t3Q.ci;
+  if (ci >= total) { t3QuizEnd(); return; }
+  const p = t3Q.pitanja[ci];
+  const pct = Math.round((ci / total) * 100);
+  document.getElementById('t3-quiz-prog').style.width = pct + '%';
+  document.getElementById('t3-quiz-qnum').textContent = `${ci+1} / ${total} pitanja`;
+  document.getElementById('t3-quiz-body').innerHTML = `
+    <div class="t3-quiz-q animate-fade">${p.q}</div>
+    <div class="t3-quiz-options">
+      ${p.opcije.map((o,i) => `
+        <button class="t3-quiz-opt" onclick="t3Answer(${i})">
+          <span>${o}</span><span class="opt-icon"></span>
+        </button>`).join('')}
+    </div>
+    <div class="t3-quiz-feedback" id="t3-fb"></div>
+    <button class="t3-quiz-next" id="t3-next" onclick="t3NextQ()">Dalje →</button>`;
+}
+
+window.t3Answer = function(idx) {
+  if (t3Q.answered) return;
+  t3Q.answered = true;
+  const p = t3Q.pitanja[t3Q.ci];
+  const opts = document.querySelectorAll('.t3-quiz-opt');
+  opts.forEach(b => b.disabled = true);
+  const fb = document.getElementById('t3-fb');
+  if (idx === p.tac) {
+    t3Q.score++;
+    opts[idx].classList.add('correct');
+    opts[idx].querySelector('.opt-icon').textContent = '✓';
+    fb.textContent = '✓ Točno! Odlično!';
+    fb.className = 't3-quiz-feedback show ok';
+  } else {
+    opts[idx].classList.add('wrong');
+    opts[idx].querySelector('.opt-icon').textContent = '✗';
+    opts[p.tac].classList.add('correct');
+    opts[p.tac].querySelector('.opt-icon').textContent = '✓';
+    fb.textContent = `✗ Točan odgovor: ${p.opcije[p.tac]}`;
+    fb.className = 't3-quiz-feedback show no';
+  }
+  setTimeout(() => {
+    const btn = document.getElementById('t3-next');
+    if (btn) btn.classList.add('show');
+  }, 600);
+};
+
+window.t3NextQ = function() {
+  t3Q.ci++;
+  t3Q.answered = false;
+  t3RenderQuestion();
+};
+
+function t3QuizEnd() {
+  const m = T3_MODULI.find(x => x.id === t3Q.modId);
+  const done = t3GetDone();
+  const already = done.includes(m.id);
+  const pct = Math.round((t3Q.score / t3Q.pitanja.length) * 100);
+  const pass = pct >= 60;
+  const emoji = pct === 100 ? '🏆' : pct >= 80 ? '🌟' : pct >= 60 ? '✅' : '📚';
+  let xpHtml = '';
+  if (pass && !already) {
+    done.push(m.id);
+    localStorage.setItem(T3_DONE_KEY, JSON.stringify(done));
+    updateXP(m.xp);
+    t3RenderStats();
+    t3RenderModuli();
+    xpHtml = `<div class="t3-quiz-result-xp">+${m.xp} XP zarađeno! ⚡</div>`;
+  } else if (already) {
+    xpHtml = `<div style="color:var(--brown3);font-size:13px;margin-bottom:16px">Modul već završen — XP nije dodijen ponovo</div>`;
+  } else {
+    xpHtml = `<div style="color:var(--red);font-size:13px;margin-bottom:16px">Treba 60%+ za XP — pokušaj ponovo! 💪</div>`;
+  }
+  document.getElementById('t3-quiz-prog').style.width = '100%';
+  document.getElementById('t3-quiz-qnum').textContent = 'Završeno!';
+  document.getElementById('t3-quiz-body').innerHTML = `
+    <div class="t3-quiz-result animate-fade">
+      <div class="t3-quiz-result-emoji">${emoji}</div>
+      <div class="t3-quiz-result-title">${pct === 100 ? 'Savršeno!' : pct >= 80 ? 'Odlično!' : pct >= 60 ? 'Prošao!' : 'Probaj još!'}</div>
+      <div class="t3-quiz-result-sub">${t3Q.score} / ${t3Q.pitanja.length} točnih · ${pct}%</div>
+      ${xpHtml}
+      <div class="t3-quiz-result-score">
+        ${t3Q.pitanja.map((p, i) => {
+          const r = t3Q.pitanja[i];
+          return `${i < t3Q.score ? '✅' : '❌'} ${r.q.substring(0, 40)}${r.q.length > 40 ? '...' : ''}`;
+        }).join('<br>')}
+      </div>
+      <button class="t3-quiz-close" onclick="closeSlideScreen('t3-quiz')">← Natrag na module</button>
+    </div>`;
+}
+
+/* ═══════════════════════════════════════
+   MEMORY GAME
+   ═══════════════════════════════════════ */
+const MEM_EMOJIS = ['🥩','🧅','🫑','🥛','🫓','🔥','🐑','🐷','🧄','🌶'];
+let t3Mem = { cards:[], first:null, locked:false, moves:0, pairs:0, startTime:null };
+const T3_MEM_XP = 75;
+
+window.t3StartMemory = function() {
+  const deck = shuffle([...MEM_EMOJIS, ...MEM_EMOJIS]);
+  t3Mem = {
+    cards: deck.map((e, i) => ({ id:i, emoji:e, flipped:false, matched:false })),
+    first: null, locked: false, moves: 0, pairs: 0, startTime: Date.now()
+  };
+  document.getElementById('t3-mem-win').classList.remove('show');
+  document.getElementById('t3-mem-potezi').textContent = '0';
+  document.getElementById('t3-mem-parovi').textContent = '0/10';
+  t3RenderMemGrid();
+  openSlideScreen('t3-memory');
+};
+
+window.t3CloseMemory = function() {
+  closeSlideScreen('t3-memory');
+};
+
+function t3RenderMemGrid() {
+  document.getElementById('t3-mem-grid').innerHTML = t3Mem.cards.map((c, i) => `
+    <div class="t3-mem-card${c.flipped || c.matched ? ' flipped' : ''}${c.matched ? ' matched' : ''}" id="mc${i}" onclick="t3FlipCard(${i})">
+      <div class="t3-mem-card-inner">
+        <div class="t3-mem-card-front">🥩</div>
+        <div class="t3-mem-card-back">${c.emoji}</div>
+      </div>
+    </div>`).join('');
+}
+
+window.t3FlipCard = function(idx) {
+  const c = t3Mem.cards[idx];
+  if (t3Mem.locked || c.flipped || c.matched) return;
+  c.flipped = true;
+  document.getElementById('mc' + idx).classList.add('flipped');
+  if (!t3Mem.first) {
+    t3Mem.first = idx;
+    return;
+  }
+  const fi = t3Mem.first;
+  t3Mem.first = null;
+  t3Mem.moves++;
+  document.getElementById('t3-mem-potezi').textContent = t3Mem.moves;
+  if (t3Mem.cards[fi].emoji === c.emoji) {
+    t3Mem.cards[fi].matched = true;
+    c.matched = true;
+    document.getElementById('mc' + fi).classList.add('matched');
+    document.getElementById('mc' + idx).classList.add('matched');
+    t3Mem.pairs++;
+    document.getElementById('t3-mem-parovi').textContent = t3Mem.pairs + '/10';
+    if (t3Mem.pairs === 10) setTimeout(t3MemWin, 400);
+  } else {
+    t3Mem.locked = true;
+    setTimeout(() => {
+      t3Mem.cards[fi].flipped = false;
+      c.flipped = false;
+      document.getElementById('mc' + fi).classList.remove('flipped');
+      document.getElementById('mc' + idx).classList.remove('flipped');
+      t3Mem.locked = false;
+    }, 900);
+  }
+};
+
+function t3MemWin() {
+  const elapsed = Math.round((Date.now() - t3Mem.startTime) / 1000);
+  const mins = Math.floor(elapsed / 60);
+  const secs = elapsed % 60;
+  const timeStr = mins > 0 ? `${mins}m ${secs}s` : `${secs}s`;
+  const games = t3GetGames();
+  if (!games.mem) {
+    games.mem = true;
+    localStorage.setItem(T3_GAMES_KEY, JSON.stringify(games));
+    updateXP(T3_MEM_XP);
+    t3RenderStats();
+    document.getElementById('t3-mem-win-xp').textContent = `+${T3_MEM_XP} XP zarađeno! ⚡`;
+  } else {
+    document.getElementById('t3-mem-win-xp').textContent = 'XP već zarađen za ovu igru';
+  }
+  document.getElementById('t3-mem-win-sub').textContent =
+    `${t3Mem.moves} poteza · ${timeStr}`;
+  document.getElementById('t3-mem-win').classList.add('show');
+}
+
+/* ═══════════════════════════════════════
+   ROŠTILJ PANIC
+   ═══════════════════════════════════════ */
+const PANIC_XP_PER = 4;
+const PANIC_BURN_MS = 3000;
+const PANIC_SPAWN_MS = 1400;
+let t3P = { active: new Array(9).fill(null), score:0, interval:null, gameOver:false };
+
+window.t3StartPanic = function() {
+  openSlideScreen('t3-panic');
+  t3StartPanicGame();
+};
+
+window.t3StartPanicGame = function() {
+  // clear timers
+  clearInterval(t3P.interval);
+  t3P.active.forEach((v, i) => { if (v) clearTimeout(v.timer); });
+  t3P = { active: new Array(9).fill(null), score:0, interval:null, gameOver:false };
+  document.getElementById('t3-panic-score').textContent = '0';
+  document.getElementById('t3-panic-overlay').classList.remove('show');
+  // build grid
+  const grid = document.getElementById('t3-panic-grill');
+  grid.innerHTML = Array.from({length:9}, (_,i) =>
+    `<div class="t3-panic-cell empty" id="pc${i}" onclick="t3PanicTap(${i})"></div>`
+  ).join('');
+  // spawn loop
+  t3P.interval = setInterval(t3PanicSpawn, PANIC_SPAWN_MS);
+};
+
+function t3PanicSpawn() {
+  if (t3P.gameOver) return;
+  const empty = t3P.active.map((v,i)=>[v,i]).filter(([v])=>!v).map(([,i])=>i);
+  if (!empty.length) return;
+  const idx = empty[Math.floor(Math.random() * empty.length)];
+  const el = document.getElementById('pc' + idx);
+  el.className = 't3-panic-cell active';
+  el.innerHTML = `<span>🥩</span><div class="t3-panic-burn-bar" id="pb${idx}"></div>`;
+  // animate burn bar
+  const bar = document.getElementById('pb' + idx);
+  bar.style.transition = `width ${PANIC_BURN_MS}ms linear`;
+  requestAnimationFrame(() => requestAnimationFrame(() => { bar.style.width = '100%'; }));
+  // burn timer
+  const timer = setTimeout(() => t3PanicBurn(idx), PANIC_BURN_MS);
+  t3P.active[idx] = { timer };
+}
+
+window.t3PanicTap = function(idx) {
+  if (t3P.gameOver || !t3P.active[idx]) return;
+  clearTimeout(t3P.active[idx].timer);
+  t3P.active[idx] = null;
+  const el = document.getElementById('pc' + idx);
+  el.innerHTML = '✅';
+  el.className = 't3-panic-cell';
+  setTimeout(() => {
+    if (!t3P.gameOver && el) {
+      el.innerHTML = '';
+      el.className = 't3-panic-cell empty';
+    }
+  }, 400);
+  t3P.score++;
+  document.getElementById('t3-panic-score').textContent = t3P.score;
+};
+
+function t3PanicBurn(idx) {
+  if (t3P.gameOver) return;
+  t3P.gameOver = true;
+  clearInterval(t3P.interval);
+  t3P.active.forEach((v) => { if (v) clearTimeout(v.timer); });
+  const el = document.getElementById('pc' + idx);
+  el.className = 't3-panic-cell burned';
+  el.innerHTML = '💀';
+  setTimeout(() => {
+    const earned = t3P.score * PANIC_XP_PER;
+    const games = t3GetGames();
+    const alreadyMax = games.panicMax || 0;
+    let xpGiven = 0;
+    if (earned > alreadyMax) {
+      xpGiven = earned - alreadyMax;
+      games.panicMax = earned;
+      localStorage.setItem(T3_GAMES_KEY, JSON.stringify(games));
+      if (xpGiven > 0) { updateXP(xpGiven); t3RenderStats(); }
+    }
+    document.getElementById('t3-panic-ov-emoji').textContent = t3P.score >= 10 ? '🏆' : '🔥';
+    document.getElementById('t3-panic-ov-title').textContent = t3P.score >= 10 ? 'Maestro roštilja!' : 'Izgorio si!';
+    document.getElementById('t3-panic-ov-sub').textContent = `Spasio si ${t3P.score} ćevapa`;
+    document.getElementById('t3-panic-ov-xp').textContent = xpGiven > 0
+      ? `+${xpGiven} XP zarađeno! ⚡`
+      : earned > 0 ? `${earned} XP (već zarađeno)`  : '';
+    document.getElementById('t3-panic-overlay').classList.add('show');
+  }, 600);
+}
+
+window.t3StopPanic = function() {
+  clearInterval(t3P.interval);
+  t3P.active.forEach(v => { if (v) clearTimeout(v.timer); });
+  t3P.gameOver = true;
+  closeSlideScreen('t3-panic');
+};
+
+/* ═══════════════════════════════════════
+   Hook: osvježi kad se otvori Tab 3
+   ═══════════════════════════════════════ */
+const _origSwitch = window.switchTab;
+window.switchTab = function(btn) {
+  _origSwitch && _origSwitch(btn);
+  if (btn && btn.dataset && btn.dataset.tab === 'akademija') {
+    t3RenderStats();
+    t3RenderModuli();
+  }
+};
+
+t3Init();
+
+}());
+/* === JS-TAB3-END === */
+
 /* === PLACEHOLDER ZA JS OSTALIH TABOVA ===
-   Tab 3 → // JS-TAB3-START / END
-   Tab 4 → // JS-TAB4-START / END
    Tab 6 → // JS-TAB6-START / END
    Overlays → // JS-OVERLAYS-START / END
    ========================================= */
+
+/* === JS-TAB4-START === */
+(function() {
+
+function t4Switch(btn) {
+  document.querySelectorAll('.t4-subnav-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  const panel = btn.dataset.panel;
+  document.querySelectorAll('.t4-panel').forEach(p => p.classList.remove('active'));
+  document.getElementById('t4-' + panel).classList.add('active');
+}
+window.t4Switch = t4Switch;
+
+function t4Vote(btn, type) {
+  const card = btn.closest('.t4-vote-card');
+  card.style.opacity = '0.5';
+  card.style.pointerEvents = 'none';
+  setTimeout(() => {
+    card.innerHTML = '<div style="text-align:center;padding:12px;font-size:13px;color:var(--brown3);">' +
+      (type === 'odobri' ? '✅ Glasao si ZA ovaj biser!' : '✖️ Glasao si PROTIV.') + '</div>';
+    card.style.opacity = '1';
+  }, 300);
+}
+window.t4Vote = t4Vote;
+
+// Like toggle on post action buttons
+document.addEventListener('click', function(e) {
+  const btn = e.target.closest('.t4-action-btn');
+  if (!btn || !btn.textContent.includes('🧆')) return;
+  const isLiked = btn.classList.toggle('liked');
+  const parts = btn.textContent.trim().split(' ');
+  const current = parseInt(parts[1]) || 0;
+  btn.textContent = '🧆 ' + (isLiked ? current + 1 : current - 1);
+});
+
+}());
+/* === JS-TAB4-END === */
 </script>
 </body>
 </html>
