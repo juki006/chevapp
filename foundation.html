@@ -1591,8 +1591,10 @@ a {
   border: 1px solid var(--cream3); overflow: hidden;
 }
 .t3-daily-top { padding: 14px; }
-.t3-daily-nav { display:flex; justify-content:space-between; gap:8px; margin-bottom:8px; }
-.t3-daily-nav-btn { padding:6px 10px; border-radius:10px; background:var(--cream2); color:var(--brown3); font-size:11px; font-weight:700; }
+.t3-daily-nav { display:flex; justify-content:space-between; gap:8px; }
+.t3-daily-nav-outside { margin: 8px 16px 0; }
+.t3-daily-nav-btn { padding:8px 12px; border-radius:12px; background:var(--cream2); color:var(--brown3); font-size:11px; font-weight:700; border:1px solid var(--cream3); }
+.t3-daily-nav-btn:active { transform: translateY(1px); }
 .t3-daily-lbl {
   font-size: 9px; font-weight: 800; letter-spacing: 1.4px; font-family: var(--font-mono);
   color: var(--brown3); margin-bottom: 6px; display: flex; gap: 6px; align-items: center;
@@ -1721,6 +1723,11 @@ a {
 .t3-quiz-body { flex: 1; overflow-y: auto; padding: 20px 16px 32px; scrollbar-width: none; }
 .t3-quiz-body::-webkit-scrollbar { display: none; }
 
+.t3-quiz-viz { text-align:center;background:var(--cream2);border-radius:14px;padding:10px;margin-bottom:10px; }
+.t3-quiz-viz img { width:100%; max-height:140px; object-fit:cover; border-radius:10px; margin-bottom:8px; }
+.t3-quiz-viz-sub { font-size:11px;color:var(--brown3);font-weight:700; }
+.t5-hero-name { color: var(--white); text-shadow: 0 2px 10px rgba(0,0,0,0.2); }
+.t5-hero-rank, .t5-hero-xp { color: rgba(255,255,255,0.92); }
 .t3-quiz-q {
   font-family: var(--font-title); font-size: 20px; font-weight: 700;
   color: var(--brown); margin-bottom: 20px; line-height: 1.35;
@@ -1848,6 +1855,10 @@ a {
   border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 18px;
 }
 .t3-panic-title { font-family: var(--font-title); font-size: 18px; font-weight: 700; color: var(--white); }
+.t3-panic-restart, .t3-quiz-restart {
+  padding: 6px 10px; border-radius: 10px; border: 1px solid rgba(255,255,255,0.2);
+  background: rgba(255,255,255,0.08); color: var(--white); font-size: 11px; font-weight: 700;
+}
 .t3-panic-score-wrap { text-align: right; }
 .t3-panic-score-val { font-size: 22px; font-weight: 800; color: var(--orange); font-family: var(--font-mono); }
 .t3-panic-score-lbl { font-size: 9px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.8px; color: rgba(255,255,255,0.4); font-family: var(--font-mono); }
@@ -1887,9 +1898,11 @@ a {
 .t3-panic-ov-xp { font-size: 18px; font-weight: 800; color: var(--orange); font-family: var(--font-mono); }
 .t3-panic-ov-btn { padding: 12px 28px; background: linear-gradient(135deg, var(--red), var(--orange)); color: var(--white); border-radius: var(--radius-md); font-size: 14px; font-weight: 700; }
 .t3-panic-ov-close { font-size: 12px; color: rgba(255,255,255,0.4); text-decoration: underline; }
-.t3-snake-wrap { flex:1; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:14px; }
-#t3-snake-canvas { background:#1b130d; border:2px solid #3b2a1f; border-radius:10px; }
-.t3-snake-controls button { margin:4px; padding:10px 14px; border-radius:10px; background:var(--cream2); font-weight:700; }
+.t3-snake-wrap { flex:1; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:12px; padding: 0 16px 16px; }
+.t3-snake-help { color: rgba(255,255,255,0.72); font-size: 11px; text-align: center; }
+#t3-snake-canvas { background:#1b130d; border:2px solid #3b2a1f; border-radius:12px; box-shadow: 0 8px 20px rgba(0,0,0,0.3); }
+.t3-snake-controls { display:flex; flex-direction:column; align-items:center; gap:6px; }
+.t3-snake-controls button { width:56px; height:44px; border-radius:12px; background:var(--cream2); font-weight:700; margin:0 4px; }
 
 /* === CSS-TAB3-END === */
 
@@ -2077,15 +2090,15 @@ a {
 /* === CSS-TAB4-START === */
 
 /* Header */
-.t4-header { display: flex; align-items: center; justify-content: space-between; padding: 20px 20px 0; }
+.t4-header { display: flex; align-items: center; justify-content: space-between; padding: 16px 16px 0; }
 .t4-title { font-family: var(--font-title); font-size: 28px; color: var(--brown); }
 .t4-title em { color: var(--red); font-style: italic; }
 .t4-biser-btn { background: linear-gradient(135deg, var(--red), var(--orange)); color: var(--white); border-radius: var(--radius-md); padding: 8px 18px; font-size: 13px; font-weight: 700; }
 
 /* Sub-nav */
-.t4-subnav { display: flex; gap: 6px; padding: 14px 16px 12px; overflow-x: auto; scrollbar-width: none; }
+.t4-subnav { display: flex; gap: 8px; padding: 12px 16px 12px; overflow-x: auto; scrollbar-width: none; }
 .t4-subnav::-webkit-scrollbar { display: none; }
-.t4-subnav-btn { display: flex; flex-direction: column; align-items: center; gap: 3px; min-width: 60px; padding: 8px 10px; border-radius: var(--radius-md); background: var(--cream2); color: var(--brown3); font-size: 10px; font-weight: 700; letter-spacing: 0.5px; transition: all var(--transition); flex-shrink: 0; }
+.t4-subnav-btn { display: flex; flex-direction: column; align-items: center; gap: 3px; min-width: 68px; padding: 10px 10px; border-radius: var(--radius-md); background: var(--cream2); color: var(--brown3); font-size: 10px; font-weight: 700; letter-spacing: 0.5px; transition: all var(--transition); flex-shrink: 0; border: 1px solid var(--cream3); }
 .t4-subnav-btn span { font-size: 16px; }
 .t4-subnav-btn.active { background: var(--red); color: var(--white); }
 
@@ -2498,11 +2511,7 @@ a {
             <!-- Riječ dana -->
             <div class="t3-daily" id="t3-daily" onclick="t3ToggleDaily()">
               <div class="t3-daily-top">
-                <div class="t3-daily-nav">
-                  <button class="t3-daily-nav-btn" onclick="event.stopPropagation();t3PrevDaily()">← Prethodna</button>
-                  <button class="t3-daily-nav-btn" onclick="event.stopPropagation();t3NextDaily()">Sljedeća →</button>
-                </div>
-                <div class="t3-daily-lbl" id="t3-daily-lbl"></div>
+                                <div class="t3-daily-lbl" id="t3-daily-lbl"></div>
                 <div class="t3-daily-rijec" id="t3-daily-rijec"></div>
                 <div class="t3-daily-sub" id="t3-daily-sub"></div>
               </div>
@@ -2510,6 +2519,11 @@ a {
                 <div class="t3-daily-opis" id="t3-daily-opis"></div>
                 <div class="t3-daily-tagovi" id="t3-daily-tagovi"></div>
               </div>
+            </div>
+
+            <div class="t3-daily-nav t3-daily-nav-outside">
+              <button class="t3-daily-nav-btn" onclick="t3PrevDaily()">← Prethodna</button>
+              <button class="t3-daily-nav-btn" onclick="t3NextDaily()">Sljedeća →</button>
             </div>
 
             <!-- Stats: Streak + XP -->
@@ -2567,7 +2581,7 @@ a {
                 <div class="t3-game-xp">+50 XP</div>
                 <span class="t3-game-emoji">🗺️</span>
                 <div class="t3-game-naziv">Prepoznaj grad</div>
-                <div class="t3-game-sub">pogodi grad · po opisu</div>
+                <div class="t3-game-sub">pogodi grad · po slici</div>
               </div>
               <div class="t3-game-card" style="background:linear-gradient(135deg,#1A3A4A,#0D2030)" onclick="t3StartMemory()">
                 <div class="t3-game-xp">+75 XP</div>
@@ -2898,9 +2912,9 @@ a {
 
               <!-- Stats banner -->
               <div class="t4-stats-banner">
-                <div class="t4-stats-year">TVOJ 2026 DO SADA</div>
+                <div class="t4-stats-year" id="t4-dn-year">TVOJ SAŽETAK ZA 2026.</div>
                 <div class="t4-stats-count" id="t4-dn-cevapi">0 ćevapa</div>
-                <div class="t4-stats-label">pojeden</div>
+                <div class="t4-stats-label">pojedeno</div>
                 <div class="t4-stats-row">
                   <div class="t4-stats-item">
                     <div class="t4-stats-num" id="t4-dn-gradovi">0</div>
@@ -2935,7 +2949,7 @@ a {
                   <div class="t4-taste-bar-bg"><div class="t4-taste-bar" id="t4-bar-tra" style="width:0%;background:var(--brown3);"></div></div>
                   <span class="t4-taste-pct" id="t4-pct-tra">0%</span>
                 </div>
-                <p class="t4-taste-type">🍽️ Tip si <strong>Sarajevskog purista</strong> — klasičan, bez kompromisa.</p>
+                <p class="t4-taste-type" id="t4-taste-type" style="display:none"></p>
               </div>
 
               <!-- Spotify Vibes -->
@@ -2973,51 +2987,8 @@ a {
               <!-- Ćevap Mapa -->
               <div class="t4-mapa-section">
                 <div class="t4-mapa-label">🗺️ ĆEVAP MAPA</div>
-                <div class="t4-mapa-grid">
-                  <div class="t4-mapa-pin">
-                    <span class="t4-mapa-pin-emoji">🏛️</span>
-                    <div>
-                      <div class="t4-mapa-pin-city">Sarajevo</div>
-                      <div class="t4-mapa-pin-count">6 mjesta</div>
-                    </div>
-                  </div>
-                  <div class="t4-mapa-pin">
-                    <span class="t4-mapa-pin-emoji">🌿</span>
-                    <div>
-                      <div class="t4-mapa-pin-city">Banja Luka</div>
-                      <div class="t4-mapa-pin-count">3 mjesta</div>
-                    </div>
-                  </div>
-                  <div class="t4-mapa-pin">
-                    <span class="t4-mapa-pin-emoji">🏔️</span>
-                    <div>
-                      <div class="t4-mapa-pin-city">Travnik</div>
-                      <div class="t4-mapa-pin-count">2 mjesta</div>
-                    </div>
-                  </div>
-                  <div class="t4-mapa-pin">
-                    <span class="t4-mapa-pin-emoji">🌉</span>
-                    <div>
-                      <div class="t4-mapa-pin-city">Mostar</div>
-                      <div class="t4-mapa-pin-count">2 mjesta</div>
-                    </div>
-                  </div>
-                  <div class="t4-mapa-pin">
-                    <span class="t4-mapa-pin-emoji">🏙️</span>
-                    <div>
-                      <div class="t4-mapa-pin-city">Zenica</div>
-                      <div class="t4-mapa-pin-count">1 mjesto</div>
-                    </div>
-                  </div>
-                  <div class="t4-mapa-pin">
-                    <span class="t4-mapa-pin-emoji">🌍</span>
-                    <div>
-                      <div class="t4-mapa-pin-city">Beč</div>
-                      <div class="t4-mapa-pin-count">1 mjesto</div>
-                    </div>
-                  </div>
-                </div>
-                <p class="t4-mapa-visited">6 gradova · 14 mjesta posjećeno</p>
+                <div class="t4-mapa-grid" id="t4-mapa-grid"></div>
+                <p class="t4-mapa-visited" id="t4-mapa-visited">Nema zabilježenih gradova.</p>
               </div>
 
             </div><!-- /t4-dnevnik -->
@@ -3109,7 +3080,7 @@ a {
                   <span class="t5-pref-icon">🌐</span>
                   <div class="t5-pref-info">
                     <div class="t5-pref-label">JEZIK</div>
-                    <div class="t5-pref-val" id="t5-pref-jezik">Bosanski</div>
+                    <div class="t5-pref-val" id="t5-pref-jezik">Hrvatski</div>
                   </div>
                   <span class="t5-pref-chevron">›</span>
                 </div>
@@ -3386,6 +3357,7 @@ a {
       <div class="slide-screen" id="t3-quiz">
         <div class="t3-quiz-header" style="position:relative">
           <button class="t3-quiz-back" onclick="closeSlideScreen('t3-quiz')">←</button>
+          <button class="t3-quiz-restart" onclick="t3RestartQuiz()">Restart</button>
           <div class="t3-quiz-meta">
             <div class="t3-quiz-modul" id="t3-quiz-modul-lbl"></div>
             <div class="t3-quiz-progress-bar">
@@ -3404,6 +3376,7 @@ a {
         <div class="t3-mem-header">
           <button class="t3-mem-back" onclick="t3CloseMemory()">←</button>
           <div class="t3-mem-title">Ćevap Memory</div>
+          <button class="t3-quiz-restart" onclick="t3StartMemory()">Restart</button>
           <div class="t3-mem-stats">
             <div class="t3-mem-stat">
               <div class="t3-mem-stat-val" id="t3-mem-potezi">0</div>
@@ -3435,6 +3408,7 @@ a {
         <div class="t3-panic-header">
           <button class="t3-panic-back" onclick="t3StopPanic()">←</button>
           <div class="t3-panic-title">Roštilj Panic 🔥</div>
+          <button class="t3-panic-restart" onclick="t3StartPanicGame()">Restart</button>
           <div class="t3-panic-score-wrap">
             <div class="t3-panic-score-val" id="t3-panic-score">0</div>
             <div class="t3-panic-score-lbl">SPAŠENO</div>
@@ -3457,15 +3431,17 @@ a {
         <div class="t3-panic-header">
           <button class="t3-panic-back" onclick="t3StopSnake()">←</button>
           <div class="t3-panic-title">Ćevap Zmijica 🐍</div>
+          <button class="t3-panic-restart" onclick="t3StartSnake()">Restart</button>
           <div class="t3-panic-score-wrap">
             <div class="t3-panic-score-val" id="t3-snake-score">0</div>
             <div class="t3-panic-score-lbl">LEPINJA</div>
           </div>
         </div>
         <div class="t3-snake-wrap">
+          <div class="t3-snake-help">Tipke ili strelice — vodi ćevap do lepinje prije sudara.</div>
           <canvas id="t3-snake-canvas" width="312" height="312"></canvas>
           <div class="t3-snake-controls">
-            <button onclick="t3SnakeDir('up')">⬆️</button>
+            <button class="up" onclick="t3SnakeDir('up')">⬆️</button>
             <div>
               <button onclick="t3SnakeDir('left')">⬅️</button>
               <button onclick="t3SnakeDir('down')">⬇️</button>
@@ -4892,11 +4868,11 @@ const T3_GAME_QUIZZES = {
   city: {
     id: 'g-city', label: '🗺️ PREPOZNAJ GRAD', xp: 50,
     pitanja: [
-      { q:'Prepoznaj grad po znamenitosti', viz:'🌉', vizSub:'Stari most', opcije:['Mostar','Tuzla','Zenica','Bihać'], tac:0 },
-      { q:'Prepoznaj grad po znamenitosti', viz:'🕊️', vizSub:'Sebilj (Baščaršija)', opcije:['Sarajevo','Trebinje','Goražde','Livno'], tac:0 },
-      { q:'Prepoznaj grad po znamenitosti', viz:'🏰', vizSub:'Kastel tvrđava', opcije:['Banja Luka','Foča','Prijedor','Jajce'], tac:0 },
-      { q:'Prepoznaj grad po znamenitosti', viz:'🧂', vizSub:'Pannonica / grad soli', opcije:['Tuzla','Mostar','Konjic','Travnik'], tac:0 },
-      { q:'Prepoznaj grad po znamenitosti', viz:'🏯', vizSub:'Travnička tvrđava', opcije:['Travnik','Zenica','Doboj','Visoko'], tac:0 },
+      { q:'Prepoznaj grad po znamenitosti', vizImg:'https://upload.wikimedia.org/wikipedia/commons/thumb/8/8f/Stari_Most_2008.jpg/640px-Stari_Most_2008.jpg', vizSub:'Stari most', opcije:['Mostar','Tuzla','Zenica','Bihać'], tac:0 },
+      { q:'Prepoznaj grad po znamenitosti', vizImg:'https://upload.wikimedia.org/wikipedia/commons/thumb/0/0a/Sebilj%2C_Bascarsija.jpg/640px-Sebilj%2C_Bascarsija.jpg', vizSub:'Sebilj (Baščaršija)', opcije:['Sarajevo','Trebinje','Goražde','Livno'], tac:0 },
+      { q:'Prepoznaj grad po znamenitosti', vizImg:'https://upload.wikimedia.org/wikipedia/commons/thumb/6/6b/Kastel_Banja_Luka.jpg/640px-Kastel_Banja_Luka.jpg', vizSub:'Kastel tvrđava', opcije:['Banja Luka','Foča','Prijedor','Jajce'], tac:0 },
+      { q:'Prepoznaj grad po znamenitosti', vizImg:'https://upload.wikimedia.org/wikipedia/commons/thumb/b/b3/Pannonica_lakes_in_Tuzla.jpg/640px-Pannonica_lakes_in_Tuzla.jpg', vizSub:'Pannonica / grad soli', opcije:['Tuzla','Mostar','Konjic','Travnik'], tac:0 },
+      { q:'Prepoznaj grad po znamenitosti', vizImg:'https://upload.wikimedia.org/wikipedia/commons/thumb/2/2c/Travnik_fortress.jpg/640px-Travnik_fortress.jpg', vizSub:'Travnička tvrđava', opcije:['Travnik','Zenica','Doboj','Visoko'], tac:0 },
     ]
   },
   cevap: {
@@ -4948,7 +4924,7 @@ function t3RenderQuestion() {
   document.getElementById('t3-quiz-qnum').textContent = `${ci+1} / ${total} pitanja`;
   document.getElementById('t3-quiz-body').innerHTML = `
     <div class="t3-quiz-q animate-fade">${p.q}</div>
-    ${p.viz ? `<div style="text-align:center;background:var(--cream2);border-radius:14px;padding:12px;margin-bottom:10px"><div style="font-size:52px">${p.viz}</div><div style="font-size:11px;color:var(--brown3);font-weight:700">${p.vizSub || "Znamenitost"}</div></div>` : ""}
+    ${(p.vizImg || p.viz) ? `<div class="t3-quiz-viz">${p.vizImg ? `<img src="${p.vizImg}" alt="${p.vizSub || 'Znamenitost'}" loading="lazy" />` : `<div style="font-size:52px">${p.viz}</div>`}<div class="t3-quiz-viz-sub">${p.vizSub || 'Znamenitost'}</div></div>` : ''}
     <div class="t3-quiz-options">
       ${p.opcije.map((o,i) => `
         <button class="t3-quiz-opt" onclick="t3Answer(${i})">
@@ -4990,6 +4966,13 @@ window.t3NextQ = function() {
   t3Q.ci++;
   t3Q.answered = false;
   t3RenderQuestion();
+};
+
+window.t3RestartQuiz = function() {
+  if (!t3Q.modId) return;
+  const gameKey = Object.entries(T3_GAME_QUIZZES).find(([, g]) => g.id === t3Q.modId)?.[0];
+  if (gameKey) return t3StartGameQuiz(gameKey);
+  t3StartQuiz(t3Q.modId);
 };
 
 function t3QuizEnd() {
@@ -5348,6 +5331,7 @@ function t4UpdateDiaryUI() {
   const traPct = totalStyles ? Math.round((tra/totalStyles)*100) : 0;
 
   const setTxt = (id,val) => { const el = document.getElementById(id); if (el) el.textContent = val; };
+  setTxt('t4-dn-year', `TVOJ SAŽETAK ZA ${new Date().getFullYear()}.`);
   setTxt('t4-dn-cevapi', `${d.cevapi} ćevapa`);
   setTxt('t4-dn-gradovi', d.cities.length);
   setTxt('t4-dn-mjesta', d.places.length);
@@ -5356,6 +5340,31 @@ function t4UpdateDiaryUI() {
   const bar = (id,pct)=>{ const el=document.getElementById(id); if(el) el.style.width = pct + '%'; };
   bar('t4-bar-sar', sarPct); bar('t4-bar-ban', banPct); bar('t4-bar-tra', traPct);
   setTxt('t4-pct-sar', sarPct + '%'); setTxt('t4-pct-ban', banPct + '%'); setTxt('t4-pct-tra', traPct + '%');
+
+  const taste = document.getElementById('t4-taste-type');
+  if (taste) {
+    const sorted = Object.entries(d.styles).sort((a,b)=>b[1]-a[1]);
+    if (sorted.length) {
+      taste.style.display = '';
+      taste.innerHTML = `🍽️ Trenutno najviše voliš <strong>${sorted[0][0]}</strong> stil.`;
+    } else {
+      taste.style.display = 'none';
+      taste.textContent = '';
+    }
+  }
+
+  const grid = document.getElementById('t4-mapa-grid');
+  const visited = document.getElementById('t4-mapa-visited');
+  if (grid && visited) {
+    const icons = { Sarajevo:'🏛️', 'Banja Luka':'🌿', Travnik:'🏔️', Mostar:'🌉', Zenica:'🏙️', 'Beč':'🌍' };
+    if (!d.cities.length) {
+      grid.innerHTML = '<div class="t4-mapa-pin"><span class="t4-mapa-pin-emoji">📍</span><div><div class="t4-mapa-pin-city">Još nema zabilježenih gradova</div><div class="t4-mapa-pin-count">Lajkaj objavu da krene praćenje</div></div></div>';
+      visited.textContent = 'Nema zabilježenih gradova.';
+    } else {
+      grid.innerHTML = d.cities.map(city => `<div class="t4-mapa-pin"><span class="t4-mapa-pin-emoji">${icons[city] || '📍'}</span><div><div class="t4-mapa-pin-city">${city}</div><div class="t4-mapa-pin-count">Posjećen grad</div></div></div>`).join('');
+      visited.textContent = `${d.cities.length} gradova evidentirano`;
+    }
+  }
 }
 
 function t4ApplyDiaryDelta(meta, amount) {
