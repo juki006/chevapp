@@ -1050,6 +1050,29 @@ a {
 }
 .t1-search-clear.vis { display: flex; }
 
+.t1-tools-row { display: flex; gap: 8px; margin-bottom: 10px; }
+.t1-geo-btn, .t1-sort-select {
+  height: 34px; border-radius: 18px; border: 1.5px solid var(--cream3); background: var(--white);
+  font-size: 12px; font-weight: 700; color: var(--brown3); padding: 0 12px;
+}
+.t1-geo-btn.active { border-color: var(--green2); color: var(--green2); }
+.t1-sort-select { margin-left: auto; }
+.t1-card-top { display:flex; justify-content:flex-end; margin-bottom: 6px; }
+.t1-fav-btn { font-size: 18px; opacity: 0.45; }
+.t1-fav-btn.active { opacity: 1; }
+.t1-rate-modal {
+  position: absolute; inset: 0; z-index: 350; background: rgba(44,26,14,0.6);
+  display: none; align-items: flex-end;
+}
+.t1-rate-modal.open { display: flex; }
+.t1-rate-sheet { width: 100%; background: var(--white); border-radius: 26px 26px 0 0; padding: 18px 18px 28px; }
+.t1-rate-title { text-align: center; font-weight: 800; margin-bottom: 10px; color: var(--brown); }
+.t1-rate-stars { display:flex; gap: 8px; justify-content:center; margin-bottom: 12px; }
+.t1-rate-star { font-size: 28px; opacity: 0.35; }
+.t1-rate-star.active { opacity: 1; }
+.t1-rate-comment { width:100%; min-height:90px; border:1.5px solid var(--cream3); border-radius: 12px; padding:10px; margin-bottom:10px; }
+.t1-rate-submit { width:100%; padding:12px; border-radius: 12px; background: linear-gradient(135deg,var(--red),var(--orange)); color:var(--white); font-weight: 800; }
+
 /* Filter chips */
 .t1-chips {
   display: flex; gap: 6px; overflow-x: auto;
@@ -1296,6 +1319,13 @@ a {
 }
 .t2-title { font-family: var(--font-title); font-size: 26px; font-weight: 700; color: var(--brown); margin-bottom: 10px; }
 .t2-title em { color: var(--red); font-style: italic; }
+
+.t2-search-wrap { position: relative; margin-bottom: 10px; }
+.t2-search-icon { position:absolute; left:10px; top:50%; transform:translateY(-50%); opacity:0.6; font-size:14px; }
+.t2-search-input {
+  width: 100%; border:1.5px solid var(--cream3); border-radius: 20px; padding:10px 12px 10px 32px;
+  background: var(--white); font-size: 13px;
+}
 .t2-chips { display: flex; gap: 6px; overflow-x: auto; scrollbar-width: none; padding-bottom: 10px; }
 .t2-chips::-webkit-scrollbar { display: none; }
 .t2-chip {
@@ -2019,6 +2049,8 @@ a {
   padding: 20px 20px 36px;
 }
 .t5-picker-title { font-size: 14px; font-weight: 700; color: var(--brown); margin-bottom: 14px; text-align: center; }
+.t5-upload-btn { width:100%; padding:10px; background: var(--cream2); border-radius: 10px; margin-bottom: 12px; font-weight: 700; color: var(--brown); }
+.t5-coming-soon { padding: 14px 16px; font-size: 13px; color: var(--brown3); font-style: italic; }
 .t5-picker-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 10px; }
 .t5-picker-emoji {
   aspect-ratio: 1;
@@ -2304,6 +2336,14 @@ a {
                 oninput="t1OnSearch(this.value)" autocomplete="off" />
               <button class="t1-search-clear" id="t1-clear" onclick="t1ClearSearch()">✕</button>
             </div>
+            <div class="t1-tools-row">
+              <button class="t1-geo-btn" id="t1-geo-btn" onclick="t1UseMyLocation()">📡 U blizini mene</button>
+              <select class="t1-sort-select" id="t1-sort" onchange="t1SetSort(this.value)">
+                <option value="distance">Udaljenost</option>
+                <option value="rating">Ocjena</option>
+                <option value="az">A-Z</option>
+              </select>
+            </div>
             <div class="t1-chips" id="t1-chips"></div>
           </div>
 
@@ -2356,6 +2396,10 @@ a {
           <!-- Sticky: title + filter chips -->
           <div class="t2-sticky">
             <div class="t2-title">The <em>Kuhinja</em></div>
+            <div class="t2-search-wrap">
+              <span class="t2-search-icon">🔍</span>
+              <input class="t2-search-input" id="t2-search" type="text" placeholder="Traži recepte, tagove, opis..." oninput="t2SetSearch(this.value)" />
+            </div>
             <div class="t2-chips" id="t2-chips"></div>
           </div>
 
@@ -2964,11 +3008,11 @@ a {
               <button class="t5-edit-btn" onclick="t5ToggleBioEdit()">Uredi profil</button>
             </div>
             <div class="t5-name" id="t5-name">Džemal Hadžić</div>
-            <div class="t5-rank-badge">🔥 Ugljeni Majstor · Nivo 4</div>
+            <div class="t5-rank-badge" id="t5-rank-badge">🔥 Ugljeni Majstor · Nivo 4</div>
             <div class="t5-xp-bar-wrap">
               <div class="t5-xp-label">
-                <span>1 240 XP</span>
-                <span>Sljedeći rang: 1 500 XP</span>
+                <span id="t5-xp-current">1 240 XP</span>
+                <span id="t5-xp-next">Sljedeći rang: 1 500 XP</span>
               </div>
               <div class="t5-xp-track">
                 <div class="t5-xp-fill" id="t5-xp-fill" style="width:83%"></div>
@@ -2979,7 +3023,9 @@ a {
           <!-- Avatar modal -->
           <div class="t5-avatar-modal" id="t5-avatar-modal" onclick="t5CloseAvatarPicker(event)">
             <div class="t5-avatar-picker">
+              <input type="file" id="t5-avatar-upload" accept="image/*" style="display:none" onchange="t5UploadAvatar(event)" />
               <div class="t5-picker-title">Odaberi avatar</div>
+              <button class="t5-upload-btn" onclick="document.getElementById('t5-avatar-upload').click()">📷 Učitaj sliku</button>
               <div class="t5-picker-grid" id="t5-picker-grid"></div>
             </div>
           </div>
@@ -3051,7 +3097,7 @@ a {
                     <div class="t5-stat-key">ĆEVABDŽINICA POSJEĆENO</div>
                   </div>
                   <div class="t5-stat-cell">
-                    <div class="t5-stat-num red">1 240</div>
+                    <div class="t5-stat-num red" id="t5-stat-xp">1 240</div>
                     <div class="t5-stat-key">UKUPNO XP</div>
                   </div>
                   <div class="t5-stat-cell">
@@ -3063,7 +3109,7 @@ a {
                     <div class="t5-stat-key">RECEPATA NAUČENO</div>
                   </div>
                   <div class="t5-stat-cell">
-                    <div class="t5-stat-num orange">🔥 8</div>
+                    <div class="t5-stat-num orange" id="t5-stat-streak">🔥 8</div>
                     <div class="t5-stat-key">STREAK (DANA)</div>
                   </div>
                   <div class="t5-stat-cell">
@@ -3078,13 +3124,21 @@ a {
                 <div class="t5-section-head">
                   <span class="t5-section-title">OMILJENI RECEPTI</span>
                 </div>
-                <div class="t5-favs-scroll">
+                <div class="t5-favs-scroll" id="t5-favs-scroll">
                   <div class="t5-fav-card"><span class="t5-fav-emoji">🥩</span><span class="t5-fav-name">Bosanski ćevap</span></div>
                   <div class="t5-fav-card"><span class="t5-fav-emoji">🫓</span><span class="t5-fav-name">Somun domaći</span></div>
                   <div class="t5-fav-card"><span class="t5-fav-emoji">🧅</span><span class="t5-fav-name">Luk mariniran</span></div>
                   <div class="t5-fav-card"><span class="t5-fav-emoji">🫙</span><span class="t5-fav-name">Kajmak svježi</span></div>
                   <div class="t5-fav-card"><span class="t5-fav-emoji">🥗</span><span class="t5-fav-name">Šopska salata</span></div>
                 </div>
+              </div>
+
+
+              <div class="t5-section">
+                <div class="t5-section-head">
+                  <span class="t5-section-title">AI PICTURE MAKER</span>
+                </div>
+                <div class="t5-coming-soon">🎨 Dolazi uskoro — generiranje AI food fotki profila.</div>
               </div>
 
               <!-- Postavke -->
@@ -3361,6 +3415,17 @@ a {
           </div>
         </div>
       </div><!-- /t3-panic -->
+
+
+
+      <div class="t1-rate-modal" id="t1-rate-modal" onclick="t1CloseRateModal(event)">
+        <div class="t1-rate-sheet" onclick="event.stopPropagation()">
+          <div class="t1-rate-title" id="t1-rate-title">Ocijeni restoran</div>
+          <div class="t1-rate-stars" id="t1-rate-stars"></div>
+          <textarea id="t1-rate-comment" class="t1-rate-comment" placeholder="Dodaj komentar (opcionalno)"></textarea>
+          <button class="t1-rate-submit" onclick="t1SubmitRating()">Pošalji ocjenu (+25 XP)</button>
+        </div>
+      </div>
 
     </div><!-- /screen-app -->
 
@@ -3815,7 +3880,8 @@ const T1_DATA = [
 ];
 
 /* ─── State ─── */
-let t1State = { stil: 'sve', query: '' };
+const T1_FAV_KEY = 'ca_t1_fav';
+let t1State = { stil: 'sve', query: '', sort: 'distance', onlyFav: false, userLoc: null };
 let t1Map = null, t1Markers = [], t1ActiveRest = null;
 
 /* ─── Helpers ─── */
@@ -3835,24 +3901,51 @@ function t1RatingDots(ocjena) {
   return html;
 }
 
+function t1GetFavs() { return LS.get(T1_FAV_KEY, []); }
+window.t1ToggleFav = function(id) {
+  let favs = t1GetFavs();
+  favs = favs.includes(id) ? favs.filter(x => x !== id) : [...favs, id];
+  LS.set(T1_FAV_KEY, favs);
+  t1RenderChips();
+  t1RenderList();
+}
+function t1GetDistanceKm(lat1, lon1, lat2, lon2) {
+  const R = 6371;
+  const dLat = (lat2 - lat1) * Math.PI / 180;
+  const dLon = (lon2 - lon1) * Math.PI / 180;
+  const a = Math.sin(dLat / 2) ** 2 + Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) * Math.sin(dLon / 2) ** 2;
+  return R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+}
+function t1DistanceFor(r) {
+  if (!t1State.userLoc) return parseFloat(r.udaljenost);
+  return t1GetDistanceKm(t1State.userLoc.lat, t1State.userLoc.lng, r.lat, r.lng);
+}
+
 function t1GetFiltered() {
-  return T1_DATA.filter(r => {
+  const favs = t1GetFavs();
+  let list = T1_DATA.filter(r => {
     if (t1State.stil !== 'sve' && r.stil !== t1State.stil) return false;
+    if (t1State.onlyFav && !favs.includes(r.id)) return false;
     if (t1State.query) {
       const q = t1State.query.toLowerCase();
       if (!r.ime.toLowerCase().includes(q) && !r.grad.toLowerCase().includes(q)) return false;
     }
     return true;
   });
+  if (t1State.sort === 'rating') list = list.sort((a,b) => b.ocjena - a.ocjena);
+  if (t1State.sort === 'az') list = list.sort((a,b) => a.ime.localeCompare(b.ime,'hr'));
+  if (t1State.sort === 'distance') list = list.sort((a,b) => t1DistanceFor(a) - t1DistanceFor(b));
+  return list;
 }
 
 /* ─── Chips ─── */
 function t1RenderChips() {
   const stilovi = [...new Set(T1_DATA.map(r => r.stil))];
   const icons = { Sarajevski: '🗺️', Banjalučki: '🌿', Mostarsko: '🌊', Travnički: '🏔️' };
-  let html = `<button class="t1-chip active" data-stil="sve" onclick="t1SetStil('sve',this)">SVE</button>`;
+  let html = `<button class="t1-chip${t1State.stil==='sve' ? ' active' : ''}" data-stil="sve" onclick="t1SetStil('sve',this)">SVE</button>`;
+  html += `<button class="t1-chip${t1State.onlyFav ? ' active' : ''}" onclick="t1ToggleFavOnly()">❤️ FAVORITI</button>`;
   stilovi.forEach(s => {
-    html += `<button class="t1-chip" data-stil="${s}" onclick="t1SetStil('${s}',this)">${icons[s] || '🥩'} ${s.toUpperCase()}</button>`;
+    html += `<button class="t1-chip${t1State.stil===s ? ' active' : ''}" data-stil="${s}" onclick="t1SetStil('${s}',this)">${icons[s] || '🥩'} ${s.toUpperCase()}</button>`;
   });
   document.getElementById('t1-chips').innerHTML = html;
 }
@@ -3868,8 +3961,13 @@ function t1RenderList() {
     return;
   }
   empty.style.display = 'none';
-  container.innerHTML = filtered.map(r => `
+  const favs = t1GetFavs();
+  container.innerHTML = filtered.map(r => {
+    const isFav = favs.includes(r.id);
+    const distance = t1DistanceFor(r).toFixed(1);
+    return `
     <div class="t1-card animate-fade" onclick="t1OpenDetail(${r.id})">
+      <div class="t1-card-top"><button class="t1-fav-btn${isFav ? ' active' : ''}" onclick="event.stopPropagation();t1ToggleFav(${r.id})">${isFav ? '❤️' : '🤍'}</button></div>
       <div class="t1-card-emoji-wrap">
         <div class="t1-card-emoji" style="background:${r.boja}22">${r.emoji}</div>
       </div>
@@ -3877,23 +3975,44 @@ function t1RenderList() {
       <div class="t1-card-tags">
         <span class="t1-card-tag">🗺️ ${r.stil.toUpperCase()}</span>
         <span class="t1-card-tag">🥩 ${r.meso.toUpperCase()}</span>
-        <span class="t1-card-tag">📍 ${r.udaljenost} KM</span>
+        <span class="t1-card-tag">📍 ${distance} KM</span>
       </div>
       <div class="t1-card-rating">
         <div class="t1-rating-dots">${t1RatingDots(r.ocjena)}</div>
-        <span class="t1-rating-num-lg">${r.ocjena}</span>
+        <span class="t1-rating-num-lg">${r.ocjena.toFixed(1)}</span>
         <span class="t1-rating-count">(${r.recenzija_count.toLocaleString('hr')} recenzija)</span>
       </div>
-    </div>`).join('');
+    </div>`;
+  }).join('');
 }
 
 /* ─── Filters ─── */
-window.t1SetStil = function (stil, btn) {
+window.t1SetStil = function (stil) {
   t1State.stil = stil;
-  document.querySelectorAll('#t1-chips .t1-chip').forEach(b => b.classList.remove('active'));
-  btn.classList.add('active');
+  t1RenderChips();
   t1RenderList();
   t1UpdateMap();
+};
+window.t1ToggleFavOnly = function() {
+  t1State.onlyFav = !t1State.onlyFav;
+  t1RenderChips();
+  t1RenderList();
+  t1UpdateMap();
+};
+window.t1SetSort = function(sort) {
+  t1State.sort = sort;
+  t1RenderList();
+  t1UpdateMap();
+};
+window.t1UseMyLocation = function() {
+  if (!navigator.geolocation) { showToast('Geolokacija nije podržana.'); return; }
+  navigator.geolocation.getCurrentPosition((pos) => {
+    t1State.userLoc = { lat: pos.coords.latitude, lng: pos.coords.longitude };
+    document.getElementById('t1-geo-btn').classList.add('active');
+    t1SetSort('distance');
+    document.getElementById('t1-sort').value = 'distance';
+    showToast('Lokacija ažurirana 📡');
+  }, () => showToast('Lokacija nije dostupna.'));
 };
 
 window.t1OnSearch = function (val) {
@@ -4030,10 +4149,42 @@ window.t1Navigate = function () {
   const r = t1ActiveRest; if (!r) return;
   window.open('https://maps.google.com/?q=' + r.lat + ',' + r.lng, '_blank');
 };
-window.t1Ocijeni = function () { showToast('Ocjenjivanje dolazi uskoro! ⭐'); };
+let t1RateState = { stars: 0 };
+window.t1Ocijeni = function () {
+  if (!t1ActiveRest) return;
+  document.getElementById('t1-rate-title').textContent = 'Ocijeni: ' + t1ActiveRest.ime;
+  t1RateState.stars = 0;
+  document.getElementById('t1-rate-comment').value = '';
+  document.getElementById('t1-rate-stars').innerHTML = Array.from({ length: 5 }, (_, i) =>
+    `<button class="t1-rate-star" onclick="t1SetRateStar(${i + 1})">🧆</button>`
+  ).join('');
+  document.getElementById('t1-rate-modal').classList.add('open');
+};
+window.t1CloseRateModal = function(e) {
+  if (!e || e.target.id === 't1-rate-modal') document.getElementById('t1-rate-modal').classList.remove('open');
+};
+window.t1SetRateStar = function(stars) {
+  t1RateState.stars = stars;
+  document.querySelectorAll('.t1-rate-star').forEach((el, idx) => el.classList.toggle('active', idx < stars));
+};
+window.t1SubmitRating = function() {
+  if (!t1ActiveRest || !t1RateState.stars) { showToast('Odaberi broj zvjezdica.'); return; }
+  const comment = document.getElementById('t1-rate-comment').value.trim();
+  const rest = T1_DATA.find(x => x.id === t1ActiveRest.id);
+  const oldCount = rest.recenzija_count;
+  rest.ocjena = Number((((rest.ocjena * oldCount) + t1RateState.stars) / (oldCount + 1)).toFixed(1));
+  rest.recenzija_count = oldCount + 1;
+  if (comment) rest.reviews.unshift({ user: 'ti_sada', badge: '🧆 Nova recenzija', avatar: '🙂', dana: 0, tekst: comment });
+  updateXP(25);
+  t1RenderList();
+  t1OpenDetail(rest.id);
+  t1CloseRateModal();
+  showToast('Ocjena spremljena! +25 XP');
+};
 
 /* ─── Init ─── */
 t1RenderChips();
+document.getElementById('t1-sort').value = t1State.sort;
 t1RenderList();
 setTimeout(() => { t1InitMap(); t1UpdateMap(); }, 150);
 
@@ -4219,6 +4370,8 @@ const T2_DATA = [
   },
 ];
 
+window.__T2_DATA__ = T2_DATA;
+
 const T2_KALK = {
   'Sarajevski (60/40)':       {kcal:41, prot:3.2, masti:2.4, tagovi:['🔥 Visoko proteinski','✗ Gluten FREE','🐄 Govedina/Janjetina']},
   'Banjalučki (svinjetina)':  {kcal:48, prot:2.8, masti:3.8, tagovi:['✗ Gluten FREE','🐷 Svinjetina/Junetina']},
@@ -4227,6 +4380,7 @@ const T2_KALK = {
 
 /* ─── State ─── */
 let t2Kategorija = 'sve';
+let t2Search = '';
 let t2ActiveRecept = null;
 let t2Porcije = 4, t2BasePorcije = 4;
 const T2_SAVED_KEY = 'ca_t2_saved';
@@ -4248,6 +4402,7 @@ function t2ToggleSave() {
   document.getElementById('t2-detail-save-btn').textContent = t2IsSaved(r.id) ? '🔖' : '🔖';
   document.getElementById('t2-detail-save-btn').style.opacity = t2IsSaved(r.id) ? '1' : '0.5';
   t2RenderGrid();
+  refreshProfileUI();
 }
 
 /* ─── Chips ─── */
@@ -4261,9 +4416,19 @@ function t2RenderChips() {
 
 /* ─── Grid ─── */
 function t2GetFiltered() {
-  if (t2Kategorija === 'sve') return T2_DATA;
-  if (t2Kategorija === 'spremljeni') { const s = t2GetSaved(); return T2_DATA.filter(r => s.includes(r.id)); }
-  return T2_DATA.filter(r => r.kategorija === t2Kategorija);
+  let list = t2Kategorija === 'sve' ? T2_DATA :
+    t2Kategorija === 'spremljeni' ? T2_DATA.filter(r => t2GetSaved().includes(r.id)) :
+    T2_DATA.filter(r => r.kategorija === t2Kategorija);
+  if (t2Search) {
+    const q = t2Search.toLowerCase();
+    list = list.filter(r =>
+      r.naziv.toLowerCase().includes(q) ||
+      r.subtitle.toLowerCase().includes(q) ||
+      r.tagovi.some(t => t.toLowerCase().includes(q)) ||
+      r.koraci.some(k => `${k.naslov} ${k.opis}`.toLowerCase().includes(q))
+    );
+  }
+  return list;
 }
 
 function t2RenderGrid() {
@@ -4288,12 +4453,19 @@ window.t2QuickSave = function(id, btn) {
   if (saved.includes(id)) { saved = saved.filter(x => x !== id); btn.classList.remove('saved'); showToast('Uklonjeno 🗑️'); }
   else { saved.push(id); btn.classList.add('saved'); showToast('Spremljeno 🔖'); }
   localStorage.setItem(T2_SAVED_KEY, JSON.stringify(saved));
+  refreshProfileUI();
 };
 
 window.t2SetKat = function(kat, btn) {
   t2Kategorija = kat;
   document.querySelectorAll('.t2-chip').forEach(b => b.classList.remove('active'));
   btn.classList.add('active');
+  t2RenderGrid();
+};
+
+
+window.t2SetSearch = function(val) {
+  t2Search = val.trim();
   t2RenderGrid();
 };
 
@@ -4966,6 +5138,42 @@ document.addEventListener('click', function(e) {
     settings: { notif: true, loc: true, offline: false, priv: false },
   };
 
+  function t5SavedIds() { return LS.get('ca_t2_saved', []); }
+
+  window.refreshProfileUI = function() {
+    const user = getCurrentUser();
+    const xp = user?.xp || 0;
+    const streak = user?.streak || 0;
+    const rank = getRank(xp);
+    const next = getNextRank(xp);
+
+    document.getElementById('t5-name').textContent = user?.name || 'Gost';
+    document.getElementById('t5-rank-badge').textContent = rank.title;
+    document.getElementById('t5-xp-current').textContent = `${xp.toLocaleString('hr')} XP`;
+    document.getElementById('t5-xp-next').textContent = next ? `Sljedeći rang: ${next.xpMin.toLocaleString('hr')} XP` : 'Maksimalni rang';
+    document.getElementById('t5-xp-fill').style.width = `${getXpProgress(xp)}%`;
+    document.getElementById('t5-stat-xp').textContent = xp.toLocaleString('hr');
+    document.getElementById('t5-stat-streak').textContent = `🔥 ${streak}`;
+
+    if (user?.avatarImg) {
+      const av = document.getElementById('t5-avatar');
+      av.textContent = '';
+      av.style.backgroundImage = `url(${user.avatarImg})`;
+      av.style.backgroundSize = 'cover';
+      av.style.backgroundPosition = 'center';
+    } else {
+      const av = document.getElementById('t5-avatar');
+      av.style.backgroundImage = '';
+      av.textContent = user?.avatar || state.avatar;
+    }
+
+    const savedIds = t5SavedIds();
+    const items = (window.__T2_DATA__ || []).filter(r => savedIds.includes(r.id));
+    document.getElementById('t5-favs-scroll').innerHTML = items.length
+      ? items.map(r => `<div class="t5-fav-card"><span class="t5-fav-emoji">${r.emoji}</span><span class="t5-fav-name">${r.naziv}</span></div>`).join('')
+      : '<div style="font-size:12px;color:var(--brown3);padding:4px 0;">Nema bookmarkanih recepata još.</div>';
+  };
+
   window.t5OpenAvatarPicker = function() {
     const grid = document.getElementById('t5-picker-grid');
     grid.innerHTML = AVATARS.map(e =>
@@ -4979,9 +5187,31 @@ document.addEventListener('click', function(e) {
       document.getElementById('t5-avatar-modal').classList.remove('open');
   };
 
+  window.t5UploadAvatar = function(event) {
+    const file = event.target.files && event.target.files[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = () => {
+      const user = getCurrentUser();
+      if (!user) return;
+      user.avatarImg = reader.result;
+      saveUser(user);
+      refreshProfileUI();
+      showToast('Profilna slika ažurirana 📷');
+      document.getElementById('t5-avatar-modal').classList.remove('open');
+    };
+    reader.readAsDataURL(file);
+  };
+
   window.t5PickAvatar = function(emoji) {
     state.avatar = emoji;
-    document.getElementById('t5-avatar').textContent = emoji;
+    const user = getCurrentUser();
+    if (user) {
+      user.avatar = emoji;
+      user.avatarImg = null;
+      saveUser(user);
+    }
+    refreshProfileUI();
     document.getElementById('t5-avatar-modal').classList.remove('open');
   };
 
@@ -5041,11 +5271,14 @@ document.addEventListener('click', function(e) {
   };
 
   window.t5Logout = function() {
-    if (confirm('Stvarno se odjavljuješ?')) {
-      document.getElementById('main-app').style.display = 'none';
-      document.getElementById('auth-screen').style.display = 'flex';
-    }
+    doLogout();
   };
+
+  window.onAppEnter = function() {
+    refreshProfileUI();
+  };
+
+  refreshProfileUI();
 
 }());
 /* === JS-TAB5-END === */
