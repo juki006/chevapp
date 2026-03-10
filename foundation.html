@@ -2072,7 +2072,8 @@ a {
 
 /* Header */
 .t4-header { display: flex; align-items: center; justify-content: space-between; padding: 20px 20px 0; }
-.t4-title { font-family: var(--font-title); font-size: 28px; color: var(--brown); font-style: italic; }
+.t4-title { font-family: var(--font-title); font-size: 28px; color: var(--brown); }
+.t4-title em { color: var(--red); font-style: italic; }
 .t4-biser-btn { background: linear-gradient(135deg, var(--red), var(--orange)); color: var(--white); border-radius: var(--radius-md); padding: 8px 18px; font-size: 13px; font-weight: 700; }
 
 /* Sub-nav */
@@ -2154,6 +2155,8 @@ a {
 .t4-rang-you { font-size: 11px; color: var(--orange); font-weight: 700; margin-left: 4px; }
 .t4-rang-title { font-size: 11px; color: var(--brown3); }
 .t4-rang-xp { font-size: 14px; font-weight: 800; color: var(--orange); font-family: var(--font-mono); white-space: nowrap; }
+.t4-chips { display:flex; gap:8px; margin-bottom:10px; }
+.t4-chips .t4-subnav-btn { min-width: 76px; }
 
 /* --- DNEVNIK --- */
 .t4-stats-banner { background: linear-gradient(135deg, var(--orange), var(--red)); border-radius: var(--radius-lg); padding: 20px; margin-bottom: 16px; color: var(--white); }
@@ -2329,6 +2332,7 @@ a {
 
           <!-- Sticky header -->
           <div class="t1-sticky">
+            <div class="t2-title">The <em>Tražilica</em></div>
             <div class="t1-search-wrap">
               <span class="t1-search-icon">🔍</span>
               <input class="t1-search-input" id="t1-search" type="text"
@@ -2338,13 +2342,16 @@ a {
             </div>
             <div class="t1-tools-row">
               <button class="t1-geo-btn" id="t1-geo-btn" onclick="t1UseMyLocation()">📡 U blizini mene</button>
+              <select class="t1-sort-select" id="t1-location" onchange="t1SetLocation(this.value)">
+                <option value="sve">Sve lokacije</option>
+              </select>
               <select class="t1-sort-select" id="t1-sort" onchange="t1SetSort(this.value)">
                 <option value="distance">Udaljenost</option>
                 <option value="rating">Ocjena</option>
                 <option value="az">A-Z</option>
               </select>
+              <button class="t1-geo-btn" onclick="t1PickRandom()">🎲 Random</button>
             </div>
-            <div class="t1-chips" id="t1-chips"></div>
           </div>
 
           <!-- Lista view: mini-mapa uvijek gore + lista ispod -->
@@ -2528,18 +2535,29 @@ a {
             </div>
 
             <!-- Moduli -->
+            <div class="t3-section-lbl">DNEVNI IZAZOV</div>
+            <div class="t3-rank-card" id="t3-challenge-card">
+              <div class="t3-rank-top">
+                <div class="t3-rank-emoji">🎯</div>
+                <div>
+                  <div class="t3-rank-title" id="t3-ch-title">Dnevni izazov</div>
+                  <div class="t3-rank-next" id="t3-ch-sub">Riješi 1 kviz ili igru danas</div>
+                </div>
+              </div>
+              <button class="t3-quiz-close" id="t3-ch-btn" onclick="t3ClaimDailyChallenge()">Preuzmi +30 XP</button>
+            </div>
+
             <div class="t3-section-lbl">MODULI</div>
             <div class="t3-modul-list" id="t3-modul-list"></div>
 
             <!-- Igre -->
             <div class="t3-section-lbl">ĆEVAP IGRE</div>
             <div class="t3-games-grid">
-              <div class="t3-game-card coming" style="background:linear-gradient(135deg,#1A4A2A,#0D2A16)" onclick="showToast('Uskoro! 🐍')">
-                <div class="t3-game-soon">USKORO</div>
+              <div class="t3-game-card" style="background:linear-gradient(135deg,#1A4A2A,#0D2A16)" onclick="t3StartCityRush()">
                 <div class="t3-game-xp">+50 XP</div>
-                <span class="t3-game-emoji">🐍</span>
-                <div class="t3-game-naziv">Ćevap Snake</div>
-                <div class="t3-game-sub">skupljaj · izbjegavaj kosti</div>
+                <span class="t3-game-emoji">🗺️</span>
+                <div class="t3-game-naziv">Prepoznaj grad</div>
+                <div class="t3-game-sub">pogodi grad · po opisu</div>
               </div>
               <div class="t3-game-card" style="background:linear-gradient(135deg,#1A3A4A,#0D2030)" onclick="t3StartMemory()">
                 <div class="t3-game-xp">+75 XP</div>
@@ -2553,12 +2571,11 @@ a {
                 <div class="t3-game-naziv">Roštilj Panic</div>
                 <div class="t3-game-sub">tapkaj · ne daj da izgore</div>
               </div>
-              <div class="t3-game-card coming" style="background:linear-gradient(135deg,#1A2A4A,#0D1A30)" onclick="showToast('Uskoro! 🫓')">
-                <div class="t3-game-soon">USKORO</div>
+              <div class="t3-game-card" style="background:linear-gradient(135deg,#1A2A4A,#0D1A30)" onclick="t3StartCevapGuess()">
                 <div class="t3-game-xp">+40 XP</div>
-                <span class="t3-game-emoji">🫓</span>
-                <div class="t3-game-naziv">Somun Flip</div>
-                <div class="t3-game-sub">timing · uhvati somun</div>
+                <span class="t3-game-emoji">🥩</span>
+                <div class="t3-game-naziv">Prepoznaj ćevap</div>
+                <div class="t3-game-sub">stil · sastojci · grad</div>
               </div>
             </div>
 
@@ -2574,7 +2591,7 @@ a {
 
           <!-- Header -->
           <div class="t4-header">
-            <h2 class="t4-title">Zajednica</h2>
+            <h2 class="t4-title">The <em>Zajednica</em></h2>
             <button class="t4-biser-btn">+ Biser</button>
           </div>
 
@@ -2602,7 +2619,7 @@ a {
             <!-- PANEL: OBJAVE -->
             <div class="t4-panel active" id="t4-objave">
 
-              <div class="t4-post">
+              <div class="t4-post" data-city="Sarajevo" data-resto="Ćevabdžinica Željo" data-style="Sarajevski">
                 <div class="t4-post-head">
                   <div class="t4-avatar" style="background:#FFD580;">🧔</div>
                   <div class="t4-post-meta">
@@ -2633,7 +2650,7 @@ a {
                 </div>
               </div>
 
-              <div class="t4-post">
+              <div class="t4-post" data-city="Travnik" data-resto="Kod Bake Fate" data-style="Banjalučki">
                 <div class="t4-post-head">
                   <div class="t4-avatar" style="background:#AED6F1;">👩</div>
                   <div class="t4-post-meta">
@@ -2664,7 +2681,7 @@ a {
                 </div>
               </div>
 
-              <div class="t4-post">
+              <div class="t4-post" data-city="Zenica" data-resto="Kodo Muje" data-style="Travnički">
                 <div class="t4-post-head">
                   <div class="t4-avatar" style="background:#A9DFBF;">🧑</div>
                   <div class="t4-post-meta">
@@ -2730,7 +2747,7 @@ a {
 
               <span class="t4-section-label">ČEKA VAŠ GLAS</span>
 
-              <div class="t4-vote-card">
+              <div class="t4-vote-card" data-city="Zenica" data-resto="Kodo Muje" data-style="Travnički">
                 <div class="t4-vote-head">
                   <span class="t4-vote-emoji">🏠</span>
                   <div>
@@ -2745,7 +2762,7 @@ a {
                 </div>
               </div>
 
-              <div class="t4-vote-card">
+              <div class="t4-vote-card" data-city="Travnik" data-resto="Pečenjara Kovač" data-style="Banjalučki">
                 <div class="t4-vote-head">
                   <span class="t4-vote-emoji">🔥</span>
                   <div>
@@ -2806,7 +2823,13 @@ a {
             <!-- PANEL: RANG -->
             <div class="t4-panel" id="t4-rang">
 
-              <span class="t4-rang-header">TOP KORISNICI OVOG MJESECA</span>
+              <span class="t4-rang-header" id="t4-rang-header">TOP KORISNICI OVOG MJESECA</span>
+              <div class="t4-chips" id="t4-rang-chips">
+                <button class="t4-subnav-btn active" onclick="t4SetRangPeriod('month',this)"><span>📅</span>MJESEC</button>
+                <button class="t4-subnav-btn" onclick="t4SetRangPeriod('week',this)"><span>🗓️</span>TJEDAN</button>
+                <button class="t4-subnav-btn" onclick="t4SetRangPeriod('all',this)"><span>🕰️</span>ALL</button>
+              </div>
+              <div id="t4-rang-list">
 
               <div class="t4-rang-row">
                 <span class="t4-rang-pos">🥇</span>
@@ -2858,7 +2881,7 @@ a {
                 <span class="t4-rang-xp">420 XP</span>
               </div>
 
-            </div><!-- /t4-rang -->
+            </div></div><!-- /t4-rang -->
 
             <!-- PANEL: DNEVNIK -->
             <div class="t4-panel" id="t4-dnevnik">
@@ -2866,19 +2889,19 @@ a {
               <!-- Stats banner -->
               <div class="t4-stats-banner">
                 <div class="t4-stats-year">TVOJ 2026 DO SADA</div>
-                <div class="t4-stats-count">84 ćevapa</div>
+                <div class="t4-stats-count" id="t4-dn-cevapi">0 ćevapa</div>
                 <div class="t4-stats-label">pojeden</div>
                 <div class="t4-stats-row">
                   <div class="t4-stats-item">
-                    <div class="t4-stats-num">6</div>
+                    <div class="t4-stats-num" id="t4-dn-gradovi">0</div>
                     <div class="t4-stats-key">Gradova</div>
                   </div>
                   <div class="t4-stats-item">
-                    <div class="t4-stats-num">14</div>
+                    <div class="t4-stats-num" id="t4-dn-mjesta">0</div>
                     <div class="t4-stats-key">Mjesta</div>
                   </div>
                   <div class="t4-stats-item">
-                    <div class="t4-stats-num">3 stila</div>
+                    <div class="t4-stats-num" id="t4-dn-stilovi">0 stila</div>
                     <div class="t4-stats-key">Isprobano</div>
                   </div>
                 </div>
@@ -2889,18 +2912,18 @@ a {
                 <div class="t4-taste-label">TVOJ PROFIL UKUSA</div>
                 <div class="t4-taste-row">
                   <span class="t4-taste-name">🏛️ Sarajevski</span>
-                  <div class="t4-taste-bar-bg"><div class="t4-taste-bar" style="width:55%;background:var(--red);"></div></div>
-                  <span class="t4-taste-pct">55%</span>
+                  <div class="t4-taste-bar-bg"><div class="t4-taste-bar" id="t4-bar-sar" style="width:0%;background:var(--red);"></div></div>
+                  <span class="t4-taste-pct" id="t4-pct-sar">0%</span>
                 </div>
                 <div class="t4-taste-row">
                   <span class="t4-taste-name">🌿 Banjalučki</span>
-                  <div class="t4-taste-bar-bg"><div class="t4-taste-bar" style="width:30%;background:var(--orange);"></div></div>
-                  <span class="t4-taste-pct">30%</span>
+                  <div class="t4-taste-bar-bg"><div class="t4-taste-bar" id="t4-bar-ban" style="width:0%;background:var(--orange);"></div></div>
+                  <span class="t4-taste-pct" id="t4-pct-ban">0%</span>
                 </div>
                 <div class="t4-taste-row">
                   <span class="t4-taste-name">🏔️ Travnički</span>
-                  <div class="t4-taste-bar-bg"><div class="t4-taste-bar" style="width:15%;background:var(--brown3);"></div></div>
-                  <span class="t4-taste-pct">15%</span>
+                  <div class="t4-taste-bar-bg"><div class="t4-taste-bar" id="t4-bar-tra" style="width:0%;background:var(--brown3);"></div></div>
+                  <span class="t4-taste-pct" id="t4-pct-tra">0%</span>
                 </div>
                 <p class="t4-taste-type">🍽️ Tip si <strong>Sarajevskog purista</strong> — klasičan, bez kompromisa.</p>
               </div>
@@ -2997,6 +3020,10 @@ a {
         <!-- TAB 5: Profil -->
         <div class="tab-pane" id="tab-profil">
           <!-- HTML-TAB5-START -->
+
+          <div class="t2-sticky">
+            <div class="t2-title">The <em>Profil</em></div>
+          </div>
 
           <!-- Hero -->
           <div class="t5-hero">
@@ -3881,7 +3908,7 @@ const T1_DATA = [
 
 /* ─── State ─── */
 const T1_FAV_KEY = 'ca_t1_fav';
-let t1State = { stil: 'sve', query: '', sort: 'distance', onlyFav: false, userLoc: null };
+let t1State = { location: 'sve', query: '', sort: 'distance', userLoc: null };
 let t1Map = null, t1Markers = [], t1ActiveRest = null;
 
 /* ─── Helpers ─── */
@@ -3906,7 +3933,6 @@ window.t1ToggleFav = function(id) {
   let favs = t1GetFavs();
   favs = favs.includes(id) ? favs.filter(x => x !== id) : [...favs, id];
   LS.set(T1_FAV_KEY, favs);
-  t1RenderChips();
   t1RenderList();
 }
 function t1GetDistanceKm(lat1, lon1, lat2, lon2) {
@@ -3924,9 +3950,8 @@ function t1DistanceFor(r) {
 function t1GetFiltered() {
   const favs = t1GetFavs();
   let list = T1_DATA.filter(r => {
-    if (t1State.stil !== 'sve' && r.stil !== t1State.stil) return false;
-    if (t1State.onlyFav && !favs.includes(r.id)) return false;
-    if (t1State.query) {
+    if (t1State.location !== 'sve' && r.grad !== t1State.location) return false;
+        if (t1State.query) {
       const q = t1State.query.toLowerCase();
       if (!r.ime.toLowerCase().includes(q) && !r.grad.toLowerCase().includes(q)) return false;
     }
@@ -3938,16 +3963,13 @@ function t1GetFiltered() {
   return list;
 }
 
-/* ─── Chips ─── */
-function t1RenderChips() {
-  const stilovi = [...new Set(T1_DATA.map(r => r.stil))];
-  const icons = { Sarajevski: '🗺️', Banjalučki: '🌿', Mostarsko: '🌊', Travnički: '🏔️' };
-  let html = `<button class="t1-chip${t1State.stil==='sve' ? ' active' : ''}" data-stil="sve" onclick="t1SetStil('sve',this)">SVE</button>`;
-  html += `<button class="t1-chip${t1State.onlyFav ? ' active' : ''}" onclick="t1ToggleFavOnly()">❤️ FAVORITI</button>`;
-  stilovi.forEach(s => {
-    html += `<button class="t1-chip${t1State.stil===s ? ' active' : ''}" data-stil="${s}" onclick="t1SetStil('${s}',this)">${icons[s] || '🥩'} ${s.toUpperCase()}</button>`;
-  });
-  document.getElementById('t1-chips').innerHTML = html;
+/* ─── Location filter ─── */
+function t1RenderLocationSelect() {
+  const cities = [...new Set(T1_DATA.map(r => r.grad))].sort((a,b)=>a.localeCompare(b,'hr'));
+  const sel = document.getElementById('t1-location');
+  if (!sel) return;
+  sel.innerHTML = `<option value="sve">Sve lokacije</option>` + cities.map(c => `<option value="${c}">${c}</option>`).join('');
+  sel.value = t1State.location;
 }
 
 /* ─── Cards ─── */
@@ -3987,15 +4009,8 @@ function t1RenderList() {
 }
 
 /* ─── Filters ─── */
-window.t1SetStil = function (stil) {
-  t1State.stil = stil;
-  t1RenderChips();
-  t1RenderList();
-  t1UpdateMap();
-};
-window.t1ToggleFavOnly = function() {
-  t1State.onlyFav = !t1State.onlyFav;
-  t1RenderChips();
+window.t1SetLocation = function(location) {
+  t1State.location = location;
   t1RenderList();
   t1UpdateMap();
 };
@@ -4014,6 +4029,15 @@ window.t1UseMyLocation = function() {
     showToast('Lokacija ažurirana 📡');
   }, () => showToast('Lokacija nije dostupna.'));
 };
+
+window.t1PickRandom = function() {
+  const filtered = t1GetFiltered();
+  if (!filtered.length) { showToast('Nema restorana za odabranu lokaciju.'); return; }
+  const r = filtered[Math.floor(Math.random() * filtered.length)];
+  showToast(`🎲 Danas probaj: ${r.ime}`);
+  t1OpenDetail(r.id);
+};
+
 
 window.t1OnSearch = function (val) {
   t1State.query = val.trim();
@@ -4183,7 +4207,7 @@ window.t1SubmitRating = function() {
 };
 
 /* ─── Init ─── */
-t1RenderChips();
+t1RenderLocationSelect();
 document.getElementById('t1-sort').value = t1State.sort;
 t1RenderList();
 setTimeout(() => { t1InitMap(); t1UpdateMap(); }, 150);
@@ -4662,6 +4686,28 @@ const T3_MODULI = [
     ]
   },
   {
+    id:'m6', naziv:'Majstorske marinade', opis:'Balans soli, luka i masnoće bez pretjerivanja',
+    emoji:'🧂', boja:'#4B3A5A', xp:180, reqXP:200,
+    pitanja:[
+      { q:'Koja je ključna uloga soli u smjesi ćevapa?', opcije:['Veže proteine i strukturu','Samo pojača boju','Smanjuje miris dima','Ubrzava pečenje'], tac:0 },
+      { q:'Koliko dugo minimalno odmarati smjesu nakon miješanja?', opcije:['12-24 sata u hladnjaku','15 minuta na sobnoj','Bez odmora','3 dana na toplom'], tac:0 },
+      { q:'Što je najbolja praksa s češnjakom u klasičnom receptu?', opcije:['Vrlo umjereno ili nimalo po stilu','Što više, to bolje','Uvijek u prahu','Samo sirov preko mesa'], tac:0 },
+      { q:'Zašto je hladno meso važno pri oblikovanju?', opcije:['Drži masnoću stabilnom','Brže tamni','Smanjuje okus','Lakše se soli'], tac:0 },
+      { q:'Koja greška najviše kvari teksturu?', opcije:['Previše aditiva i začina','Korištenje svježeg luka sa strane','Pečenje na ugljenu','Kratko odmaranje somuna'], tac:0 },
+    ]
+  },
+  {
+    id:'m7', naziv:'Serviranje i tempo', opis:'Kako poslužiti ćevap da ostane sočan',
+    emoji:'🫓', boja:'#5A432D', xp:200, reqXP:350,
+    pitanja:[
+      { q:'Kad je najbolje otvoriti somun?', opcije:['Odmah prije serviranja','30 min ranije','Nakon što se ohladi','Nije bitno'], tac:0 },
+      { q:'Zašto se ćevapi kratko odmore nakon roštilja?', opcije:['Redistribucija sokova','Da izgube dim','Da očvrsnu','Da se zalijepe za somun'], tac:0 },
+      { q:'Koji redoslijed je najčešći za serviranje?', opcije:['Somun, ćevapi, luk/kajmak','Luk pa voda pa ćevap','Ajvar pa pomfrit pa ćevap','Samo ćevapi bez somuna'], tac:0 },
+      { q:'Što najviše hladi jelo i kvari iskustvo?', opcije:['Dugo čekanje prije posluživanja','Topli tanjur','Svježe pečen somun','Brza usluga'], tac:0 },
+      { q:'Koja je idealna porcija za standardnu degustaciju?', opcije:['8-10 komada','2 komada','20 komada','Samo jedan veliki ćevap'], tac:0 },
+    ]
+  },
+  {
     id:'m5', naziv:'Tajne omjera mesa', opis:'Otključaj na razini Redoviti posjetitelj',
     emoji:'🥩', boja:'#3D3D3D', xp:250, reqXP:500,
     pitanja:[
@@ -4685,11 +4731,44 @@ function t3GetGames() { return JSON.parse(localStorage.getItem(T3_GAMES_KEY) || 
 /* ═══════════════════════════════════════
    INIT & RENDER
    ═══════════════════════════════════════ */
+function t3ChallengeKey() {
+  const d = new Date();
+  return `ca_t3_daily_${d.getFullYear()}-${d.getMonth()+1}-${d.getDate()}`;
+}
+
+function t3RenderDailyChallenge() {
+  const claimed = !!LS.get(t3ChallengeKey(), false);
+  const btn = document.getElementById('t3-ch-btn');
+  const sub = document.getElementById('t3-ch-sub');
+  if (!btn || !sub) return;
+  if (claimed) {
+    btn.textContent = '✅ Dnevni bonus preuzet';
+    btn.disabled = true;
+    btn.style.opacity = '0.6';
+    sub.textContent = 'Vrati se sutra po novi bonus.';
+  } else {
+    btn.textContent = 'Preuzmi +30 XP';
+    btn.disabled = false;
+    btn.style.opacity = '1';
+    sub.textContent = 'Riješi 1 kviz ili igru danas';
+  }
+}
+
+window.t3ClaimDailyChallenge = function() {
+  if (LS.get(t3ChallengeKey(), false)) return;
+  LS.set(t3ChallengeKey(), true);
+  updateXP(30);
+  t3RenderStats();
+  t3RenderDailyChallenge();
+  showToast('+30 XP dnevni bonus 🎯');
+};
+
 function t3Init() {
   updateStreak();
   t3RenderDaily();
   t3RenderStats();
   t3RenderModuli();
+  t3RenderDailyChallenge();
 }
 
 function t3RenderStats() {
@@ -4767,9 +4846,43 @@ window.t3ToggleDaily = function() {
    ═══════════════════════════════════════ */
 let t3Q = { modId:null, pitanja:[], ci:0, score:0, answered:false };
 
+const T3_GAME_QUIZZES = {
+  city: {
+    id: 'g-city', label: '🗺️ PREPOZNAJ GRAD', xp: 50,
+    pitanja: [
+      { q:'Ćevapi uz Stari most i Neretvu — koji grad?', opcije:['Mostar','Tuzla','Zenica','Bihać'], tac:0 },
+      { q:'Baščaršija, Bravadžiluk i legendarne ćevabdžinice?', opcije:['Sarajevo','Trebinje','Goražde','Livno'], tac:0 },
+      { q:'Širi ćevapi i jaka rivalstva sa Sarajevom?', opcije:['Banja Luka','Foča','Prijedor','Jajce'], tac:0 },
+      { q:'Grad soli i popularna janjetina varijanta?', opcije:['Tuzla','Mostar','Konjic','Travnik'], tac:0 },
+      { q:'Poznat po travničkim ćevapima i ćevap tradiciji?', opcije:['Travnik','Zenica','Doboj','Visoko'], tac:0 },
+    ]
+  },
+  cevap: {
+    id: 'g-cevap', label: '🥩 PREPOZNAJ ĆEVAP', xp: 40,
+    pitanja: [
+      { q:'Koji stil je najčešće 60/40 govedina-janjetina?', opcije:['Sarajevski','Banjalučki','Tuzlanski','Travnički'], tac:0 },
+      { q:'Koji stil često uključuje svinjetinu?', opcije:['Banjalučki','Sarajevski','Mostarski','Tuzlanski'], tac:0 },
+      { q:'Koji stil naginje većem udjelu janjetine?', opcije:['Tuzlanski','Banjalučki','Sarajevski','Zenicki'], tac:0 },
+      { q:'Koji stil se često opisuje kao klasični “somun + luk” standard?', opcije:['Sarajevski','Američki BBQ','Grčki gyros','Adana'], tac:0 },
+      { q:'Koji stil se najčešće veže uz šire komade i jaču masnoću?', opcije:['Banjalučki','Tuzlanski','Sarajevski','Hercegovački'], tac:0 },
+    ]
+  }
+};
+
+function t3StartGameQuiz(kind) {
+  const g = T3_GAME_QUIZZES[kind];
+  if (!g) return;
+  t3Q = { modId: g.id, pitanja: shuffle([...g.pitanja]), ci:0, score:0, answered:false, gameXP:g.xp };
+  document.getElementById('t3-quiz-modul-lbl').textContent = g.label;
+  t3RenderQuestion();
+  openSlideScreen('t3-quiz');
+}
+window.t3StartCityRush = function() { t3StartGameQuiz('city'); };
+window.t3StartCevapGuess = function() { t3StartGameQuiz('cevap'); };
+
 window.t3StartQuiz = function(modId) {
   const m = T3_MODULI.find(x => x.id === modId);
-  t3Q = { modId, pitanja: shuffle([...m.pitanja]), ci:0, score:0, answered:false };
+  t3Q = { modId, pitanja: shuffle([...m.pitanja]), ci:0, score:0, answered:false, gameXP:null };
   document.getElementById('t3-quiz-modul-lbl').textContent = `${m.emoji} ${m.naziv.toUpperCase()}`;
   t3RenderQuestion();
   openSlideScreen('t3-quiz');
@@ -4839,22 +4952,39 @@ window.t3NextQ = function() {
 function t3QuizEnd() {
   const m = T3_MODULI.find(x => x.id === t3Q.modId);
   const done = t3GetDone();
-  const already = done.includes(m.id);
   const pct = Math.round((t3Q.score / t3Q.pitanja.length) * 100);
   const pass = pct >= 60;
   const emoji = pct === 100 ? '🏆' : pct >= 80 ? '🌟' : pct >= 60 ? '✅' : '📚';
   let xpHtml = '';
-  if (pass && !already) {
-    done.push(m.id);
-    localStorage.setItem(T3_DONE_KEY, JSON.stringify(done));
-    updateXP(m.xp);
-    t3RenderStats();
-    t3RenderModuli();
-    xpHtml = `<div class="t3-quiz-result-xp">+${m.xp} XP zarađeno! ⚡</div>`;
-  } else if (already) {
-    xpHtml = `<div style="color:var(--brown3);font-size:13px;margin-bottom:16px">Modul već završen — XP nije dodijen ponovo</div>`;
+
+  if (t3Q.gameXP) {
+    const games = t3GetGames();
+    const key = t3Q.modId;
+    if (pass && !games[key]) {
+      games[key] = true;
+      localStorage.setItem(T3_GAMES_KEY, JSON.stringify(games));
+      updateXP(t3Q.gameXP);
+      t3RenderStats();
+      xpHtml = `<div class="t3-quiz-result-xp">+${t3Q.gameXP} XP zarađeno! ⚡</div>`;
+    } else if (games[key]) {
+      xpHtml = `<div style="color:var(--brown3);font-size:13px;margin-bottom:16px">Igra već završena — XP je već upisan</div>`;
+    } else {
+      xpHtml = `<div style="color:var(--red);font-size:13px;margin-bottom:16px">Treba 60%+ za XP — pokušaj ponovo! 💪</div>`;
+    }
   } else {
-    xpHtml = `<div style="color:var(--red);font-size:13px;margin-bottom:16px">Treba 60%+ za XP — pokušaj ponovo! 💪</div>`;
+    const already = m && done.includes(m.id);
+    if (m && pass && !already) {
+      done.push(m.id);
+      localStorage.setItem(T3_DONE_KEY, JSON.stringify(done));
+      updateXP(m.xp);
+      t3RenderStats();
+      t3RenderModuli();
+      xpHtml = `<div class="t3-quiz-result-xp">+${m.xp} XP zarađeno! ⚡</div>`;
+    } else if (already) {
+      xpHtml = `<div style="color:var(--brown3);font-size:13px;margin-bottom:16px">Modul već završen — XP nije dodijeljen ponovo</div>`;
+    } else {
+      xpHtml = `<div style="color:var(--red);font-size:13px;margin-bottom:16px">Treba 60%+ za XP — pokušaj ponovo! 💪</div>`;
+    }
   }
   document.getElementById('t3-quiz-prog').style.width = '100%';
   document.getElementById('t3-quiz-qnum').textContent = 'Završeno!';
@@ -5085,23 +5215,124 @@ t3Init();
 /* === JS-TAB4-START === */
 (function() {
 
+const T4_DIARY_KEY = 'ca_t4_diary';
+
+function t4GetDiary() {
+  return LS.get(T4_DIARY_KEY, { cevapi: 0, cities: [], places: [], styles: {} });
+}
+function t4SaveDiary(d) { LS.set(T4_DIARY_KEY, d); }
+
+function t4UpdateDiaryUI() {
+  const d = t4GetDiary();
+  const totalStyles = Object.values(d.styles).reduce((a,b)=>a+b,0) || 0;
+  const sar = d.styles['Sarajevski'] || 0;
+  const ban = d.styles['Banjalučki'] || 0;
+  const tra = d.styles['Travnički'] || 0;
+  const sarPct = totalStyles ? Math.round((sar/totalStyles)*100) : 0;
+  const banPct = totalStyles ? Math.round((ban/totalStyles)*100) : 0;
+  const traPct = totalStyles ? Math.round((tra/totalStyles)*100) : 0;
+
+  const setTxt = (id,val) => { const el = document.getElementById(id); if (el) el.textContent = val; };
+  setTxt('t4-dn-cevapi', `${d.cevapi} ćevapa`);
+  setTxt('t4-dn-gradovi', d.cities.length);
+  setTxt('t4-dn-mjesta', d.places.length);
+  setTxt('t4-dn-stilovi', `${Object.keys(d.styles).length} stila`);
+
+  const bar = (id,pct)=>{ const el=document.getElementById(id); if(el) el.style.width = pct + '%'; };
+  bar('t4-bar-sar', sarPct); bar('t4-bar-ban', banPct); bar('t4-bar-tra', traPct);
+  setTxt('t4-pct-sar', sarPct + '%'); setTxt('t4-pct-ban', banPct + '%'); setTxt('t4-pct-tra', traPct + '%');
+}
+
+function t4ApplyDiaryDelta(meta, amount) {
+  const d = t4GetDiary();
+  d.cevapi = Math.max(0, (d.cevapi || 0) + amount);
+  if (meta.city) {
+    if (amount > 0 && !d.cities.includes(meta.city)) d.cities.push(meta.city);
+    if (amount < 0 && !document.querySelector(`.t4-action-btn.liked[data-city="${meta.city}"]`)) {
+      d.cities = d.cities.filter(c => c !== meta.city);
+    }
+  }
+  if (meta.resto) {
+    if (amount > 0 && !d.places.includes(meta.resto)) d.places.push(meta.resto);
+    if (amount < 0 && !document.querySelector(`.t4-action-btn.liked[data-resto="${meta.resto}"]`)) {
+      d.places = d.places.filter(r => r !== meta.resto);
+    }
+  }
+  if (meta.style) {
+    d.styles[meta.style] = Math.max(0, (d.styles[meta.style] || 0) + amount);
+    if (d.styles[meta.style] === 0) delete d.styles[meta.style];
+  }
+  t4SaveDiary(d);
+  t4UpdateDiaryUI();
+t4RenderRang('month');
+}
+
+
+const T4_RANG_DATA = {
+  month: [
+    {pos:'🥇', avatar:'🧔', bg:'#FFD580', name:'mujo_sarajlija', title:'🔥 Majstor roštilja', xp:'2.840 XP'},
+    {pos:'🥈', avatar:'👩', bg:'#AED6F1', name:'ana_foodie_zagreb', title:'🍽️ Iskusni degustator', xp:'1.120 XP'},
+    {pos:'🥉', avatar:'🧑', bg:'#A9DFBF', name:'dino_k', title:'🔥 Ugljeni poklonik', xp:'890 XP'},
+  ],
+  week: [
+    {pos:'🥇', avatar:'👩', bg:'#AED6F1', name:'ana_foodie_zagreb', title:'🍽️ Iskusni degustator', xp:'460 XP'},
+    {pos:'🥈', avatar:'🧔', bg:'#FFD580', name:'mujo_sarajlija', title:'🔥 Majstor roštilja', xp:'420 XP'},
+    {pos:'🥉', avatar:'🙂', bg:'#C8E6C9', name:'adnan_k', title:'🍽️ Iskusni degustator', xp:'340 XP'},
+  ],
+  all: [
+    {pos:'🥇', avatar:'🧔', bg:'#FFD580', name:'mujo_sarajlija', title:'🔥 Majstor roštilja', xp:'9.420 XP'},
+    {pos:'🥈', avatar:'👩', bg:'#AED6F1', name:'ana_foodie_zagreb', title:'🍽️ Iskusni degustator', xp:'7.130 XP'},
+    {pos:'🥉', avatar:'🧑', bg:'#A9DFBF', name:'dino_k', title:'🔥 Ugljeni poklonik', xp:'5.980 XP'},
+  ]
+};
+
+function t4RenderRang(period='month') {
+  const labels = { month:'TOP KORISNICI OVOG MJESECA', week:'TOP KORISNICI OVOG TJEDNA', all:'TOP KORISNICI - ALL TIME' };
+  const hdr = document.getElementById('t4-rang-header');
+  if (hdr) hdr.textContent = labels[period] || labels.month;
+  const list = document.getElementById('t4-rang-list');
+  if (!list) return;
+  list.innerHTML = (T4_RANG_DATA[period] || []).map(r => `
+    <div class="t4-rang-row">
+      <span class="t4-rang-pos">${r.pos}</span>
+      <div class="t4-rang-avatar" style="background:${r.bg};">${r.avatar}</div>
+      <div class="t4-rang-info">
+        <div class="t4-rang-name">${r.name}</div>
+        <div class="t4-rang-title">${r.title}</div>
+      </div>
+      <span class="t4-rang-xp">${r.xp}</span>
+    </div>`).join('');
+}
+
+window.t4SetRangPeriod = function(period, btn) {
+  document.querySelectorAll('#t4-rang-chips .t4-subnav-btn').forEach(b => b.classList.remove('active'));
+  if (btn) btn.classList.add('active');
+  t4RenderRang(period);
+};
+
 function t4Switch(btn) {
   document.querySelectorAll('.t4-subnav-btn').forEach(b => b.classList.remove('active'));
   btn.classList.add('active');
   const panel = btn.dataset.panel;
   document.querySelectorAll('.t4-panel').forEach(p => p.classList.remove('active'));
   document.getElementById('t4-' + panel).classList.add('active');
+  if (panel === 'dnevnik') t4UpdateDiaryUI();
 }
 window.t4Switch = t4Switch;
 
 function t4Vote(btn, type) {
   const card = btn.closest('.t4-vote-card');
+  const meta = { city: card.dataset.city, resto: card.dataset.resto, style: card.dataset.style };
   card.style.opacity = '0.5';
   card.style.pointerEvents = 'none';
   setTimeout(() => {
     card.innerHTML = '<div style="text-align:center;padding:12px;font-size:13px;color:var(--brown3);">' +
       (type === 'odobri' ? '✅ Glasao si ZA ovaj biser!' : '✖️ Glasao si PROTIV.') + '</div>';
     card.style.opacity = '1';
+    if (type === 'odobri') {
+      t4ApplyDiaryDelta(meta, 2);
+      showToast('Dnevnik ažuriran: +2 ćevapa 📓');
+    }
   }, 300);
 }
 window.t4Vote = t4Vote;
@@ -5110,11 +5341,18 @@ window.t4Vote = t4Vote;
 document.addEventListener('click', function(e) {
   const btn = e.target.closest('.t4-action-btn');
   if (!btn || !btn.textContent.includes('🧆')) return;
+  const post = btn.closest('.t4-post');
+  const meta = post ? { city: post.dataset.city, resto: post.dataset.resto, style: post.dataset.style } : {};
   const isLiked = btn.classList.toggle('liked');
   const parts = btn.textContent.trim().split(' ');
   const current = parseInt(parts[1]) || 0;
   btn.textContent = '🧆 ' + (isLiked ? current + 1 : current - 1);
+  btn.dataset.city = meta.city || '';
+  btn.dataset.resto = meta.resto || '';
+  t4ApplyDiaryDelta(meta, isLiked ? 1 : -1);
 });
+
+t4UpdateDiaryUI();
 
 }());
 /* === JS-TAB4-END === */
