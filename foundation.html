@@ -1591,6 +1591,8 @@ a {
   border: 1px solid var(--cream3); overflow: hidden;
 }
 .t3-daily-top { padding: 14px; }
+.t3-daily-nav { display:flex; justify-content:space-between; gap:8px; margin-bottom:8px; }
+.t3-daily-nav-btn { padding:6px 10px; border-radius:10px; background:var(--cream2); color:var(--brown3); font-size:11px; font-weight:700; }
 .t3-daily-lbl {
   font-size: 9px; font-weight: 800; letter-spacing: 1.4px; font-family: var(--font-mono);
   color: var(--brown3); margin-bottom: 6px; display: flex; gap: 6px; align-items: center;
@@ -1866,6 +1868,7 @@ a {
 .t3-panic-cell.empty { cursor: default; }
 .t3-panic-cell.active { border-color: rgba(255,120,0,0.4); background: rgba(255,80,0,0.08); }
 .t3-panic-cell.burned { border-color: rgba(255,0,0,0.6); background: rgba(255,0,0,0.1); }
+.t3-panic-cell .t3-panic-timer { position:absolute; left:0; right:0; bottom:6px; font-size:9px; color:#ffb38a; font-family:var(--font-mono); text-align:center; }
 .t3-panic-burn-bar {
   position: absolute; bottom: 0; left: 0; right: 0; height: 4px;
   background: var(--orange); transform-origin: left;
@@ -1884,6 +1887,9 @@ a {
 .t3-panic-ov-xp { font-size: 18px; font-weight: 800; color: var(--orange); font-family: var(--font-mono); }
 .t3-panic-ov-btn { padding: 12px 28px; background: linear-gradient(135deg, var(--red), var(--orange)); color: var(--white); border-radius: var(--radius-md); font-size: 14px; font-weight: 700; }
 .t3-panic-ov-close { font-size: 12px; color: rgba(255,255,255,0.4); text-decoration: underline; }
+.t3-snake-wrap { flex:1; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:14px; }
+#t3-snake-canvas { background:#1b130d; border:2px solid #3b2a1f; border-radius:10px; }
+.t3-snake-controls button { margin:4px; padding:10px 14px; border-radius:10px; background:var(--cream2); font-weight:700; }
 
 /* === CSS-TAB3-END === */
 
@@ -2492,6 +2498,10 @@ a {
             <!-- Riječ dana -->
             <div class="t3-daily" id="t3-daily" onclick="t3ToggleDaily()">
               <div class="t3-daily-top">
+                <div class="t3-daily-nav">
+                  <button class="t3-daily-nav-btn" onclick="event.stopPropagation();t3PrevDaily()">← Prethodna</button>
+                  <button class="t3-daily-nav-btn" onclick="event.stopPropagation();t3NextDaily()">Sljedeća →</button>
+                </div>
                 <div class="t3-daily-lbl" id="t3-daily-lbl"></div>
                 <div class="t3-daily-rijec" id="t3-daily-rijec"></div>
                 <div class="t3-daily-sub" id="t3-daily-sub"></div>
@@ -2571,11 +2581,11 @@ a {
                 <div class="t3-game-naziv">Roštilj Panic</div>
                 <div class="t3-game-sub">tapkaj · ne daj da izgore</div>
               </div>
-              <div class="t3-game-card" style="background:linear-gradient(135deg,#1A2A4A,#0D1A30)" onclick="t3StartCevapGuess()">
-                <div class="t3-game-xp">+40 XP</div>
-                <span class="t3-game-emoji">🥩</span>
-                <div class="t3-game-naziv">Prepoznaj ćevap</div>
-                <div class="t3-game-sub">stil · sastojci · grad</div>
+              <div class="t3-game-card" style="background:linear-gradient(135deg,#1A2A4A,#0D1A30)" onclick="t3StartSnake()">
+                <div class="t3-game-xp">+80 XP</div>
+                <span class="t3-game-emoji">🐍</span>
+                <div class="t3-game-naziv">Ćevap Zmijica</div>
+                <div class="t3-game-sub">pojedi lepinju · narasti</div>
               </div>
             </div>
 
@@ -3442,6 +3452,29 @@ a {
           </div>
         </div>
       </div><!-- /t3-panic -->
+
+      <div class="slide-screen" id="t3-snake" style="background:#111;display:flex;flex-direction:column">
+        <div class="t3-panic-header">
+          <button class="t3-panic-back" onclick="t3StopSnake()">←</button>
+          <div class="t3-panic-title">Ćevap Zmijica 🐍</div>
+          <div class="t3-panic-score-wrap">
+            <div class="t3-panic-score-val" id="t3-snake-score">0</div>
+            <div class="t3-panic-score-lbl">LEPINJA</div>
+          </div>
+        </div>
+        <div class="t3-snake-wrap">
+          <canvas id="t3-snake-canvas" width="312" height="312"></canvas>
+          <div class="t3-snake-controls">
+            <button onclick="t3SnakeDir('up')">⬆️</button>
+            <div>
+              <button onclick="t3SnakeDir('left')">⬅️</button>
+              <button onclick="t3SnakeDir('down')">⬇️</button>
+              <button onclick="t3SnakeDir('right')">➡️</button>
+            </div>
+          </div>
+        </div>
+      </div><!-- /t3-snake -->
+
 
 
 
@@ -4824,9 +4857,16 @@ function t3RenderModuli() {
 /* ═══════════════════════════════════════
    DAILY WORD
    ═══════════════════════════════════════ */
-function t3RenderDaily() {
-  const day = Math.floor((Date.now() - new Date(new Date().getFullYear(), 0, 0)) / 86400000);
-  const w = T3_WORDS[day % T3_WORDS.length];
+let t3DailyIdx = null;
+
+function t3RenderDaily(idx = null) {
+  if (idx === null || idx === undefined) {
+    const day = Math.floor((Date.now() - new Date(new Date().getFullYear(), 0, 0)) / 86400000);
+    t3DailyIdx = day % T3_WORDS.length;
+  } else {
+    t3DailyIdx = (idx + T3_WORDS.length) % T3_WORDS.length;
+  }
+  const w = T3_WORDS[t3DailyIdx];
   document.getElementById('t3-daily-lbl').innerHTML =
     `${w.kat} <span>·</span> RIJEČ <span>·</span> MUDROST DANA`;
   document.getElementById('t3-daily-rijec').textContent = w.rijec;
@@ -4840,6 +4880,8 @@ function t3RenderDaily() {
 window.t3ToggleDaily = function() {
   document.getElementById('t3-daily').classList.toggle('open');
 };
+window.t3PrevDaily = function() { t3RenderDaily((t3DailyIdx ?? 0) - 1); };
+window.t3NextDaily = function() { t3RenderDaily((t3DailyIdx ?? 0) + 1); };
 
 /* ═══════════════════════════════════════
    KVIZ
@@ -4850,11 +4892,11 @@ const T3_GAME_QUIZZES = {
   city: {
     id: 'g-city', label: '🗺️ PREPOZNAJ GRAD', xp: 50,
     pitanja: [
-      { q:'Ćevapi uz Stari most i Neretvu — koji grad?', opcije:['Mostar','Tuzla','Zenica','Bihać'], tac:0 },
-      { q:'Baščaršija, Bravadžiluk i legendarne ćevabdžinice?', opcije:['Sarajevo','Trebinje','Goražde','Livno'], tac:0 },
-      { q:'Širi ćevapi i jaka rivalstva sa Sarajevom?', opcije:['Banja Luka','Foča','Prijedor','Jajce'], tac:0 },
-      { q:'Grad soli i popularna janjetina varijanta?', opcije:['Tuzla','Mostar','Konjic','Travnik'], tac:0 },
-      { q:'Poznat po travničkim ćevapima i ćevap tradiciji?', opcije:['Travnik','Zenica','Doboj','Visoko'], tac:0 },
+      { q:'Prepoznaj grad po znamenitosti', viz:'🌉', vizSub:'Stari most', opcije:['Mostar','Tuzla','Zenica','Bihać'], tac:0 },
+      { q:'Prepoznaj grad po znamenitosti', viz:'🕊️', vizSub:'Sebilj (Baščaršija)', opcije:['Sarajevo','Trebinje','Goražde','Livno'], tac:0 },
+      { q:'Prepoznaj grad po znamenitosti', viz:'🏰', vizSub:'Kastel tvrđava', opcije:['Banja Luka','Foča','Prijedor','Jajce'], tac:0 },
+      { q:'Prepoznaj grad po znamenitosti', viz:'🧂', vizSub:'Pannonica / grad soli', opcije:['Tuzla','Mostar','Konjic','Travnik'], tac:0 },
+      { q:'Prepoznaj grad po znamenitosti', viz:'🏯', vizSub:'Travnička tvrđava', opcije:['Travnik','Zenica','Doboj','Visoko'], tac:0 },
     ]
   },
   cevap: {
@@ -4878,7 +4920,7 @@ function t3StartGameQuiz(kind) {
   openSlideScreen('t3-quiz');
 }
 window.t3StartCityRush = function() { t3StartGameQuiz('city'); };
-window.t3StartCevapGuess = function() { t3StartGameQuiz('cevap'); };
+window.t3StartCevapGuess = function() { t3StartSnake(); };
 
 window.t3StartQuiz = function(modId) {
   const m = T3_MODULI.find(x => x.id === modId);
@@ -4906,6 +4948,7 @@ function t3RenderQuestion() {
   document.getElementById('t3-quiz-qnum').textContent = `${ci+1} / ${total} pitanja`;
   document.getElementById('t3-quiz-body').innerHTML = `
     <div class="t3-quiz-q animate-fade">${p.q}</div>
+    ${p.viz ? `<div style="text-align:center;background:var(--cream2);border-radius:14px;padding:12px;margin-bottom:10px"><div style="font-size:52px">${p.viz}</div><div style="font-size:11px;color:var(--brown3);font-weight:700">${p.vizSub || "Znamenitost"}</div></div>` : ""}
     <div class="t3-quiz-options">
       ${p.opcije.map((o,i) => `
         <button class="t3-quiz-opt" onclick="t3Answer(${i})">
@@ -5043,7 +5086,7 @@ window.t3FlipCard = function(idx) {
   if (t3Mem.locked || c.flipped || c.matched) return;
   c.flipped = true;
   document.getElementById('mc' + idx).classList.add('flipped');
-  if (!t3Mem.first) {
+  if (t3Mem.first === null) {
     t3Mem.first = idx;
     return;
   }
@@ -5127,19 +5170,26 @@ function t3PanicSpawn() {
   const idx = empty[Math.floor(Math.random() * empty.length)];
   const el = document.getElementById('pc' + idx);
   el.className = 't3-panic-cell active';
-  el.innerHTML = `<span>🥩</span><div class="t3-panic-burn-bar" id="pb${idx}"></div>`;
+  el.innerHTML = `<span>🥩</span><div class="t3-panic-burn-bar" id="pb${idx}"></div><div class="t3-panic-timer" id="pt${idx}">3.0s</div>`;
   // animate burn bar
   const bar = document.getElementById('pb' + idx);
   bar.style.transition = `width ${PANIC_BURN_MS}ms linear`;
   requestAnimationFrame(() => requestAnimationFrame(() => { bar.style.width = '100%'; }));
   // burn timer
+  const deadline = Date.now() + PANIC_BURN_MS;
   const timer = setTimeout(() => t3PanicBurn(idx), PANIC_BURN_MS);
-  t3P.active[idx] = { timer };
+  const ui = setInterval(() => {
+    const left = Math.max(0, (deadline - Date.now()) / 1000);
+    const tel = document.getElementById('pt' + idx);
+    if (tel) tel.textContent = left.toFixed(1) + 's';
+  }, 100);
+  t3P.active[idx] = { timer, ui };
 }
 
 window.t3PanicTap = function(idx) {
   if (t3P.gameOver || !t3P.active[idx]) return;
   clearTimeout(t3P.active[idx].timer);
+  clearInterval(t3P.active[idx].ui);
   t3P.active[idx] = null;
   const el = document.getElementById('pc' + idx);
   el.innerHTML = '✅';
@@ -5158,7 +5208,7 @@ function t3PanicBurn(idx) {
   if (t3P.gameOver) return;
   t3P.gameOver = true;
   clearInterval(t3P.interval);
-  t3P.active.forEach((v) => { if (v) clearTimeout(v.timer); });
+  t3P.active.forEach((v) => { if (v) { clearTimeout(v.timer); clearInterval(v.ui); } });
   const el = document.getElementById('pc' + idx);
   el.className = 't3-panic-cell burned';
   el.innerHTML = '💀';
@@ -5185,9 +5235,74 @@ function t3PanicBurn(idx) {
 
 window.t3StopPanic = function() {
   clearInterval(t3P.interval);
-  t3P.active.forEach(v => { if (v) clearTimeout(v.timer); });
+  t3P.active.forEach(v => { if (v) { clearTimeout(v.timer); clearInterval(v.ui); } });
   t3P.gameOver = true;
   closeSlideScreen('t3-panic');
+};
+
+
+/* ═══════════════════════════════════════
+   ĆEVAP ZMIJICA
+   ═══════════════════════════════════════ */
+const SNAKE_XP = 80;
+let t3S = { snake:[[6,6]], dir:[1,0], food:[9,6], score:0, timer:null, over:false };
+
+function t3SnakeFood() {
+  while (true) {
+    const f = [Math.floor(Math.random()*12), Math.floor(Math.random()*12)];
+    if (!t3S.snake.some(([x,y]) => x===f[0] && y===f[1])) return f;
+  }
+}
+
+function t3SnakeDraw() {
+  const c = document.getElementById('t3-snake-canvas');
+  if (!c) return;
+  const g = c.getContext('2d');
+  g.fillStyle = '#1b130d'; g.fillRect(0,0,312,312);
+  g.strokeStyle = 'rgba(255,255,255,0.04)';
+  for(let i=0;i<=12;i++){ g.beginPath(); g.moveTo(i*26,0); g.lineTo(i*26,312); g.stroke(); g.beginPath(); g.moveTo(0,i*26); g.lineTo(312,i*26); g.stroke(); }
+  g.fillStyle = '#F39C12';
+  g.fillRect(t3S.food[0]*26+5,t3S.food[1]*26+5,16,16);
+  g.fillStyle = '#C0392B';
+  t3S.snake.forEach(([x,y],i)=>{ g.fillRect(x*26+3,y*26+3,20,20); if(i===0){ g.fillStyle='#fff'; g.fillRect(x*26+10,y*26+10,4,4); g.fillStyle='#C0392B'; } });
+}
+
+function t3SnakeTick() {
+  if (t3S.over) return;
+  const [dx,dy]=t3S.dir;
+  const head=[t3S.snake[0][0]+dx, t3S.snake[0][1]+dy];
+  if (head[0]<0||head[1]<0||head[0]>11||head[1]>11||t3S.snake.some(([x,y])=>x===head[0]&&y===head[1])) {
+    t3S.over=true; clearInterval(t3S.timer);
+    showToast(`Game over! Lepinje: ${t3S.score}`);
+    const games = t3GetGames();
+    if (!games.snake && t3S.score >= 6) { games.snake = true; localStorage.setItem(T3_GAMES_KEY, JSON.stringify(games)); updateXP(SNAKE_XP); showToast(`+${SNAKE_XP} XP za Zmijicu 🐍`); }
+    return;
+  }
+  t3S.snake.unshift(head);
+  if (head[0]===t3S.food[0]&&head[1]===t3S.food[1]) { t3S.score++; document.getElementById('t3-snake-score').textContent=t3S.score; t3S.food=t3SnakeFood(); }
+  else t3S.snake.pop();
+  t3SnakeDraw();
+}
+
+window.t3SnakeDir = function(dir) {
+  const map = {up:[0,-1],down:[0,1],left:[-1,0],right:[1,0]};
+  const [nx,ny]=map[dir]||t3S.dir;
+  if (t3S.dir[0]===-nx && t3S.dir[1]===-ny) return;
+  t3S.dir=[nx,ny];
+};
+
+window.t3StartSnake = function() {
+  clearInterval(t3S.timer);
+  t3S = { snake:[[6,6],[5,6],[4,6]], dir:[1,0], food:[9,6], score:0, timer:null, over:false };
+  document.getElementById('t3-snake-score').textContent = '0';
+  openSlideScreen('t3-snake');
+  t3SnakeDraw();
+  t3S.timer = setInterval(t3SnakeTick, 220);
+};
+
+window.t3StopSnake = function() {
+  clearInterval(t3S.timer);
+  closeSlideScreen('t3-snake');
 };
 
 /* ═══════════════════════════════════════
