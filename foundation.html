@@ -1050,6 +1050,29 @@ a {
 }
 .t1-search-clear.vis { display: flex; }
 
+.t1-tools-row { display: flex; gap: 8px; margin-bottom: 10px; }
+.t1-geo-btn, .t1-sort-select {
+  height: 34px; border-radius: 18px; border: 1.5px solid var(--cream3); background: var(--white);
+  font-size: 12px; font-weight: 700; color: var(--brown3); padding: 0 12px;
+}
+.t1-geo-btn.active { border-color: var(--green2); color: var(--green2); }
+.t1-sort-select { margin-left: auto; }
+.t1-card-top { display:flex; justify-content:flex-end; margin-bottom: 6px; }
+.t1-fav-btn { font-size: 18px; opacity: 0.45; }
+.t1-fav-btn.active { opacity: 1; }
+.t1-rate-modal {
+  position: absolute; inset: 0; z-index: 350; background: rgba(44,26,14,0.6);
+  display: none; align-items: flex-end;
+}
+.t1-rate-modal.open { display: flex; }
+.t1-rate-sheet { width: 100%; background: var(--white); border-radius: 26px 26px 0 0; padding: 18px 18px 28px; }
+.t1-rate-title { text-align: center; font-weight: 800; margin-bottom: 10px; color: var(--brown); }
+.t1-rate-stars { display:flex; gap: 8px; justify-content:center; margin-bottom: 12px; }
+.t1-rate-star { font-size: 28px; opacity: 0.35; }
+.t1-rate-star.active { opacity: 1; }
+.t1-rate-comment { width:100%; min-height:90px; border:1.5px solid var(--cream3); border-radius: 12px; padding:10px; margin-bottom:10px; }
+.t1-rate-submit { width:100%; padding:12px; border-radius: 12px; background: linear-gradient(135deg,var(--red),var(--orange)); color:var(--white); font-weight: 800; }
+
 /* Filter chips */
 .t1-chips {
   display: flex; gap: 6px; overflow-x: auto;
@@ -1296,6 +1319,13 @@ a {
 }
 .t2-title { font-family: var(--font-title); font-size: 26px; font-weight: 700; color: var(--brown); margin-bottom: 10px; }
 .t2-title em { color: var(--red); font-style: italic; }
+
+.t2-search-wrap { position: relative; margin-bottom: 10px; }
+.t2-search-icon { position:absolute; left:10px; top:50%; transform:translateY(-50%); opacity:0.6; font-size:14px; }
+.t2-search-input {
+  width: 100%; border:1.5px solid var(--cream3); border-radius: 20px; padding:10px 12px 10px 32px;
+  background: var(--white); font-size: 13px;
+}
 .t2-chips { display: flex; gap: 6px; overflow-x: auto; scrollbar-width: none; padding-bottom: 10px; }
 .t2-chips::-webkit-scrollbar { display: none; }
 .t2-chip {
@@ -1561,6 +1591,10 @@ a {
   border: 1px solid var(--cream3); overflow: hidden;
 }
 .t3-daily-top { padding: 14px; }
+.t3-daily-nav { display:flex; justify-content:space-between; gap:8px; }
+.t3-daily-nav-outside { margin: 8px 16px 0; }
+.t3-daily-nav-btn { padding:8px 12px; border-radius:12px; background:var(--cream2); color:var(--brown3); font-size:11px; font-weight:700; border:1px solid var(--cream3); }
+.t3-daily-nav-btn:active { transform: translateY(1px); }
 .t3-daily-lbl {
   font-size: 9px; font-weight: 800; letter-spacing: 1.4px; font-family: var(--font-mono);
   color: var(--brown3); margin-bottom: 6px; display: flex; gap: 6px; align-items: center;
@@ -1689,6 +1723,11 @@ a {
 .t3-quiz-body { flex: 1; overflow-y: auto; padding: 20px 16px 32px; scrollbar-width: none; }
 .t3-quiz-body::-webkit-scrollbar { display: none; }
 
+.t3-quiz-viz { text-align:center;background:var(--cream2);border-radius:14px;padding:10px;margin-bottom:10px; }
+.t3-quiz-viz img { width:100%; max-height:140px; object-fit:cover; border-radius:10px; margin-bottom:8px; }
+.t3-quiz-viz-sub { font-size:11px;color:var(--brown3);font-weight:700; }
+.t5-hero-name { color: var(--white); text-shadow: 0 2px 10px rgba(0,0,0,0.2); }
+.t5-hero-rank, .t5-hero-xp { color: rgba(255,255,255,0.92); }
 .t3-quiz-q {
   font-family: var(--font-title); font-size: 20px; font-weight: 700;
   color: var(--brown); margin-bottom: 20px; line-height: 1.35;
@@ -1816,6 +1855,10 @@ a {
   border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 18px;
 }
 .t3-panic-title { font-family: var(--font-title); font-size: 18px; font-weight: 700; color: var(--white); }
+.t3-panic-restart, .t3-quiz-restart {
+  padding: 6px 10px; border-radius: 10px; border: 1px solid rgba(255,255,255,0.2);
+  background: rgba(255,255,255,0.08); color: var(--white); font-size: 11px; font-weight: 700;
+}
 .t3-panic-score-wrap { text-align: right; }
 .t3-panic-score-val { font-size: 22px; font-weight: 800; color: var(--orange); font-family: var(--font-mono); }
 .t3-panic-score-lbl { font-size: 9px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.8px; color: rgba(255,255,255,0.4); font-family: var(--font-mono); }
@@ -1836,6 +1879,7 @@ a {
 .t3-panic-cell.empty { cursor: default; }
 .t3-panic-cell.active { border-color: rgba(255,120,0,0.4); background: rgba(255,80,0,0.08); }
 .t3-panic-cell.burned { border-color: rgba(255,0,0,0.6); background: rgba(255,0,0,0.1); }
+.t3-panic-cell .t3-panic-timer { position:absolute; left:0; right:0; bottom:6px; font-size:9px; color:#ffb38a; font-family:var(--font-mono); text-align:center; }
 .t3-panic-burn-bar {
   position: absolute; bottom: 0; left: 0; right: 0; height: 4px;
   background: var(--orange); transform-origin: left;
@@ -1854,6 +1898,11 @@ a {
 .t3-panic-ov-xp { font-size: 18px; font-weight: 800; color: var(--orange); font-family: var(--font-mono); }
 .t3-panic-ov-btn { padding: 12px 28px; background: linear-gradient(135deg, var(--red), var(--orange)); color: var(--white); border-radius: var(--radius-md); font-size: 14px; font-weight: 700; }
 .t3-panic-ov-close { font-size: 12px; color: rgba(255,255,255,0.4); text-decoration: underline; }
+.t3-snake-wrap { flex:1; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:12px; padding: 0 16px 16px; }
+.t3-snake-help { color: rgba(255,255,255,0.72); font-size: 11px; text-align: center; }
+#t3-snake-canvas { background:#1b130d; border:2px solid #3b2a1f; border-radius:12px; box-shadow: 0 8px 20px rgba(0,0,0,0.3); }
+.t3-snake-controls { display:flex; flex-direction:column; align-items:center; gap:6px; }
+.t3-snake-controls button { width:56px; height:44px; border-radius:12px; background:var(--cream2); font-weight:700; margin:0 4px; }
 
 /* === CSS-TAB3-END === */
 
@@ -2019,6 +2068,8 @@ a {
   padding: 20px 20px 36px;
 }
 .t5-picker-title { font-size: 14px; font-weight: 700; color: var(--brown); margin-bottom: 14px; text-align: center; }
+.t5-upload-btn { width:100%; padding:10px; background: var(--cream2); border-radius: 10px; margin-bottom: 12px; font-weight: 700; color: var(--brown); }
+.t5-coming-soon { padding: 14px 16px; font-size: 13px; color: var(--brown3); font-style: italic; }
 .t5-picker-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 10px; }
 .t5-picker-emoji {
   aspect-ratio: 1;
@@ -2039,14 +2090,15 @@ a {
 /* === CSS-TAB4-START === */
 
 /* Header */
-.t4-header { display: flex; align-items: center; justify-content: space-between; padding: 20px 20px 0; }
-.t4-title { font-family: var(--font-title); font-size: 28px; color: var(--brown); font-style: italic; }
+.t4-header { display: flex; align-items: center; justify-content: space-between; padding: 16px 16px 0; }
+.t4-title { font-family: var(--font-title); font-size: 28px; color: var(--brown); }
+.t4-title em { color: var(--red); font-style: italic; }
 .t4-biser-btn { background: linear-gradient(135deg, var(--red), var(--orange)); color: var(--white); border-radius: var(--radius-md); padding: 8px 18px; font-size: 13px; font-weight: 700; }
 
 /* Sub-nav */
-.t4-subnav { display: flex; gap: 6px; padding: 14px 16px 12px; overflow-x: auto; scrollbar-width: none; }
+.t4-subnav { display: flex; gap: 8px; padding: 12px 16px 12px; overflow-x: auto; scrollbar-width: none; }
 .t4-subnav::-webkit-scrollbar { display: none; }
-.t4-subnav-btn { display: flex; flex-direction: column; align-items: center; gap: 3px; min-width: 60px; padding: 8px 10px; border-radius: var(--radius-md); background: var(--cream2); color: var(--brown3); font-size: 10px; font-weight: 700; letter-spacing: 0.5px; transition: all var(--transition); flex-shrink: 0; }
+.t4-subnav-btn { display: flex; flex-direction: column; align-items: center; gap: 3px; min-width: 68px; padding: 10px 10px; border-radius: var(--radius-md); background: var(--cream2); color: var(--brown3); font-size: 10px; font-weight: 700; letter-spacing: 0.5px; transition: all var(--transition); flex-shrink: 0; border: 1px solid var(--cream3); }
 .t4-subnav-btn span { font-size: 16px; }
 .t4-subnav-btn.active { background: var(--red); color: var(--white); }
 
@@ -2122,6 +2174,8 @@ a {
 .t4-rang-you { font-size: 11px; color: var(--orange); font-weight: 700; margin-left: 4px; }
 .t4-rang-title { font-size: 11px; color: var(--brown3); }
 .t4-rang-xp { font-size: 14px; font-weight: 800; color: var(--orange); font-family: var(--font-mono); white-space: nowrap; }
+.t4-chips { display:flex; gap:8px; margin-bottom:10px; }
+.t4-chips .t4-subnav-btn { min-width: 76px; }
 
 /* --- DNEVNIK --- */
 .t4-stats-banner { background: linear-gradient(135deg, var(--orange), var(--red)); border-radius: var(--radius-lg); padding: 20px; margin-bottom: 16px; color: var(--white); }
@@ -2297,6 +2351,7 @@ a {
 
           <!-- Sticky header -->
           <div class="t1-sticky">
+            <div class="t2-title">The <em>Tražilica</em></div>
             <div class="t1-search-wrap">
               <span class="t1-search-icon">🔍</span>
               <input class="t1-search-input" id="t1-search" type="text"
@@ -2304,7 +2359,18 @@ a {
                 oninput="t1OnSearch(this.value)" autocomplete="off" />
               <button class="t1-search-clear" id="t1-clear" onclick="t1ClearSearch()">✕</button>
             </div>
-            <div class="t1-chips" id="t1-chips"></div>
+            <div class="t1-tools-row">
+              <button class="t1-geo-btn" id="t1-geo-btn" onclick="t1UseMyLocation()">📡 U blizini mene</button>
+              <select class="t1-sort-select" id="t1-location" onchange="t1SetLocation(this.value)">
+                <option value="sve">Sve lokacije</option>
+              </select>
+              <select class="t1-sort-select" id="t1-sort" onchange="t1SetSort(this.value)">
+                <option value="distance">Udaljenost</option>
+                <option value="rating">Ocjena</option>
+                <option value="az">A-Z</option>
+              </select>
+              <button class="t1-geo-btn" onclick="t1PickRandom()">🎲 Random</button>
+            </div>
           </div>
 
           <!-- Lista view: mini-mapa uvijek gore + lista ispod -->
@@ -2356,6 +2422,10 @@ a {
           <!-- Sticky: title + filter chips -->
           <div class="t2-sticky">
             <div class="t2-title">The <em>Kuhinja</em></div>
+            <div class="t2-search-wrap">
+              <span class="t2-search-icon">🔍</span>
+              <input class="t2-search-input" id="t2-search" type="text" placeholder="Traži recepte, tagove, opis..." oninput="t2SetSearch(this.value)" />
+            </div>
             <div class="t2-chips" id="t2-chips"></div>
           </div>
 
@@ -2441,7 +2511,7 @@ a {
             <!-- Riječ dana -->
             <div class="t3-daily" id="t3-daily" onclick="t3ToggleDaily()">
               <div class="t3-daily-top">
-                <div class="t3-daily-lbl" id="t3-daily-lbl"></div>
+                                <div class="t3-daily-lbl" id="t3-daily-lbl"></div>
                 <div class="t3-daily-rijec" id="t3-daily-rijec"></div>
                 <div class="t3-daily-sub" id="t3-daily-sub"></div>
               </div>
@@ -2449,6 +2519,11 @@ a {
                 <div class="t3-daily-opis" id="t3-daily-opis"></div>
                 <div class="t3-daily-tagovi" id="t3-daily-tagovi"></div>
               </div>
+            </div>
+
+            <div class="t3-daily-nav t3-daily-nav-outside">
+              <button class="t3-daily-nav-btn" onclick="t3PrevDaily()">← Prethodna</button>
+              <button class="t3-daily-nav-btn" onclick="t3NextDaily()">Sljedeća →</button>
             </div>
 
             <!-- Stats: Streak + XP -->
@@ -2484,18 +2559,29 @@ a {
             </div>
 
             <!-- Moduli -->
+            <div class="t3-section-lbl">DNEVNI IZAZOV</div>
+            <div class="t3-rank-card" id="t3-challenge-card">
+              <div class="t3-rank-top">
+                <div class="t3-rank-emoji">🎯</div>
+                <div>
+                  <div class="t3-rank-title" id="t3-ch-title">Dnevni izazov</div>
+                  <div class="t3-rank-next" id="t3-ch-sub">Riješi 1 kviz ili igru danas</div>
+                </div>
+              </div>
+              <button class="t3-quiz-close" id="t3-ch-btn" onclick="t3ClaimDailyChallenge()">Preuzmi +30 XP</button>
+            </div>
+
             <div class="t3-section-lbl">MODULI</div>
             <div class="t3-modul-list" id="t3-modul-list"></div>
 
             <!-- Igre -->
             <div class="t3-section-lbl">ĆEVAP IGRE</div>
             <div class="t3-games-grid">
-              <div class="t3-game-card coming" style="background:linear-gradient(135deg,#1A4A2A,#0D2A16)" onclick="showToast('Uskoro! 🐍')">
-                <div class="t3-game-soon">USKORO</div>
+              <div class="t3-game-card" style="background:linear-gradient(135deg,#1A4A2A,#0D2A16)" onclick="t3StartCityRush()">
                 <div class="t3-game-xp">+50 XP</div>
-                <span class="t3-game-emoji">🐍</span>
-                <div class="t3-game-naziv">Ćevap Snake</div>
-                <div class="t3-game-sub">skupljaj · izbjegavaj kosti</div>
+                <span class="t3-game-emoji">🗺️</span>
+                <div class="t3-game-naziv">Prepoznaj grad</div>
+                <div class="t3-game-sub">pogodi grad · po slici</div>
               </div>
               <div class="t3-game-card" style="background:linear-gradient(135deg,#1A3A4A,#0D2030)" onclick="t3StartMemory()">
                 <div class="t3-game-xp">+75 XP</div>
@@ -2509,12 +2595,11 @@ a {
                 <div class="t3-game-naziv">Roštilj Panic</div>
                 <div class="t3-game-sub">tapkaj · ne daj da izgore</div>
               </div>
-              <div class="t3-game-card coming" style="background:linear-gradient(135deg,#1A2A4A,#0D1A30)" onclick="showToast('Uskoro! 🫓')">
-                <div class="t3-game-soon">USKORO</div>
-                <div class="t3-game-xp">+40 XP</div>
-                <span class="t3-game-emoji">🫓</span>
-                <div class="t3-game-naziv">Somun Flip</div>
-                <div class="t3-game-sub">timing · uhvati somun</div>
+              <div class="t3-game-card" style="background:linear-gradient(135deg,#1A2A4A,#0D1A30)" onclick="t3StartSnake()">
+                <div class="t3-game-xp">+80 XP</div>
+                <span class="t3-game-emoji">🐍</span>
+                <div class="t3-game-naziv">Ćevap Zmijica</div>
+                <div class="t3-game-sub">pojedi lepinju · narasti</div>
               </div>
             </div>
 
@@ -2530,7 +2615,7 @@ a {
 
           <!-- Header -->
           <div class="t4-header">
-            <h2 class="t4-title">Zajednica</h2>
+            <h2 class="t4-title">The <em>Zajednica</em></h2>
             <button class="t4-biser-btn">+ Biser</button>
           </div>
 
@@ -2558,7 +2643,7 @@ a {
             <!-- PANEL: OBJAVE -->
             <div class="t4-panel active" id="t4-objave">
 
-              <div class="t4-post">
+              <div class="t4-post" data-city="Sarajevo" data-resto="Ćevabdžinica Željo" data-style="Sarajevski">
                 <div class="t4-post-head">
                   <div class="t4-avatar" style="background:#FFD580;">🧔</div>
                   <div class="t4-post-meta">
@@ -2589,7 +2674,7 @@ a {
                 </div>
               </div>
 
-              <div class="t4-post">
+              <div class="t4-post" data-city="Travnik" data-resto="Kod Bake Fate" data-style="Banjalučki">
                 <div class="t4-post-head">
                   <div class="t4-avatar" style="background:#AED6F1;">👩</div>
                   <div class="t4-post-meta">
@@ -2620,7 +2705,7 @@ a {
                 </div>
               </div>
 
-              <div class="t4-post">
+              <div class="t4-post" data-city="Zenica" data-resto="Kodo Muje" data-style="Travnički">
                 <div class="t4-post-head">
                   <div class="t4-avatar" style="background:#A9DFBF;">🧑</div>
                   <div class="t4-post-meta">
@@ -2686,7 +2771,7 @@ a {
 
               <span class="t4-section-label">ČEKA VAŠ GLAS</span>
 
-              <div class="t4-vote-card">
+              <div class="t4-vote-card" data-city="Zenica" data-resto="Kodo Muje" data-style="Travnički">
                 <div class="t4-vote-head">
                   <span class="t4-vote-emoji">🏠</span>
                   <div>
@@ -2701,7 +2786,7 @@ a {
                 </div>
               </div>
 
-              <div class="t4-vote-card">
+              <div class="t4-vote-card" data-city="Travnik" data-resto="Pečenjara Kovač" data-style="Banjalučki">
                 <div class="t4-vote-head">
                   <span class="t4-vote-emoji">🔥</span>
                   <div>
@@ -2762,7 +2847,13 @@ a {
             <!-- PANEL: RANG -->
             <div class="t4-panel" id="t4-rang">
 
-              <span class="t4-rang-header">TOP KORISNICI OVOG MJESECA</span>
+              <span class="t4-rang-header" id="t4-rang-header">TOP KORISNICI OVOG MJESECA</span>
+              <div class="t4-chips" id="t4-rang-chips">
+                <button class="t4-subnav-btn active" onclick="t4SetRangPeriod('month',this)"><span>📅</span>MJESEC</button>
+                <button class="t4-subnav-btn" onclick="t4SetRangPeriod('week',this)"><span>🗓️</span>TJEDAN</button>
+                <button class="t4-subnav-btn" onclick="t4SetRangPeriod('all',this)"><span>🕰️</span>ALL</button>
+              </div>
+              <div id="t4-rang-list">
 
               <div class="t4-rang-row">
                 <span class="t4-rang-pos">🥇</span>
@@ -2814,27 +2905,27 @@ a {
                 <span class="t4-rang-xp">420 XP</span>
               </div>
 
-            </div><!-- /t4-rang -->
+            </div></div><!-- /t4-rang -->
 
             <!-- PANEL: DNEVNIK -->
             <div class="t4-panel" id="t4-dnevnik">
 
               <!-- Stats banner -->
               <div class="t4-stats-banner">
-                <div class="t4-stats-year">TVOJ 2026 DO SADA</div>
-                <div class="t4-stats-count">84 ćevapa</div>
-                <div class="t4-stats-label">pojeden</div>
+                <div class="t4-stats-year" id="t4-dn-year">TVOJ SAŽETAK ZA 2026.</div>
+                <div class="t4-stats-count" id="t4-dn-cevapi">0 ćevapa</div>
+                <div class="t4-stats-label">pojedeno</div>
                 <div class="t4-stats-row">
                   <div class="t4-stats-item">
-                    <div class="t4-stats-num">6</div>
+                    <div class="t4-stats-num" id="t4-dn-gradovi">0</div>
                     <div class="t4-stats-key">Gradova</div>
                   </div>
                   <div class="t4-stats-item">
-                    <div class="t4-stats-num">14</div>
+                    <div class="t4-stats-num" id="t4-dn-mjesta">0</div>
                     <div class="t4-stats-key">Mjesta</div>
                   </div>
                   <div class="t4-stats-item">
-                    <div class="t4-stats-num">3 stila</div>
+                    <div class="t4-stats-num" id="t4-dn-stilovi">0 stila</div>
                     <div class="t4-stats-key">Isprobano</div>
                   </div>
                 </div>
@@ -2845,20 +2936,20 @@ a {
                 <div class="t4-taste-label">TVOJ PROFIL UKUSA</div>
                 <div class="t4-taste-row">
                   <span class="t4-taste-name">🏛️ Sarajevski</span>
-                  <div class="t4-taste-bar-bg"><div class="t4-taste-bar" style="width:55%;background:var(--red);"></div></div>
-                  <span class="t4-taste-pct">55%</span>
+                  <div class="t4-taste-bar-bg"><div class="t4-taste-bar" id="t4-bar-sar" style="width:0%;background:var(--red);"></div></div>
+                  <span class="t4-taste-pct" id="t4-pct-sar">0%</span>
                 </div>
                 <div class="t4-taste-row">
                   <span class="t4-taste-name">🌿 Banjalučki</span>
-                  <div class="t4-taste-bar-bg"><div class="t4-taste-bar" style="width:30%;background:var(--orange);"></div></div>
-                  <span class="t4-taste-pct">30%</span>
+                  <div class="t4-taste-bar-bg"><div class="t4-taste-bar" id="t4-bar-ban" style="width:0%;background:var(--orange);"></div></div>
+                  <span class="t4-taste-pct" id="t4-pct-ban">0%</span>
                 </div>
                 <div class="t4-taste-row">
                   <span class="t4-taste-name">🏔️ Travnički</span>
-                  <div class="t4-taste-bar-bg"><div class="t4-taste-bar" style="width:15%;background:var(--brown3);"></div></div>
-                  <span class="t4-taste-pct">15%</span>
+                  <div class="t4-taste-bar-bg"><div class="t4-taste-bar" id="t4-bar-tra" style="width:0%;background:var(--brown3);"></div></div>
+                  <span class="t4-taste-pct" id="t4-pct-tra">0%</span>
                 </div>
-                <p class="t4-taste-type">🍽️ Tip si <strong>Sarajevskog purista</strong> — klasičan, bez kompromisa.</p>
+                <p class="t4-taste-type" id="t4-taste-type" style="display:none"></p>
               </div>
 
               <!-- Spotify Vibes -->
@@ -2896,51 +2987,8 @@ a {
               <!-- Ćevap Mapa -->
               <div class="t4-mapa-section">
                 <div class="t4-mapa-label">🗺️ ĆEVAP MAPA</div>
-                <div class="t4-mapa-grid">
-                  <div class="t4-mapa-pin">
-                    <span class="t4-mapa-pin-emoji">🏛️</span>
-                    <div>
-                      <div class="t4-mapa-pin-city">Sarajevo</div>
-                      <div class="t4-mapa-pin-count">6 mjesta</div>
-                    </div>
-                  </div>
-                  <div class="t4-mapa-pin">
-                    <span class="t4-mapa-pin-emoji">🌿</span>
-                    <div>
-                      <div class="t4-mapa-pin-city">Banja Luka</div>
-                      <div class="t4-mapa-pin-count">3 mjesta</div>
-                    </div>
-                  </div>
-                  <div class="t4-mapa-pin">
-                    <span class="t4-mapa-pin-emoji">🏔️</span>
-                    <div>
-                      <div class="t4-mapa-pin-city">Travnik</div>
-                      <div class="t4-mapa-pin-count">2 mjesta</div>
-                    </div>
-                  </div>
-                  <div class="t4-mapa-pin">
-                    <span class="t4-mapa-pin-emoji">🌉</span>
-                    <div>
-                      <div class="t4-mapa-pin-city">Mostar</div>
-                      <div class="t4-mapa-pin-count">2 mjesta</div>
-                    </div>
-                  </div>
-                  <div class="t4-mapa-pin">
-                    <span class="t4-mapa-pin-emoji">🏙️</span>
-                    <div>
-                      <div class="t4-mapa-pin-city">Zenica</div>
-                      <div class="t4-mapa-pin-count">1 mjesto</div>
-                    </div>
-                  </div>
-                  <div class="t4-mapa-pin">
-                    <span class="t4-mapa-pin-emoji">🌍</span>
-                    <div>
-                      <div class="t4-mapa-pin-city">Beč</div>
-                      <div class="t4-mapa-pin-count">1 mjesto</div>
-                    </div>
-                  </div>
-                </div>
-                <p class="t4-mapa-visited">6 gradova · 14 mjesta posjećeno</p>
+                <div class="t4-mapa-grid" id="t4-mapa-grid"></div>
+                <p class="t4-mapa-visited" id="t4-mapa-visited">Nema zabilježenih gradova.</p>
               </div>
 
             </div><!-- /t4-dnevnik -->
@@ -2954,6 +3002,10 @@ a {
         <div class="tab-pane" id="tab-profil">
           <!-- HTML-TAB5-START -->
 
+          <div class="t2-sticky">
+            <div class="t2-title">The <em>Profil</em></div>
+          </div>
+
           <!-- Hero -->
           <div class="t5-hero">
             <div class="t5-hero-top">
@@ -2964,11 +3016,11 @@ a {
               <button class="t5-edit-btn" onclick="t5ToggleBioEdit()">Uredi profil</button>
             </div>
             <div class="t5-name" id="t5-name">Džemal Hadžić</div>
-            <div class="t5-rank-badge">🔥 Ugljeni Majstor · Nivo 4</div>
+            <div class="t5-rank-badge" id="t5-rank-badge">🔥 Ugljeni Majstor · Nivo 4</div>
             <div class="t5-xp-bar-wrap">
               <div class="t5-xp-label">
-                <span>1 240 XP</span>
-                <span>Sljedeći rang: 1 500 XP</span>
+                <span id="t5-xp-current">1 240 XP</span>
+                <span id="t5-xp-next">Sljedeći rang: 1 500 XP</span>
               </div>
               <div class="t5-xp-track">
                 <div class="t5-xp-fill" id="t5-xp-fill" style="width:83%"></div>
@@ -2979,7 +3031,9 @@ a {
           <!-- Avatar modal -->
           <div class="t5-avatar-modal" id="t5-avatar-modal" onclick="t5CloseAvatarPicker(event)">
             <div class="t5-avatar-picker">
+              <input type="file" id="t5-avatar-upload" accept="image/*" style="display:none" onchange="t5UploadAvatar(event)" />
               <div class="t5-picker-title">Odaberi avatar</div>
+              <button class="t5-upload-btn" onclick="document.getElementById('t5-avatar-upload').click()">📷 Učitaj sliku</button>
               <div class="t5-picker-grid" id="t5-picker-grid"></div>
             </div>
           </div>
@@ -3026,7 +3080,7 @@ a {
                   <span class="t5-pref-icon">🌐</span>
                   <div class="t5-pref-info">
                     <div class="t5-pref-label">JEZIK</div>
-                    <div class="t5-pref-val" id="t5-pref-jezik">Bosanski</div>
+                    <div class="t5-pref-val" id="t5-pref-jezik">Hrvatski</div>
                   </div>
                   <span class="t5-pref-chevron">›</span>
                 </div>
@@ -3051,7 +3105,7 @@ a {
                     <div class="t5-stat-key">ĆEVABDŽINICA POSJEĆENO</div>
                   </div>
                   <div class="t5-stat-cell">
-                    <div class="t5-stat-num red">1 240</div>
+                    <div class="t5-stat-num red" id="t5-stat-xp">1 240</div>
                     <div class="t5-stat-key">UKUPNO XP</div>
                   </div>
                   <div class="t5-stat-cell">
@@ -3063,7 +3117,7 @@ a {
                     <div class="t5-stat-key">RECEPATA NAUČENO</div>
                   </div>
                   <div class="t5-stat-cell">
-                    <div class="t5-stat-num orange">🔥 8</div>
+                    <div class="t5-stat-num orange" id="t5-stat-streak">🔥 8</div>
                     <div class="t5-stat-key">STREAK (DANA)</div>
                   </div>
                   <div class="t5-stat-cell">
@@ -3078,13 +3132,21 @@ a {
                 <div class="t5-section-head">
                   <span class="t5-section-title">OMILJENI RECEPTI</span>
                 </div>
-                <div class="t5-favs-scroll">
+                <div class="t5-favs-scroll" id="t5-favs-scroll">
                   <div class="t5-fav-card"><span class="t5-fav-emoji">🥩</span><span class="t5-fav-name">Bosanski ćevap</span></div>
                   <div class="t5-fav-card"><span class="t5-fav-emoji">🫓</span><span class="t5-fav-name">Somun domaći</span></div>
                   <div class="t5-fav-card"><span class="t5-fav-emoji">🧅</span><span class="t5-fav-name">Luk mariniran</span></div>
                   <div class="t5-fav-card"><span class="t5-fav-emoji">🫙</span><span class="t5-fav-name">Kajmak svježi</span></div>
                   <div class="t5-fav-card"><span class="t5-fav-emoji">🥗</span><span class="t5-fav-name">Šopska salata</span></div>
                 </div>
+              </div>
+
+
+              <div class="t5-section">
+                <div class="t5-section-head">
+                  <span class="t5-section-title">AI PICTURE MAKER</span>
+                </div>
+                <div class="t5-coming-soon">🎨 Dolazi uskoro — generiranje AI food fotki profila.</div>
               </div>
 
               <!-- Postavke -->
@@ -3295,6 +3357,7 @@ a {
       <div class="slide-screen" id="t3-quiz">
         <div class="t3-quiz-header" style="position:relative">
           <button class="t3-quiz-back" onclick="closeSlideScreen('t3-quiz')">←</button>
+          <button class="t3-quiz-restart" onclick="t3RestartQuiz()">Restart</button>
           <div class="t3-quiz-meta">
             <div class="t3-quiz-modul" id="t3-quiz-modul-lbl"></div>
             <div class="t3-quiz-progress-bar">
@@ -3313,6 +3376,7 @@ a {
         <div class="t3-mem-header">
           <button class="t3-mem-back" onclick="t3CloseMemory()">←</button>
           <div class="t3-mem-title">Ćevap Memory</div>
+          <button class="t3-quiz-restart" onclick="t3StartMemory()">Restart</button>
           <div class="t3-mem-stats">
             <div class="t3-mem-stat">
               <div class="t3-mem-stat-val" id="t3-mem-potezi">0</div>
@@ -3344,6 +3408,7 @@ a {
         <div class="t3-panic-header">
           <button class="t3-panic-back" onclick="t3StopPanic()">←</button>
           <div class="t3-panic-title">Roštilj Panic 🔥</div>
+          <button class="t3-panic-restart" onclick="t3StartPanicGame()">Restart</button>
           <div class="t3-panic-score-wrap">
             <div class="t3-panic-score-val" id="t3-panic-score">0</div>
             <div class="t3-panic-score-lbl">SPAŠENO</div>
@@ -3361,6 +3426,42 @@ a {
           </div>
         </div>
       </div><!-- /t3-panic -->
+
+      <div class="slide-screen" id="t3-snake" style="background:#111;display:flex;flex-direction:column">
+        <div class="t3-panic-header">
+          <button class="t3-panic-back" onclick="t3StopSnake()">←</button>
+          <div class="t3-panic-title">Ćevap Zmijica 🐍</div>
+          <button class="t3-panic-restart" onclick="t3StartSnake()">Restart</button>
+          <div class="t3-panic-score-wrap">
+            <div class="t3-panic-score-val" id="t3-snake-score">0</div>
+            <div class="t3-panic-score-lbl">LEPINJA</div>
+          </div>
+        </div>
+        <div class="t3-snake-wrap">
+          <div class="t3-snake-help">Tipke ili strelice — vodi ćevap do lepinje prije sudara.</div>
+          <canvas id="t3-snake-canvas" width="312" height="312"></canvas>
+          <div class="t3-snake-controls">
+            <button class="up" onclick="t3SnakeDir('up')">⬆️</button>
+            <div>
+              <button onclick="t3SnakeDir('left')">⬅️</button>
+              <button onclick="t3SnakeDir('down')">⬇️</button>
+              <button onclick="t3SnakeDir('right')">➡️</button>
+            </div>
+          </div>
+        </div>
+      </div><!-- /t3-snake -->
+
+
+
+
+      <div class="t1-rate-modal" id="t1-rate-modal" onclick="t1CloseRateModal(event)">
+        <div class="t1-rate-sheet" onclick="event.stopPropagation()">
+          <div class="t1-rate-title" id="t1-rate-title">Ocijeni restoran</div>
+          <div class="t1-rate-stars" id="t1-rate-stars"></div>
+          <textarea id="t1-rate-comment" class="t1-rate-comment" placeholder="Dodaj komentar (opcionalno)"></textarea>
+          <button class="t1-rate-submit" onclick="t1SubmitRating()">Pošalji ocjenu (+25 XP)</button>
+        </div>
+      </div>
 
     </div><!-- /screen-app -->
 
@@ -3815,7 +3916,8 @@ const T1_DATA = [
 ];
 
 /* ─── State ─── */
-let t1State = { stil: 'sve', query: '' };
+const T1_FAV_KEY = 'ca_t1_fav';
+let t1State = { location: 'sve', query: '', sort: 'distance', userLoc: null };
 let t1Map = null, t1Markers = [], t1ActiveRest = null;
 
 /* ─── Helpers ─── */
@@ -3835,26 +3937,48 @@ function t1RatingDots(ocjena) {
   return html;
 }
 
+function t1GetFavs() { return LS.get(T1_FAV_KEY, []); }
+window.t1ToggleFav = function(id) {
+  let favs = t1GetFavs();
+  favs = favs.includes(id) ? favs.filter(x => x !== id) : [...favs, id];
+  LS.set(T1_FAV_KEY, favs);
+  t1RenderList();
+}
+function t1GetDistanceKm(lat1, lon1, lat2, lon2) {
+  const R = 6371;
+  const dLat = (lat2 - lat1) * Math.PI / 180;
+  const dLon = (lon2 - lon1) * Math.PI / 180;
+  const a = Math.sin(dLat / 2) ** 2 + Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) * Math.sin(dLon / 2) ** 2;
+  return R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+}
+function t1DistanceFor(r) {
+  if (!t1State.userLoc) return parseFloat(r.udaljenost);
+  return t1GetDistanceKm(t1State.userLoc.lat, t1State.userLoc.lng, r.lat, r.lng);
+}
+
 function t1GetFiltered() {
-  return T1_DATA.filter(r => {
-    if (t1State.stil !== 'sve' && r.stil !== t1State.stil) return false;
-    if (t1State.query) {
+  const favs = t1GetFavs();
+  let list = T1_DATA.filter(r => {
+    if (t1State.location !== 'sve' && r.grad !== t1State.location) return false;
+        if (t1State.query) {
       const q = t1State.query.toLowerCase();
       if (!r.ime.toLowerCase().includes(q) && !r.grad.toLowerCase().includes(q)) return false;
     }
     return true;
   });
+  if (t1State.sort === 'rating') list = list.sort((a,b) => b.ocjena - a.ocjena);
+  if (t1State.sort === 'az') list = list.sort((a,b) => a.ime.localeCompare(b.ime,'hr'));
+  if (t1State.sort === 'distance') list = list.sort((a,b) => t1DistanceFor(a) - t1DistanceFor(b));
+  return list;
 }
 
-/* ─── Chips ─── */
-function t1RenderChips() {
-  const stilovi = [...new Set(T1_DATA.map(r => r.stil))];
-  const icons = { Sarajevski: '🗺️', Banjalučki: '🌿', Mostarsko: '🌊', Travnički: '🏔️' };
-  let html = `<button class="t1-chip active" data-stil="sve" onclick="t1SetStil('sve',this)">SVE</button>`;
-  stilovi.forEach(s => {
-    html += `<button class="t1-chip" data-stil="${s}" onclick="t1SetStil('${s}',this)">${icons[s] || '🥩'} ${s.toUpperCase()}</button>`;
-  });
-  document.getElementById('t1-chips').innerHTML = html;
+/* ─── Location filter ─── */
+function t1RenderLocationSelect() {
+  const cities = [...new Set(T1_DATA.map(r => r.grad))].sort((a,b)=>a.localeCompare(b,'hr'));
+  const sel = document.getElementById('t1-location');
+  if (!sel) return;
+  sel.innerHTML = `<option value="sve">Sve lokacije</option>` + cities.map(c => `<option value="${c}">${c}</option>`).join('');
+  sel.value = t1State.location;
 }
 
 /* ─── Cards ─── */
@@ -3868,8 +3992,13 @@ function t1RenderList() {
     return;
   }
   empty.style.display = 'none';
-  container.innerHTML = filtered.map(r => `
+  const favs = t1GetFavs();
+  container.innerHTML = filtered.map(r => {
+    const isFav = favs.includes(r.id);
+    const distance = t1DistanceFor(r).toFixed(1);
+    return `
     <div class="t1-card animate-fade" onclick="t1OpenDetail(${r.id})">
+      <div class="t1-card-top"><button class="t1-fav-btn${isFav ? ' active' : ''}" onclick="event.stopPropagation();t1ToggleFav(${r.id})">${isFav ? '❤️' : '🤍'}</button></div>
       <div class="t1-card-emoji-wrap">
         <div class="t1-card-emoji" style="background:${r.boja}22">${r.emoji}</div>
       </div>
@@ -3877,24 +4006,47 @@ function t1RenderList() {
       <div class="t1-card-tags">
         <span class="t1-card-tag">🗺️ ${r.stil.toUpperCase()}</span>
         <span class="t1-card-tag">🥩 ${r.meso.toUpperCase()}</span>
-        <span class="t1-card-tag">📍 ${r.udaljenost} KM</span>
+        <span class="t1-card-tag">📍 ${distance} KM</span>
       </div>
       <div class="t1-card-rating">
         <div class="t1-rating-dots">${t1RatingDots(r.ocjena)}</div>
-        <span class="t1-rating-num-lg">${r.ocjena}</span>
+        <span class="t1-rating-num-lg">${r.ocjena.toFixed(1)}</span>
         <span class="t1-rating-count">(${r.recenzija_count.toLocaleString('hr')} recenzija)</span>
       </div>
-    </div>`).join('');
+    </div>`;
+  }).join('');
 }
 
 /* ─── Filters ─── */
-window.t1SetStil = function (stil, btn) {
-  t1State.stil = stil;
-  document.querySelectorAll('#t1-chips .t1-chip').forEach(b => b.classList.remove('active'));
-  btn.classList.add('active');
+window.t1SetLocation = function(location) {
+  t1State.location = location;
   t1RenderList();
   t1UpdateMap();
 };
+window.t1SetSort = function(sort) {
+  t1State.sort = sort;
+  t1RenderList();
+  t1UpdateMap();
+};
+window.t1UseMyLocation = function() {
+  if (!navigator.geolocation) { showToast('Geolokacija nije podržana.'); return; }
+  navigator.geolocation.getCurrentPosition((pos) => {
+    t1State.userLoc = { lat: pos.coords.latitude, lng: pos.coords.longitude };
+    document.getElementById('t1-geo-btn').classList.add('active');
+    t1SetSort('distance');
+    document.getElementById('t1-sort').value = 'distance';
+    showToast('Lokacija ažurirana 📡');
+  }, () => showToast('Lokacija nije dostupna.'));
+};
+
+window.t1PickRandom = function() {
+  const filtered = t1GetFiltered();
+  if (!filtered.length) { showToast('Nema restorana za odabranu lokaciju.'); return; }
+  const r = filtered[Math.floor(Math.random() * filtered.length)];
+  showToast(`🎲 Danas probaj: ${r.ime}`);
+  t1OpenDetail(r.id);
+};
+
 
 window.t1OnSearch = function (val) {
   t1State.query = val.trim();
@@ -4030,10 +4182,42 @@ window.t1Navigate = function () {
   const r = t1ActiveRest; if (!r) return;
   window.open('https://maps.google.com/?q=' + r.lat + ',' + r.lng, '_blank');
 };
-window.t1Ocijeni = function () { showToast('Ocjenjivanje dolazi uskoro! ⭐'); };
+let t1RateState = { stars: 0 };
+window.t1Ocijeni = function () {
+  if (!t1ActiveRest) return;
+  document.getElementById('t1-rate-title').textContent = 'Ocijeni: ' + t1ActiveRest.ime;
+  t1RateState.stars = 0;
+  document.getElementById('t1-rate-comment').value = '';
+  document.getElementById('t1-rate-stars').innerHTML = Array.from({ length: 5 }, (_, i) =>
+    `<button class="t1-rate-star" onclick="t1SetRateStar(${i + 1})">🧆</button>`
+  ).join('');
+  document.getElementById('t1-rate-modal').classList.add('open');
+};
+window.t1CloseRateModal = function(e) {
+  if (!e || e.target.id === 't1-rate-modal') document.getElementById('t1-rate-modal').classList.remove('open');
+};
+window.t1SetRateStar = function(stars) {
+  t1RateState.stars = stars;
+  document.querySelectorAll('.t1-rate-star').forEach((el, idx) => el.classList.toggle('active', idx < stars));
+};
+window.t1SubmitRating = function() {
+  if (!t1ActiveRest || !t1RateState.stars) { showToast('Odaberi broj zvjezdica.'); return; }
+  const comment = document.getElementById('t1-rate-comment').value.trim();
+  const rest = T1_DATA.find(x => x.id === t1ActiveRest.id);
+  const oldCount = rest.recenzija_count;
+  rest.ocjena = Number((((rest.ocjena * oldCount) + t1RateState.stars) / (oldCount + 1)).toFixed(1));
+  rest.recenzija_count = oldCount + 1;
+  if (comment) rest.reviews.unshift({ user: 'ti_sada', badge: '🧆 Nova recenzija', avatar: '🙂', dana: 0, tekst: comment });
+  updateXP(25);
+  t1RenderList();
+  t1OpenDetail(rest.id);
+  t1CloseRateModal();
+  showToast('Ocjena spremljena! +25 XP');
+};
 
 /* ─── Init ─── */
-t1RenderChips();
+t1RenderLocationSelect();
+document.getElementById('t1-sort').value = t1State.sort;
 t1RenderList();
 setTimeout(() => { t1InitMap(); t1UpdateMap(); }, 150);
 
@@ -4219,6 +4403,8 @@ const T2_DATA = [
   },
 ];
 
+window.__T2_DATA__ = T2_DATA;
+
 const T2_KALK = {
   'Sarajevski (60/40)':       {kcal:41, prot:3.2, masti:2.4, tagovi:['🔥 Visoko proteinski','✗ Gluten FREE','🐄 Govedina/Janjetina']},
   'Banjalučki (svinjetina)':  {kcal:48, prot:2.8, masti:3.8, tagovi:['✗ Gluten FREE','🐷 Svinjetina/Junetina']},
@@ -4227,6 +4413,7 @@ const T2_KALK = {
 
 /* ─── State ─── */
 let t2Kategorija = 'sve';
+let t2Search = '';
 let t2ActiveRecept = null;
 let t2Porcije = 4, t2BasePorcije = 4;
 const T2_SAVED_KEY = 'ca_t2_saved';
@@ -4248,6 +4435,7 @@ function t2ToggleSave() {
   document.getElementById('t2-detail-save-btn').textContent = t2IsSaved(r.id) ? '🔖' : '🔖';
   document.getElementById('t2-detail-save-btn').style.opacity = t2IsSaved(r.id) ? '1' : '0.5';
   t2RenderGrid();
+  refreshProfileUI();
 }
 
 /* ─── Chips ─── */
@@ -4261,9 +4449,19 @@ function t2RenderChips() {
 
 /* ─── Grid ─── */
 function t2GetFiltered() {
-  if (t2Kategorija === 'sve') return T2_DATA;
-  if (t2Kategorija === 'spremljeni') { const s = t2GetSaved(); return T2_DATA.filter(r => s.includes(r.id)); }
-  return T2_DATA.filter(r => r.kategorija === t2Kategorija);
+  let list = t2Kategorija === 'sve' ? T2_DATA :
+    t2Kategorija === 'spremljeni' ? T2_DATA.filter(r => t2GetSaved().includes(r.id)) :
+    T2_DATA.filter(r => r.kategorija === t2Kategorija);
+  if (t2Search) {
+    const q = t2Search.toLowerCase();
+    list = list.filter(r =>
+      r.naziv.toLowerCase().includes(q) ||
+      r.subtitle.toLowerCase().includes(q) ||
+      r.tagovi.some(t => t.toLowerCase().includes(q)) ||
+      r.koraci.some(k => `${k.naslov} ${k.opis}`.toLowerCase().includes(q))
+    );
+  }
+  return list;
 }
 
 function t2RenderGrid() {
@@ -4288,12 +4486,19 @@ window.t2QuickSave = function(id, btn) {
   if (saved.includes(id)) { saved = saved.filter(x => x !== id); btn.classList.remove('saved'); showToast('Uklonjeno 🗑️'); }
   else { saved.push(id); btn.classList.add('saved'); showToast('Spremljeno 🔖'); }
   localStorage.setItem(T2_SAVED_KEY, JSON.stringify(saved));
+  refreshProfileUI();
 };
 
 window.t2SetKat = function(kat, btn) {
   t2Kategorija = kat;
   document.querySelectorAll('.t2-chip').forEach(b => b.classList.remove('active'));
   btn.classList.add('active');
+  t2RenderGrid();
+};
+
+
+window.t2SetSearch = function(val) {
+  t2Search = val.trim();
   t2RenderGrid();
 };
 
@@ -4490,6 +4695,28 @@ const T3_MODULI = [
     ]
   },
   {
+    id:'m6', naziv:'Majstorske marinade', opis:'Balans soli, luka i masnoće bez pretjerivanja',
+    emoji:'🧂', boja:'#4B3A5A', xp:180, reqXP:200,
+    pitanja:[
+      { q:'Koja je ključna uloga soli u smjesi ćevapa?', opcije:['Veže proteine i strukturu','Samo pojača boju','Smanjuje miris dima','Ubrzava pečenje'], tac:0 },
+      { q:'Koliko dugo minimalno odmarati smjesu nakon miješanja?', opcije:['12-24 sata u hladnjaku','15 minuta na sobnoj','Bez odmora','3 dana na toplom'], tac:0 },
+      { q:'Što je najbolja praksa s češnjakom u klasičnom receptu?', opcije:['Vrlo umjereno ili nimalo po stilu','Što više, to bolje','Uvijek u prahu','Samo sirov preko mesa'], tac:0 },
+      { q:'Zašto je hladno meso važno pri oblikovanju?', opcije:['Drži masnoću stabilnom','Brže tamni','Smanjuje okus','Lakše se soli'], tac:0 },
+      { q:'Koja greška najviše kvari teksturu?', opcije:['Previše aditiva i začina','Korištenje svježeg luka sa strane','Pečenje na ugljenu','Kratko odmaranje somuna'], tac:0 },
+    ]
+  },
+  {
+    id:'m7', naziv:'Serviranje i tempo', opis:'Kako poslužiti ćevap da ostane sočan',
+    emoji:'🫓', boja:'#5A432D', xp:200, reqXP:350,
+    pitanja:[
+      { q:'Kad je najbolje otvoriti somun?', opcije:['Odmah prije serviranja','30 min ranije','Nakon što se ohladi','Nije bitno'], tac:0 },
+      { q:'Zašto se ćevapi kratko odmore nakon roštilja?', opcije:['Redistribucija sokova','Da izgube dim','Da očvrsnu','Da se zalijepe za somun'], tac:0 },
+      { q:'Koji redoslijed je najčešći za serviranje?', opcije:['Somun, ćevapi, luk/kajmak','Luk pa voda pa ćevap','Ajvar pa pomfrit pa ćevap','Samo ćevapi bez somuna'], tac:0 },
+      { q:'Što najviše hladi jelo i kvari iskustvo?', opcije:['Dugo čekanje prije posluživanja','Topli tanjur','Svježe pečen somun','Brza usluga'], tac:0 },
+      { q:'Koja je idealna porcija za standardnu degustaciju?', opcije:['8-10 komada','2 komada','20 komada','Samo jedan veliki ćevap'], tac:0 },
+    ]
+  },
+  {
     id:'m5', naziv:'Tajne omjera mesa', opis:'Otključaj na razini Redoviti posjetitelj',
     emoji:'🥩', boja:'#3D3D3D', xp:250, reqXP:500,
     pitanja:[
@@ -4513,11 +4740,44 @@ function t3GetGames() { return JSON.parse(localStorage.getItem(T3_GAMES_KEY) || 
 /* ═══════════════════════════════════════
    INIT & RENDER
    ═══════════════════════════════════════ */
+function t3ChallengeKey() {
+  const d = new Date();
+  return `ca_t3_daily_${d.getFullYear()}-${d.getMonth()+1}-${d.getDate()}`;
+}
+
+function t3RenderDailyChallenge() {
+  const claimed = !!LS.get(t3ChallengeKey(), false);
+  const btn = document.getElementById('t3-ch-btn');
+  const sub = document.getElementById('t3-ch-sub');
+  if (!btn || !sub) return;
+  if (claimed) {
+    btn.textContent = '✅ Dnevni bonus preuzet';
+    btn.disabled = true;
+    btn.style.opacity = '0.6';
+    sub.textContent = 'Vrati se sutra po novi bonus.';
+  } else {
+    btn.textContent = 'Preuzmi +30 XP';
+    btn.disabled = false;
+    btn.style.opacity = '1';
+    sub.textContent = 'Riješi 1 kviz ili igru danas';
+  }
+}
+
+window.t3ClaimDailyChallenge = function() {
+  if (LS.get(t3ChallengeKey(), false)) return;
+  LS.set(t3ChallengeKey(), true);
+  updateXP(30);
+  t3RenderStats();
+  t3RenderDailyChallenge();
+  showToast('+30 XP dnevni bonus 🎯');
+};
+
 function t3Init() {
   updateStreak();
   t3RenderDaily();
   t3RenderStats();
   t3RenderModuli();
+  t3RenderDailyChallenge();
 }
 
 function t3RenderStats() {
@@ -4573,9 +4833,16 @@ function t3RenderModuli() {
 /* ═══════════════════════════════════════
    DAILY WORD
    ═══════════════════════════════════════ */
-function t3RenderDaily() {
-  const day = Math.floor((Date.now() - new Date(new Date().getFullYear(), 0, 0)) / 86400000);
-  const w = T3_WORDS[day % T3_WORDS.length];
+let t3DailyIdx = null;
+
+function t3RenderDaily(idx = null) {
+  if (idx === null || idx === undefined) {
+    const day = Math.floor((Date.now() - new Date(new Date().getFullYear(), 0, 0)) / 86400000);
+    t3DailyIdx = day % T3_WORDS.length;
+  } else {
+    t3DailyIdx = (idx + T3_WORDS.length) % T3_WORDS.length;
+  }
+  const w = T3_WORDS[t3DailyIdx];
   document.getElementById('t3-daily-lbl').innerHTML =
     `${w.kat} <span>·</span> RIJEČ <span>·</span> MUDROST DANA`;
   document.getElementById('t3-daily-rijec').textContent = w.rijec;
@@ -4589,15 +4856,51 @@ function t3RenderDaily() {
 window.t3ToggleDaily = function() {
   document.getElementById('t3-daily').classList.toggle('open');
 };
+window.t3PrevDaily = function() { t3RenderDaily((t3DailyIdx ?? 0) - 1); };
+window.t3NextDaily = function() { t3RenderDaily((t3DailyIdx ?? 0) + 1); };
 
 /* ═══════════════════════════════════════
    KVIZ
    ═══════════════════════════════════════ */
 let t3Q = { modId:null, pitanja:[], ci:0, score:0, answered:false };
 
+const T3_GAME_QUIZZES = {
+  city: {
+    id: 'g-city', label: '🗺️ PREPOZNAJ GRAD', xp: 50,
+    pitanja: [
+      { q:'Prepoznaj grad po znamenitosti', vizImg:'https://upload.wikimedia.org/wikipedia/commons/thumb/8/8f/Stari_Most_2008.jpg/640px-Stari_Most_2008.jpg', vizSub:'Stari most', opcije:['Mostar','Tuzla','Zenica','Bihać'], tac:0 },
+      { q:'Prepoznaj grad po znamenitosti', vizImg:'https://upload.wikimedia.org/wikipedia/commons/thumb/0/0a/Sebilj%2C_Bascarsija.jpg/640px-Sebilj%2C_Bascarsija.jpg', vizSub:'Sebilj (Baščaršija)', opcije:['Sarajevo','Trebinje','Goražde','Livno'], tac:0 },
+      { q:'Prepoznaj grad po znamenitosti', vizImg:'https://upload.wikimedia.org/wikipedia/commons/thumb/6/6b/Kastel_Banja_Luka.jpg/640px-Kastel_Banja_Luka.jpg', vizSub:'Kastel tvrđava', opcije:['Banja Luka','Foča','Prijedor','Jajce'], tac:0 },
+      { q:'Prepoznaj grad po znamenitosti', vizImg:'https://upload.wikimedia.org/wikipedia/commons/thumb/b/b3/Pannonica_lakes_in_Tuzla.jpg/640px-Pannonica_lakes_in_Tuzla.jpg', vizSub:'Pannonica / grad soli', opcije:['Tuzla','Mostar','Konjic','Travnik'], tac:0 },
+      { q:'Prepoznaj grad po znamenitosti', vizImg:'https://upload.wikimedia.org/wikipedia/commons/thumb/2/2c/Travnik_fortress.jpg/640px-Travnik_fortress.jpg', vizSub:'Travnička tvrđava', opcije:['Travnik','Zenica','Doboj','Visoko'], tac:0 },
+    ]
+  },
+  cevap: {
+    id: 'g-cevap', label: '🥩 PREPOZNAJ ĆEVAP', xp: 40,
+    pitanja: [
+      { q:'Koji stil je najčešće 60/40 govedina-janjetina?', opcije:['Sarajevski','Banjalučki','Tuzlanski','Travnički'], tac:0 },
+      { q:'Koji stil često uključuje svinjetinu?', opcije:['Banjalučki','Sarajevski','Mostarski','Tuzlanski'], tac:0 },
+      { q:'Koji stil naginje većem udjelu janjetine?', opcije:['Tuzlanski','Banjalučki','Sarajevski','Zenicki'], tac:0 },
+      { q:'Koji stil se često opisuje kao klasični “somun + luk” standard?', opcije:['Sarajevski','Američki BBQ','Grčki gyros','Adana'], tac:0 },
+      { q:'Koji stil se najčešće veže uz šire komade i jaču masnoću?', opcije:['Banjalučki','Tuzlanski','Sarajevski','Hercegovački'], tac:0 },
+    ]
+  }
+};
+
+function t3StartGameQuiz(kind) {
+  const g = T3_GAME_QUIZZES[kind];
+  if (!g) return;
+  t3Q = { modId: g.id, pitanja: shuffle([...g.pitanja]), ci:0, score:0, answered:false, gameXP:g.xp };
+  document.getElementById('t3-quiz-modul-lbl').textContent = g.label;
+  t3RenderQuestion();
+  openSlideScreen('t3-quiz');
+}
+window.t3StartCityRush = function() { t3StartGameQuiz('city'); };
+window.t3StartCevapGuess = function() { t3StartSnake(); };
+
 window.t3StartQuiz = function(modId) {
   const m = T3_MODULI.find(x => x.id === modId);
-  t3Q = { modId, pitanja: shuffle([...m.pitanja]), ci:0, score:0, answered:false };
+  t3Q = { modId, pitanja: shuffle([...m.pitanja]), ci:0, score:0, answered:false, gameXP:null };
   document.getElementById('t3-quiz-modul-lbl').textContent = `${m.emoji} ${m.naziv.toUpperCase()}`;
   t3RenderQuestion();
   openSlideScreen('t3-quiz');
@@ -4621,6 +4924,7 @@ function t3RenderQuestion() {
   document.getElementById('t3-quiz-qnum').textContent = `${ci+1} / ${total} pitanja`;
   document.getElementById('t3-quiz-body').innerHTML = `
     <div class="t3-quiz-q animate-fade">${p.q}</div>
+    ${(p.vizImg || p.viz) ? `<div class="t3-quiz-viz">${p.vizImg ? `<img src="${p.vizImg}" alt="${p.vizSub || 'Znamenitost'}" loading="lazy" />` : `<div style="font-size:52px">${p.viz}</div>`}<div class="t3-quiz-viz-sub">${p.vizSub || 'Znamenitost'}</div></div>` : ''}
     <div class="t3-quiz-options">
       ${p.opcije.map((o,i) => `
         <button class="t3-quiz-opt" onclick="t3Answer(${i})">
@@ -4664,25 +4968,49 @@ window.t3NextQ = function() {
   t3RenderQuestion();
 };
 
+window.t3RestartQuiz = function() {
+  if (!t3Q.modId) return;
+  const gameKey = Object.entries(T3_GAME_QUIZZES).find(([, g]) => g.id === t3Q.modId)?.[0];
+  if (gameKey) return t3StartGameQuiz(gameKey);
+  t3StartQuiz(t3Q.modId);
+};
+
 function t3QuizEnd() {
   const m = T3_MODULI.find(x => x.id === t3Q.modId);
   const done = t3GetDone();
-  const already = done.includes(m.id);
   const pct = Math.round((t3Q.score / t3Q.pitanja.length) * 100);
   const pass = pct >= 60;
   const emoji = pct === 100 ? '🏆' : pct >= 80 ? '🌟' : pct >= 60 ? '✅' : '📚';
   let xpHtml = '';
-  if (pass && !already) {
-    done.push(m.id);
-    localStorage.setItem(T3_DONE_KEY, JSON.stringify(done));
-    updateXP(m.xp);
-    t3RenderStats();
-    t3RenderModuli();
-    xpHtml = `<div class="t3-quiz-result-xp">+${m.xp} XP zarađeno! ⚡</div>`;
-  } else if (already) {
-    xpHtml = `<div style="color:var(--brown3);font-size:13px;margin-bottom:16px">Modul već završen — XP nije dodijen ponovo</div>`;
+
+  if (t3Q.gameXP) {
+    const games = t3GetGames();
+    const key = t3Q.modId;
+    if (pass && !games[key]) {
+      games[key] = true;
+      localStorage.setItem(T3_GAMES_KEY, JSON.stringify(games));
+      updateXP(t3Q.gameXP);
+      t3RenderStats();
+      xpHtml = `<div class="t3-quiz-result-xp">+${t3Q.gameXP} XP zarađeno! ⚡</div>`;
+    } else if (games[key]) {
+      xpHtml = `<div style="color:var(--brown3);font-size:13px;margin-bottom:16px">Igra već završena — XP je već upisan</div>`;
+    } else {
+      xpHtml = `<div style="color:var(--red);font-size:13px;margin-bottom:16px">Treba 60%+ za XP — pokušaj ponovo! 💪</div>`;
+    }
   } else {
-    xpHtml = `<div style="color:var(--red);font-size:13px;margin-bottom:16px">Treba 60%+ za XP — pokušaj ponovo! 💪</div>`;
+    const already = m && done.includes(m.id);
+    if (m && pass && !already) {
+      done.push(m.id);
+      localStorage.setItem(T3_DONE_KEY, JSON.stringify(done));
+      updateXP(m.xp);
+      t3RenderStats();
+      t3RenderModuli();
+      xpHtml = `<div class="t3-quiz-result-xp">+${m.xp} XP zarađeno! ⚡</div>`;
+    } else if (already) {
+      xpHtml = `<div style="color:var(--brown3);font-size:13px;margin-bottom:16px">Modul već završen — XP nije dodijeljen ponovo</div>`;
+    } else {
+      xpHtml = `<div style="color:var(--red);font-size:13px;margin-bottom:16px">Treba 60%+ za XP — pokušaj ponovo! 💪</div>`;
+    }
   }
   document.getElementById('t3-quiz-prog').style.width = '100%';
   document.getElementById('t3-quiz-qnum').textContent = 'Završeno!';
@@ -4741,7 +5069,7 @@ window.t3FlipCard = function(idx) {
   if (t3Mem.locked || c.flipped || c.matched) return;
   c.flipped = true;
   document.getElementById('mc' + idx).classList.add('flipped');
-  if (!t3Mem.first) {
+  if (t3Mem.first === null) {
     t3Mem.first = idx;
     return;
   }
@@ -4825,19 +5153,26 @@ function t3PanicSpawn() {
   const idx = empty[Math.floor(Math.random() * empty.length)];
   const el = document.getElementById('pc' + idx);
   el.className = 't3-panic-cell active';
-  el.innerHTML = `<span>🥩</span><div class="t3-panic-burn-bar" id="pb${idx}"></div>`;
+  el.innerHTML = `<span>🥩</span><div class="t3-panic-burn-bar" id="pb${idx}"></div><div class="t3-panic-timer" id="pt${idx}">3.0s</div>`;
   // animate burn bar
   const bar = document.getElementById('pb' + idx);
   bar.style.transition = `width ${PANIC_BURN_MS}ms linear`;
   requestAnimationFrame(() => requestAnimationFrame(() => { bar.style.width = '100%'; }));
   // burn timer
+  const deadline = Date.now() + PANIC_BURN_MS;
   const timer = setTimeout(() => t3PanicBurn(idx), PANIC_BURN_MS);
-  t3P.active[idx] = { timer };
+  const ui = setInterval(() => {
+    const left = Math.max(0, (deadline - Date.now()) / 1000);
+    const tel = document.getElementById('pt' + idx);
+    if (tel) tel.textContent = left.toFixed(1) + 's';
+  }, 100);
+  t3P.active[idx] = { timer, ui };
 }
 
 window.t3PanicTap = function(idx) {
   if (t3P.gameOver || !t3P.active[idx]) return;
   clearTimeout(t3P.active[idx].timer);
+  clearInterval(t3P.active[idx].ui);
   t3P.active[idx] = null;
   const el = document.getElementById('pc' + idx);
   el.innerHTML = '✅';
@@ -4856,7 +5191,7 @@ function t3PanicBurn(idx) {
   if (t3P.gameOver) return;
   t3P.gameOver = true;
   clearInterval(t3P.interval);
-  t3P.active.forEach((v) => { if (v) clearTimeout(v.timer); });
+  t3P.active.forEach((v) => { if (v) { clearTimeout(v.timer); clearInterval(v.ui); } });
   const el = document.getElementById('pc' + idx);
   el.className = 't3-panic-cell burned';
   el.innerHTML = '💀';
@@ -4883,9 +5218,74 @@ function t3PanicBurn(idx) {
 
 window.t3StopPanic = function() {
   clearInterval(t3P.interval);
-  t3P.active.forEach(v => { if (v) clearTimeout(v.timer); });
+  t3P.active.forEach(v => { if (v) { clearTimeout(v.timer); clearInterval(v.ui); } });
   t3P.gameOver = true;
   closeSlideScreen('t3-panic');
+};
+
+
+/* ═══════════════════════════════════════
+   ĆEVAP ZMIJICA
+   ═══════════════════════════════════════ */
+const SNAKE_XP = 80;
+let t3S = { snake:[[6,6]], dir:[1,0], food:[9,6], score:0, timer:null, over:false };
+
+function t3SnakeFood() {
+  while (true) {
+    const f = [Math.floor(Math.random()*12), Math.floor(Math.random()*12)];
+    if (!t3S.snake.some(([x,y]) => x===f[0] && y===f[1])) return f;
+  }
+}
+
+function t3SnakeDraw() {
+  const c = document.getElementById('t3-snake-canvas');
+  if (!c) return;
+  const g = c.getContext('2d');
+  g.fillStyle = '#1b130d'; g.fillRect(0,0,312,312);
+  g.strokeStyle = 'rgba(255,255,255,0.04)';
+  for(let i=0;i<=12;i++){ g.beginPath(); g.moveTo(i*26,0); g.lineTo(i*26,312); g.stroke(); g.beginPath(); g.moveTo(0,i*26); g.lineTo(312,i*26); g.stroke(); }
+  g.fillStyle = '#F39C12';
+  g.fillRect(t3S.food[0]*26+5,t3S.food[1]*26+5,16,16);
+  g.fillStyle = '#C0392B';
+  t3S.snake.forEach(([x,y],i)=>{ g.fillRect(x*26+3,y*26+3,20,20); if(i===0){ g.fillStyle='#fff'; g.fillRect(x*26+10,y*26+10,4,4); g.fillStyle='#C0392B'; } });
+}
+
+function t3SnakeTick() {
+  if (t3S.over) return;
+  const [dx,dy]=t3S.dir;
+  const head=[t3S.snake[0][0]+dx, t3S.snake[0][1]+dy];
+  if (head[0]<0||head[1]<0||head[0]>11||head[1]>11||t3S.snake.some(([x,y])=>x===head[0]&&y===head[1])) {
+    t3S.over=true; clearInterval(t3S.timer);
+    showToast(`Game over! Lepinje: ${t3S.score}`);
+    const games = t3GetGames();
+    if (!games.snake && t3S.score >= 6) { games.snake = true; localStorage.setItem(T3_GAMES_KEY, JSON.stringify(games)); updateXP(SNAKE_XP); showToast(`+${SNAKE_XP} XP za Zmijicu 🐍`); }
+    return;
+  }
+  t3S.snake.unshift(head);
+  if (head[0]===t3S.food[0]&&head[1]===t3S.food[1]) { t3S.score++; document.getElementById('t3-snake-score').textContent=t3S.score; t3S.food=t3SnakeFood(); }
+  else t3S.snake.pop();
+  t3SnakeDraw();
+}
+
+window.t3SnakeDir = function(dir) {
+  const map = {up:[0,-1],down:[0,1],left:[-1,0],right:[1,0]};
+  const [nx,ny]=map[dir]||t3S.dir;
+  if (t3S.dir[0]===-nx && t3S.dir[1]===-ny) return;
+  t3S.dir=[nx,ny];
+};
+
+window.t3StartSnake = function() {
+  clearInterval(t3S.timer);
+  t3S = { snake:[[6,6],[5,6],[4,6]], dir:[1,0], food:[9,6], score:0, timer:null, over:false };
+  document.getElementById('t3-snake-score').textContent = '0';
+  openSlideScreen('t3-snake');
+  t3SnakeDraw();
+  t3S.timer = setInterval(t3SnakeTick, 220);
+};
+
+window.t3StopSnake = function() {
+  clearInterval(t3S.timer);
+  closeSlideScreen('t3-snake');
 };
 
 /* ═══════════════════════════════════════
@@ -4913,23 +5313,150 @@ t3Init();
 /* === JS-TAB4-START === */
 (function() {
 
+const T4_DIARY_KEY = 'ca_t4_diary';
+
+function t4GetDiary() {
+  return LS.get(T4_DIARY_KEY, { cevapi: 0, cities: [], places: [], styles: {} });
+}
+function t4SaveDiary(d) { LS.set(T4_DIARY_KEY, d); }
+
+function t4UpdateDiaryUI() {
+  const d = t4GetDiary();
+  const totalStyles = Object.values(d.styles).reduce((a,b)=>a+b,0) || 0;
+  const sar = d.styles['Sarajevski'] || 0;
+  const ban = d.styles['Banjalučki'] || 0;
+  const tra = d.styles['Travnički'] || 0;
+  const sarPct = totalStyles ? Math.round((sar/totalStyles)*100) : 0;
+  const banPct = totalStyles ? Math.round((ban/totalStyles)*100) : 0;
+  const traPct = totalStyles ? Math.round((tra/totalStyles)*100) : 0;
+
+  const setTxt = (id,val) => { const el = document.getElementById(id); if (el) el.textContent = val; };
+  setTxt('t4-dn-year', `TVOJ SAŽETAK ZA ${new Date().getFullYear()}.`);
+  setTxt('t4-dn-cevapi', `${d.cevapi} ćevapa`);
+  setTxt('t4-dn-gradovi', d.cities.length);
+  setTxt('t4-dn-mjesta', d.places.length);
+  setTxt('t4-dn-stilovi', `${Object.keys(d.styles).length} stila`);
+
+  const bar = (id,pct)=>{ const el=document.getElementById(id); if(el) el.style.width = pct + '%'; };
+  bar('t4-bar-sar', sarPct); bar('t4-bar-ban', banPct); bar('t4-bar-tra', traPct);
+  setTxt('t4-pct-sar', sarPct + '%'); setTxt('t4-pct-ban', banPct + '%'); setTxt('t4-pct-tra', traPct + '%');
+
+  const taste = document.getElementById('t4-taste-type');
+  if (taste) {
+    const sorted = Object.entries(d.styles).sort((a,b)=>b[1]-a[1]);
+    if (sorted.length) {
+      taste.style.display = '';
+      taste.innerHTML = `🍽️ Trenutno najviše voliš <strong>${sorted[0][0]}</strong> stil.`;
+    } else {
+      taste.style.display = 'none';
+      taste.textContent = '';
+    }
+  }
+
+  const grid = document.getElementById('t4-mapa-grid');
+  const visited = document.getElementById('t4-mapa-visited');
+  if (grid && visited) {
+    const icons = { Sarajevo:'🏛️', 'Banja Luka':'🌿', Travnik:'🏔️', Mostar:'🌉', Zenica:'🏙️', 'Beč':'🌍' };
+    if (!d.cities.length) {
+      grid.innerHTML = '<div class="t4-mapa-pin"><span class="t4-mapa-pin-emoji">📍</span><div><div class="t4-mapa-pin-city">Još nema zabilježenih gradova</div><div class="t4-mapa-pin-count">Lajkaj objavu da krene praćenje</div></div></div>';
+      visited.textContent = 'Nema zabilježenih gradova.';
+    } else {
+      grid.innerHTML = d.cities.map(city => `<div class="t4-mapa-pin"><span class="t4-mapa-pin-emoji">${icons[city] || '📍'}</span><div><div class="t4-mapa-pin-city">${city}</div><div class="t4-mapa-pin-count">Posjećen grad</div></div></div>`).join('');
+      visited.textContent = `${d.cities.length} gradova evidentirano`;
+    }
+  }
+}
+
+function t4ApplyDiaryDelta(meta, amount) {
+  const d = t4GetDiary();
+  d.cevapi = Math.max(0, (d.cevapi || 0) + amount);
+  if (meta.city) {
+    if (amount > 0 && !d.cities.includes(meta.city)) d.cities.push(meta.city);
+    if (amount < 0 && !document.querySelector(`.t4-action-btn.liked[data-city="${meta.city}"]`)) {
+      d.cities = d.cities.filter(c => c !== meta.city);
+    }
+  }
+  if (meta.resto) {
+    if (amount > 0 && !d.places.includes(meta.resto)) d.places.push(meta.resto);
+    if (amount < 0 && !document.querySelector(`.t4-action-btn.liked[data-resto="${meta.resto}"]`)) {
+      d.places = d.places.filter(r => r !== meta.resto);
+    }
+  }
+  if (meta.style) {
+    d.styles[meta.style] = Math.max(0, (d.styles[meta.style] || 0) + amount);
+    if (d.styles[meta.style] === 0) delete d.styles[meta.style];
+  }
+  t4SaveDiary(d);
+  t4UpdateDiaryUI();
+t4RenderRang('month');
+}
+
+
+const T4_RANG_DATA = {
+  month: [
+    {pos:'🥇', avatar:'🧔', bg:'#FFD580', name:'mujo_sarajlija', title:'🔥 Majstor roštilja', xp:'2.840 XP'},
+    {pos:'🥈', avatar:'👩', bg:'#AED6F1', name:'ana_foodie_zagreb', title:'🍽️ Iskusni degustator', xp:'1.120 XP'},
+    {pos:'🥉', avatar:'🧑', bg:'#A9DFBF', name:'dino_k', title:'🔥 Ugljeni poklonik', xp:'890 XP'},
+  ],
+  week: [
+    {pos:'🥇', avatar:'👩', bg:'#AED6F1', name:'ana_foodie_zagreb', title:'🍽️ Iskusni degustator', xp:'460 XP'},
+    {pos:'🥈', avatar:'🧔', bg:'#FFD580', name:'mujo_sarajlija', title:'🔥 Majstor roštilja', xp:'420 XP'},
+    {pos:'🥉', avatar:'🙂', bg:'#C8E6C9', name:'adnan_k', title:'🍽️ Iskusni degustator', xp:'340 XP'},
+  ],
+  all: [
+    {pos:'🥇', avatar:'🧔', bg:'#FFD580', name:'mujo_sarajlija', title:'🔥 Majstor roštilja', xp:'9.420 XP'},
+    {pos:'🥈', avatar:'👩', bg:'#AED6F1', name:'ana_foodie_zagreb', title:'🍽️ Iskusni degustator', xp:'7.130 XP'},
+    {pos:'🥉', avatar:'🧑', bg:'#A9DFBF', name:'dino_k', title:'🔥 Ugljeni poklonik', xp:'5.980 XP'},
+  ]
+};
+
+function t4RenderRang(period='month') {
+  const labels = { month:'TOP KORISNICI OVOG MJESECA', week:'TOP KORISNICI OVOG TJEDNA', all:'TOP KORISNICI - ALL TIME' };
+  const hdr = document.getElementById('t4-rang-header');
+  if (hdr) hdr.textContent = labels[period] || labels.month;
+  const list = document.getElementById('t4-rang-list');
+  if (!list) return;
+  list.innerHTML = (T4_RANG_DATA[period] || []).map(r => `
+    <div class="t4-rang-row">
+      <span class="t4-rang-pos">${r.pos}</span>
+      <div class="t4-rang-avatar" style="background:${r.bg};">${r.avatar}</div>
+      <div class="t4-rang-info">
+        <div class="t4-rang-name">${r.name}</div>
+        <div class="t4-rang-title">${r.title}</div>
+      </div>
+      <span class="t4-rang-xp">${r.xp}</span>
+    </div>`).join('');
+}
+
+window.t4SetRangPeriod = function(period, btn) {
+  document.querySelectorAll('#t4-rang-chips .t4-subnav-btn').forEach(b => b.classList.remove('active'));
+  if (btn) btn.classList.add('active');
+  t4RenderRang(period);
+};
+
 function t4Switch(btn) {
   document.querySelectorAll('.t4-subnav-btn').forEach(b => b.classList.remove('active'));
   btn.classList.add('active');
   const panel = btn.dataset.panel;
   document.querySelectorAll('.t4-panel').forEach(p => p.classList.remove('active'));
   document.getElementById('t4-' + panel).classList.add('active');
+  if (panel === 'dnevnik') t4UpdateDiaryUI();
 }
 window.t4Switch = t4Switch;
 
 function t4Vote(btn, type) {
   const card = btn.closest('.t4-vote-card');
+  const meta = { city: card.dataset.city, resto: card.dataset.resto, style: card.dataset.style };
   card.style.opacity = '0.5';
   card.style.pointerEvents = 'none';
   setTimeout(() => {
     card.innerHTML = '<div style="text-align:center;padding:12px;font-size:13px;color:var(--brown3);">' +
       (type === 'odobri' ? '✅ Glasao si ZA ovaj biser!' : '✖️ Glasao si PROTIV.') + '</div>';
     card.style.opacity = '1';
+    if (type === 'odobri') {
+      t4ApplyDiaryDelta(meta, 2);
+      showToast('Dnevnik ažuriran: +2 ćevapa 📓');
+    }
   }, 300);
 }
 window.t4Vote = t4Vote;
@@ -4938,11 +5465,18 @@ window.t4Vote = t4Vote;
 document.addEventListener('click', function(e) {
   const btn = e.target.closest('.t4-action-btn');
   if (!btn || !btn.textContent.includes('🧆')) return;
+  const post = btn.closest('.t4-post');
+  const meta = post ? { city: post.dataset.city, resto: post.dataset.resto, style: post.dataset.style } : {};
   const isLiked = btn.classList.toggle('liked');
   const parts = btn.textContent.trim().split(' ');
   const current = parseInt(parts[1]) || 0;
   btn.textContent = '🧆 ' + (isLiked ? current + 1 : current - 1);
+  btn.dataset.city = meta.city || '';
+  btn.dataset.resto = meta.resto || '';
+  t4ApplyDiaryDelta(meta, isLiked ? 1 : -1);
 });
+
+t4UpdateDiaryUI();
 
 }());
 /* === JS-TAB4-END === */
@@ -4966,6 +5500,42 @@ document.addEventListener('click', function(e) {
     settings: { notif: true, loc: true, offline: false, priv: false },
   };
 
+  function t5SavedIds() { return LS.get('ca_t2_saved', []); }
+
+  window.refreshProfileUI = function() {
+    const user = getCurrentUser();
+    const xp = user?.xp || 0;
+    const streak = user?.streak || 0;
+    const rank = getRank(xp);
+    const next = getNextRank(xp);
+
+    document.getElementById('t5-name').textContent = user?.name || 'Gost';
+    document.getElementById('t5-rank-badge').textContent = rank.title;
+    document.getElementById('t5-xp-current').textContent = `${xp.toLocaleString('hr')} XP`;
+    document.getElementById('t5-xp-next').textContent = next ? `Sljedeći rang: ${next.xpMin.toLocaleString('hr')} XP` : 'Maksimalni rang';
+    document.getElementById('t5-xp-fill').style.width = `${getXpProgress(xp)}%`;
+    document.getElementById('t5-stat-xp').textContent = xp.toLocaleString('hr');
+    document.getElementById('t5-stat-streak').textContent = `🔥 ${streak}`;
+
+    if (user?.avatarImg) {
+      const av = document.getElementById('t5-avatar');
+      av.textContent = '';
+      av.style.backgroundImage = `url(${user.avatarImg})`;
+      av.style.backgroundSize = 'cover';
+      av.style.backgroundPosition = 'center';
+    } else {
+      const av = document.getElementById('t5-avatar');
+      av.style.backgroundImage = '';
+      av.textContent = user?.avatar || state.avatar;
+    }
+
+    const savedIds = t5SavedIds();
+    const items = (window.__T2_DATA__ || []).filter(r => savedIds.includes(r.id));
+    document.getElementById('t5-favs-scroll').innerHTML = items.length
+      ? items.map(r => `<div class="t5-fav-card"><span class="t5-fav-emoji">${r.emoji}</span><span class="t5-fav-name">${r.naziv}</span></div>`).join('')
+      : '<div style="font-size:12px;color:var(--brown3);padding:4px 0;">Nema bookmarkanih recepata još.</div>';
+  };
+
   window.t5OpenAvatarPicker = function() {
     const grid = document.getElementById('t5-picker-grid');
     grid.innerHTML = AVATARS.map(e =>
@@ -4979,9 +5549,31 @@ document.addEventListener('click', function(e) {
       document.getElementById('t5-avatar-modal').classList.remove('open');
   };
 
+  window.t5UploadAvatar = function(event) {
+    const file = event.target.files && event.target.files[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = () => {
+      const user = getCurrentUser();
+      if (!user) return;
+      user.avatarImg = reader.result;
+      saveUser(user);
+      refreshProfileUI();
+      showToast('Profilna slika ažurirana 📷');
+      document.getElementById('t5-avatar-modal').classList.remove('open');
+    };
+    reader.readAsDataURL(file);
+  };
+
   window.t5PickAvatar = function(emoji) {
     state.avatar = emoji;
-    document.getElementById('t5-avatar').textContent = emoji;
+    const user = getCurrentUser();
+    if (user) {
+      user.avatar = emoji;
+      user.avatarImg = null;
+      saveUser(user);
+    }
+    refreshProfileUI();
     document.getElementById('t5-avatar-modal').classList.remove('open');
   };
 
@@ -5041,11 +5633,14 @@ document.addEventListener('click', function(e) {
   };
 
   window.t5Logout = function() {
-    if (confirm('Stvarno se odjavljuješ?')) {
-      document.getElementById('main-app').style.display = 'none';
-      document.getElementById('auth-screen').style.display = 'flex';
-    }
+    doLogout();
   };
+
+  window.onAppEnter = function() {
+    refreshProfileUI();
+  };
+
+  refreshProfileUI();
 
 }());
 /* === JS-TAB5-END === */
